@@ -131,6 +131,9 @@
                     <a href="#sale-off" class="py-3 px-3.5 hover:bg-black/15 transition flex items-center gap-1">
                         Sale off <span class="bg-yellow-400 text-brand-dark text-[10px] font-black px-1.5 py-0.5 rounded uppercase">Hot</span>
                     </a>
+                    <a href="#khao-sat" class="py-3 px-3.5 hover:bg-black/15 transition flex items-center gap-1">
+                        Khảo sát tư vấn
+                    </a>
                     <a href="#tin-tuc" class="py-3 px-3.5 hover:bg-black/15 transition">
                         Tin tức
                     </a>
@@ -157,6 +160,10 @@
             <a href="#sale-off" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded flex justify-between items-center">
                 <span>Sale off</span>
                 <span class="bg-yellow-400 text-brand-dark text-[10px] px-1.5 py-0.5 rounded">HOT</span>
+            </a>
+            <a href="#khao-sat" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded flex justify-between items-center">
+                <span>Khảo sát nhu cầu</span>
+                <span class="bg-white text-brand-orange text-[10px] px-1.5 py-0.5 rounded font-black">Nhận quà</span>
             </a>
             <a href="#tin-tuc" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded">Tin tức</a>
             <a href="#chinh-sach" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded">Chính sách chuyển nhượng</a>
@@ -1073,6 +1080,208 @@
         </div>
     </section>
 
+    <!-- 9.5 KHẢO SÁT NHU CẦU & NHẬN TƯ VẤN DỤNG CỤ THỂ THAO -->
+    <section id="khao-sat" class="py-16 bg-gradient-to-b from-orange-50 via-white to-gray-50 border-t border-b border-orange-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl shadow-2xl border-2 border-orange-200 p-6 sm:p-10 relative overflow-hidden">
+                <!-- Dải viền màu thể thao nổi bật ở đầu thẻ -->
+                <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-orange-500 via-brand-orange to-yellow-400"></div>
+
+                <div class="text-center mb-8 pt-2">
+                    <span class="inline-flex items-center gap-1.5 bg-orange-100 text-brand-orange text-xs font-sport font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-clipboard-list"></i> Khảo Sát Nhu Cầu 30 Giây
+                    </span>
+                    <h2 class="font-sport font-black text-2xl sm:text-3xl text-gray-900 uppercase">
+                        TÌM DỤNG CỤ THỂ THAO PHÙ HỢP NHẤT CHO BẠN
+                    </h2>
+                    <p class="text-sm text-gray-600 mt-2 max-w-xl mx-auto">
+                        Hãy trả lời 5 câu hỏi nhanh bên dưới để chuyên viên <strong class="text-brand-orange">SPORTFIT PRO</strong> gợi ý dụng cụ chuẩn xác nhất theo môn tập & mức ngân sách của bạn!
+                    </p>
+                </div>
+
+                <form id="surveyForm" onsubmit="handleSurveySubmit(event)" class="space-y-6">
+                    <!-- Câu 1: Họ và tên -->
+                    <div class="bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 focus-within:border-brand-orange focus-within:ring-2 focus-within:ring-orange-200 transition">
+                        <label for="survey_name" class="block font-bold text-sm sm:text-base text-gray-900 mb-1">
+                            1. Họ và tên của bạn là gì? <span class="text-red-500">*</span>
+                        </label>
+                        <p class="text-xs text-gray-500 mb-2 italic">(Trả lời ngắn)</p>
+                        <input type="text" id="survey_name" name="fullname" required 
+                               placeholder="Nhập họ và tên của bạn..." 
+                               class="w-full px-4 py-3 bg-white rounded-xl border border-gray-300 focus:outline-none focus:border-brand-orange text-sm font-medium">
+                    </div>
+
+                    <!-- Câu 2: Số điện thoại/Zalo -->
+                    <div class="bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 focus-within:border-brand-orange focus-within:ring-2 focus-within:ring-orange-200 transition">
+                        <label for="survey_phone" class="block font-bold text-sm sm:text-base text-gray-900 mb-1">
+                            2. Số điện thoại/Zalo của bạn là gì? <span class="text-red-500">*</span>
+                        </label>
+                        <p class="text-xs text-gray-500 mb-2 italic">(Trả lời ngắn)</p>
+                        <input type="tel" id="survey_phone" name="phone_zalo" required 
+                               placeholder="Ví dụ: 0988.xxx.xxx hoặc số Zalo nhận tư vấn" 
+                               class="w-full px-4 py-3 bg-white rounded-xl border border-gray-300 focus:outline-none focus:border-brand-orange text-sm font-medium">
+                    </div>
+
+                    <!-- Câu 3: Môn thể thao đang tập luyện -->
+                    <div class="bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 transition">
+                        <label class="block font-bold text-sm sm:text-base text-gray-900 mb-1">
+                            3. Bạn đang tập luyện môn thể thao nào? <span class="text-red-500">*</span>
+                        </label>
+                        <p class="text-xs text-gray-500 mb-3 italic">(Chọn 1 môn thể thao bạn đang chơi hoặc nhập môn khác)</p>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sport" value="Bóng đá" required class="peer sr-only">
+                                <div class="px-3 py-3 rounded-xl border border-gray-300 bg-white text-center font-bold text-xs sm:text-sm text-gray-700 peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-center gap-1.5 shadow-sm">
+                                    <span>⚽ Bóng đá</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sport" value="Cầu lông" class="peer sr-only">
+                                <div class="px-3 py-3 rounded-xl border border-gray-300 bg-white text-center font-bold text-xs sm:text-sm text-gray-700 peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-center gap-1.5 shadow-sm">
+                                    <span>🏸 Cầu lông</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sport" value="Bơi lội" class="peer sr-only">
+                                <div class="px-3 py-3 rounded-xl border border-gray-300 bg-white text-center font-bold text-xs sm:text-sm text-gray-700 peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-center gap-1.5 shadow-sm">
+                                    <span>🏊 Bơi lội</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="sport" value="Chạy bộ" class="peer sr-only">
+                                <div class="px-3 py-3 rounded-xl border border-gray-300 bg-white text-center font-bold text-xs sm:text-sm text-gray-700 peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-center gap-1.5 shadow-sm">
+                                    <span>🏃 Chạy bộ</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Lựa chọn Khác -->
+                        <div class="flex items-center gap-2 mt-2">
+                            <label class="cursor-pointer flex-shrink-0">
+                                <input type="radio" name="sport" value="Khác" id="sport_other_radio" class="peer sr-only">
+                                <div class="px-3.5 py-2.5 rounded-xl border border-gray-300 bg-white font-bold text-xs sm:text-sm text-gray-700 peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange hover:bg-gray-100 transition shadow-sm">
+                                    <span>Khác:</span>
+                                </div>
+                            </label>
+                            <input type="text" id="sport_other_text" name="sport_other" 
+                                   placeholder="Ví dụ: Pickleball, Gym, Tennis, Yoga, Bóng rổ..." 
+                                   onfocus="document.getElementById('sport_other_radio').checked = true;"
+                                   class="flex-1 px-4 py-2.5 bg-white rounded-xl border border-gray-300 focus:outline-none focus:border-brand-orange text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <!-- Câu 4: Yếu tố quan tâm khi mua dụng cụ -->
+                    <div class="bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 transition">
+                        <label class="block font-bold text-sm sm:text-base text-gray-900 mb-1">
+                            4. Bạn thường quan tâm đến yếu tố nào khi mua dụng cụ thể thao?
+                        </label>
+                        <p class="text-xs text-gray-500 mb-3 italic">(Có thể chọn một hoặc nhiều yếu tố bạn quan tâm)</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="factor" value="Giá cả" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>💰 Giá cả</span>
+                                    <span class="w-5 h-5 rounded-full border border-gray-300 peer-checked:border-brand-orange peer-checked:bg-brand-orange flex items-center justify-center text-white text-[10px]">
+                                        ✓
+                                    </span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="factor" value="Chất lượng, độ bền" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>🛡️ Chất lượng, độ bền</span>
+                                    <span class="w-5 h-5 rounded-full border border-gray-300 peer-checked:border-brand-orange peer-checked:bg-brand-orange flex items-center justify-center text-white text-[10px]">
+                                        ✓
+                                    </span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="factor" value="Thương hiệu" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>⭐ Thương hiệu</span>
+                                    <span class="w-5 h-5 rounded-full border border-gray-300 peer-checked:border-brand-orange peer-checked:bg-brand-orange flex items-center justify-center text-white text-[10px]">
+                                        ✓
+                                    </span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="factor" value="Tính năng hỗ trợ tập luyện" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>🎯 Tính năng hỗ trợ tập luyện</span>
+                                    <span class="w-5 h-5 rounded-full border border-gray-300 peer-checked:border-brand-orange peer-checked:bg-brand-orange flex items-center justify-center text-white text-[10px]">
+                                        ✓
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Câu 5: Ngân sách dự kiến -->
+                    <div class="bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 transition">
+                        <label class="block font-bold text-sm sm:text-base text-gray-900 mb-1">
+                            5. Bạn dự kiến chi bao nhiêu cho dụng cụ thể thao? <span class="text-red-500">*</span>
+                        </label>
+                        <p class="text-xs text-gray-500 mb-3 italic">(Chọn mức ngân sách bạn mong muốn)</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="budget" value="Dưới 500.000đ" required class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>Dưới 500.000đ</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-bold">Cơ bản</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="budget" value="500.000đ – 1.000.000đ" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>500.000đ – 1.000.000đ</span>
+                                    <span class="text-xs bg-orange-100 text-brand-orange px-2 py-0.5 rounded font-bold">Phổ biến</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="budget" value="1.000.000đ – 3.000.000đ" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>1.000.000đ – 3.000.000đ</span>
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold">Nâng cao</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="budget" value="Trên 3.000.000đ" class="peer sr-only">
+                                <div class="p-3.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-xs sm:text-sm peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange peer-checked:shadow-md hover:bg-gray-100 transition flex items-center justify-between shadow-sm">
+                                    <span>Trên 3.000.000đ</span>
+                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold">Cao cấp / Thi đấu</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Nút Gửi Khảo Sát -->
+                    <div class="pt-2">
+                        <button type="submit" class="pulse-btn w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-orange-600 hover:to-brand-orange text-white font-sport font-black text-lg sm:text-xl py-4 rounded-2xl uppercase tracking-wider transition-all shadow-xl shadow-orange-500/40 flex items-center justify-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-paper-plane text-xl"></i>
+                            <span>GỬI KHẢO SÁT & NHẬN TƯ VẤN NGAY</span>
+                        </button>
+                        <p class="text-[11px] text-center text-gray-500 italic mt-3 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-shield-halved text-green-600"></i>
+                            <span>Cam kết bảo mật 100% • Chuyên viên tư vấn miễn phí qua Zalo/Điện thoại trong 15 phút</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- 10. CÂU HỎI THƯỜNG GẶP & HƯỚNG DẪN (FAQ & HƯỚNG DẪN) -->
     <section id="huong-dan" class="py-16 bg-white border-b border-gray-100">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1135,33 +1344,78 @@
         </div>
     </section>
 
-    <!-- 11. PHẦN TIN TỨC MỚI (Lấy cảm hứng từ 4 khối tin tức cuối trang của ảnh mẫu) -->
+    <!-- 11. PHẦN TIN TỨC MỚI & BÀI PHÂN TÍCH CHUYÊN SÂU -->
     <section id="tin-tuc" class="py-16 bg-gray-50 border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <span class="text-xs uppercase font-extrabold tracking-widest text-brand-orange">Chia Sẻ & Cập Nhật</span>
-                <h2 class="font-sport font-black text-3xl sm:text-4xl text-gray-900 mt-2">TIN TỨC MỚI</h2>
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-brand-orange">Chia Sẻ & Góc Nhìn Chuyên Gia</span>
+                <h2 class="font-sport font-black text-3xl sm:text-4xl text-gray-900 mt-2">TIN TỨC & BÀI VIẾT PHÂN TÍCH CHUYÊN SÂU</h2>
                 <div class="w-16 h-1.5 bg-brand-orange mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <!-- BÀI VIẾT NỔI BẬT ĐẶC BIỆT: BÀI 1 TỪ BONDEMANNHIEN.IO.VN -->
+            <div class="mb-12 bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-orange hover:shadow-2xl transition duration-300">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                    <div class="lg:col-span-5 relative overflow-hidden h-64 lg:h-auto">
+                        <img src="https://images.unsplash.com/photo-1556742049-0a67c5574f73?q=80&w=800&auto=format&fit=crop" 
+                             alt="Thương mại điện tử Việt Nam và người đi làm" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 bg-brand-orange text-white font-sport font-black text-xs px-3 py-1.5 rounded-lg shadow-md uppercase tracking-wider">
+                            BÀI 1 • PHÂN TÍCH CHUYÊN SÂU
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-2 text-xs text-gray-500">
+                                <span class="bg-orange-100 text-brand-orange font-bold px-2.5 py-0.5 rounded-full uppercase">Chủ đề 1.1 • E-Commerce</span>
+                                <span>•</span>
+                                <span>Tác giả: <strong>Bonde Mẫn Nhiên</strong> (bondemannhien.io.vn)</span>
+                                <span>•</span>
+                                <span>5 phút đọc</span>
+                            </div>
+                            <h3 class="font-sport font-black text-2xl sm:text-3xl text-gray-900 leading-tight hover:text-brand-orange transition">
+                                <a href="bai-viet-thuong-mai-dien-tu.html">
+                                    Bức tranh thương mại điện tử Việt Nam: Tại sao 90% người đi làm tay ngang mất sạch vốn chỉ sau 6 tháng?
+                                </a>
+                            </h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Quy mô thương mại điện tử vượt 20 tỷ USD nhưng bức tranh không hề màu hồng. Bóc tách 3 rào cản chí mạng về <strong>sự thay đổi chuỗi cung ứng</strong>, <strong>cái bẫy doanh thu cao nhưng rỗng túi</strong> và <strong>thuật toán nội dung đào thải khốc liệt</strong> mà người đi làm từ 25–35 tuổi bắt buộc phải mổ xẻ trước khi dấn thân.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center gap-2 text-xs font-semibold text-gray-500">
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping"></span>
+                                <span>Đang mở cổng Danh Sách Chờ (Waitlist) nhận bộ tài liệu</span>
+                            </div>
+                            <a href="bai-viet-thuong-mai-dien-tu.html" 
+                               class="bg-brand-orange hover:bg-brand-orangeDark text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5">
+                                <span>Đọc toàn bộ bài phân tích</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Tin 1 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition border border-gray-100 flex flex-col justify-between group">
                     <div>
-                        <div class="overflow-hidden h-44">
-                            <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="overflow-hidden h-44 relative">
+                            <img src="https://images.unsplash.com/photo-1556742049-0a67c5574f73?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Chuyên Sâu</span>
                         </div>
                         <div class="p-4">
-                            <span class="text-[10px] uppercase font-bold text-brand-orange bg-orange-100 px-2 py-0.5 rounded">Kiến thức tập</span>
+                            <span class="text-[10px] uppercase font-bold text-brand-orange bg-orange-100 px-2 py-0.5 rounded">Thương Mại Điện Tử</span>
                             <h3 class="font-bold text-sm text-gray-900 mt-2 leading-snug group-hover:text-brand-orange transition">
-                                5 Sai Lầm Phổ Biến Khi Tự Tập Thể Thao Tại Nhà Khiến Cơ Không Lên
+                                <a href="bai-viet-thuong-mai-dien-tu.html">Tại sao 90% người đi làm tay ngang mất sạch vốn sau 6 tháng bán online?</a>
                             </h3>
-                            <p class="text-xs text-gray-500 mt-2 line-clamp-2">Tìm hiểu nguyên nhân khiến bạn tập mãi mà không giảm mỡ hay lên cơ như ý muốn.</p>
+                            <p class="text-xs text-gray-500 mt-2 line-clamp-2">Bonde Mẫn Nhiên mổ xẻ 3 rào cản chuỗi cung ứng, dòng tiền và thuật toán.</p>
                         </div>
                     </div>
                     <div class="p-4 pt-0 text-[11px] text-gray-400 border-t border-gray-100 flex justify-between items-center mt-2">
-                        <span><i class="fa-regular fa-calendar-days mr-1"></i> Hôm nay</span>
-                        <a href="#sale-off" class="text-brand-orange font-bold hover:underline">Xem tiếp →</a>
+                        <span><i class="fa-regular fa-calendar-days mr-1"></i> bondemannhien.io.vn</span>
+                        <a href="bai-viet-thuong-mai-dien-tu.html" class="text-brand-orange font-bold hover:underline">Đọc ngay →</a>
                     </div>
                 </div>
 
@@ -1388,6 +1642,42 @@
         </a>
     </div>
 
+    <!-- POPUP XÁC NHẬN KHẢO SÁT THÀNH CÔNG -->
+    <div id="surveySuccessModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl transform transition-all border-2 border-brand-orange relative overflow-hidden">
+            <div class="w-16 h-16 bg-orange-100 text-brand-orange rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
+                <i class="fa-solid fa-gift animate-bounce"></i>
+            </div>
+            <h3 class="font-sport font-black text-2xl text-gray-900 uppercase">TIẾP NHẬN THÀNH CÔNG!</h3>
+            <p class="text-sm text-gray-600 mt-2">
+                Cảm ơn bạn <strong id="modal_client_name" class="text-brand-orange"></strong>! Chuyên viên SPORTFIT PRO đã ghi nhận thông tin khảo sát:
+            </p>
+
+            <div class="bg-orange-50/70 border border-orange-200 rounded-2xl p-4 my-4 text-left text-xs sm:text-sm space-y-1.5 text-gray-700">
+                <p>• <strong>Môn tập luyện:</strong> <span id="modal_client_sport" class="text-brand-dark font-semibold"></span></p>
+                <p>• <strong>Ngân sách:</strong> <span id="modal_client_budget" class="text-brand-dark font-semibold"></span></p>
+                <p>• <strong>Số Zalo/SĐT:</strong> <span id="modal_client_phone" class="text-blue-600 font-bold"></span></p>
+                <p>• <strong>Ưu đãi nhận được:</strong> <span class="text-red-600 font-bold">Voucher GIẢM 40% + Freeship</span></p>
+            </div>
+
+            <p class="text-xs text-gray-500 mb-5">
+                Chuyên viên sẽ liên hệ lại qua Zalo/SĐT trong 15 phút hoặc bạn có thể bấm bên dưới để nhắn tin nhận quà ngay:
+            </p>
+
+            <div class="space-y-2.5">
+                <a id="modal_zalo_btn" href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer"
+                   class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-base py-3.5 rounded-xl uppercase tracking-wider transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>CHAT ZALO NHẬN TƯ VẤN & QUÀ NGAY</span>
+                </a>
+                <button type="button" onclick="closeSurveyModal()" 
+                        class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-2.5 rounded-xl uppercase tracking-wider transition">
+                    Đóng thông báo
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT TƯƠNG TÁC: ĐẾM NGƯỢC, BỘ LỌC VÀ CHUYỂN HƯỚNG ZALO 0359181278 -->
     <script>
         // CẤU HÌNH LIÊN HỆ ZALO BÁN HÀNG
@@ -1414,11 +1704,9 @@
 
         // 2. Hàm chuyển hướng sang Zalo khi khách hàng bấm mua hàng
         function openZaloContact(productName = '', productPrice = '') {
-            // Mở trực tiếp chat Zalo với số 0359181278
             window.open(ZALO_URL, '_blank');
         }
 
-        // Tương thích ngược với các nút gọi openQuoteModal
         function openQuoteModal(productName = '', productPrice = '') {
             openZaloContact(productName, productPrice);
         }
@@ -1454,9 +1742,50 @@
             });
         }
 
-        // 5. TỰ ĐỘNG CHUYỂN TẤT CẢ NÚT MUA HÀNG SANG LIÊN HỆ ZALO 0359181278
+        // 5. XỬ LÝ GỬI FORM KHẢO SÁT NHU CẦU & HIỂN THỊ MODAL
+        function handleSurveySubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('surveyForm');
+            const name = form.fullname.value.trim();
+            const phone = form.phone_zalo.value.trim();
+            
+            // Lấy môn thể thao được chọn
+            let sport = '';
+            const sportRadio = form.querySelector('input[name="sport"]:checked');
+            if (sportRadio) {
+                if (sportRadio.value === 'Khác') {
+                    const otherText = form.sport_other.value.trim();
+                    sport = otherText ? otherText : 'Môn thể thao khác';
+                } else {
+                    sport = sportRadio.value;
+                }
+            }
+
+            // Lấy mức ngân sách
+            const budgetRadio = form.querySelector('input[name="budget"]:checked');
+            const budget = budgetRadio ? budgetRadio.value : 'Chưa xác định';
+
+            // Cập nhật thông tin vào Modal xác nhận
+            document.getElementById('modal_client_name').innerText = name;
+            document.getElementById('modal_client_phone').innerText = phone;
+            document.getElementById('modal_client_sport').innerText = sport;
+            document.getElementById('modal_client_budget').innerText = budget;
+
+            // Hiển thị modal
+            const modal = document.getElementById('surveySuccessModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeSurveyModal() {
+            const modal = document.getElementById('surveySuccessModal');
+            if (modal) modal.classList.add('hidden');
+            const form = document.getElementById('surveyForm');
+            if (form) form.reset();
+        }
+
+        // 6. GẮN SỰ KIỆN NÚT MUA HÀNG LIÊN HỆ ZALO 0359181278
         document.addEventListener('DOMContentLoaded', function() {
-            // Gắn sự kiện cho các nút mua trong tất cả thẻ sản phẩm
+            // Nút mua trong các thẻ sản phẩm
             const productCards = document.querySelectorAll('.product-item');
             productCards.forEach(card => {
                 const titleEl = card.querySelector('h3');
@@ -1471,15 +1800,6 @@
                         e.preventDefault();
                         openZaloContact(title, price);
                     });
-                });
-            });
-
-            // Gắn sự kiện cho các nút mua / banner khác trên toàn trang
-            const allBuyLinks = document.querySelectorAll('a[href="#sale-off"], a[href="#dat-hang"]');
-            allBuyLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    openZaloContact();
                 });
             });
         });
