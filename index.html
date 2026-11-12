@@ -1786,13 +1786,210 @@
         </div>
     </footer>
 
-    <!-- NÚT CHAT ZALO NỔI Ở GÓC PHẢI MÀN HÌNH -->
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-        <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" 
-           class="pulse-btn flex items-center gap-2.5 bg-[#0068FF] hover:bg-[#0052cc] text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-full shadow-2xl transition transform hover:scale-105 border-2 border-white ring-4 ring-blue-400/30 cursor-pointer">
-            <span class="w-7 h-7 bg-white text-[#0068FF] rounded-full flex items-center justify-center font-black text-xs shadow-inner">Zalo</span>
-            <span>Chat Zalo: 0359.181.278</span>
-        </a>
+    <!-- WIDGET CHATBOT SPORTFIT & NÚT LIÊN HỆ NỔI Ở GÓC PHẢI MÀN HÌNH -->
+    <div id="chatbot-container" class="fixed bottom-5 right-4 sm:right-6 z-50 flex flex-col items-end gap-2.5">
+        
+        <!-- CỬA SỔ CHATBOT BÁN HÀNG TỰ NHIÊN (SALES SCRIPT CHUẨN THỰC CHIẾN) -->
+        <div id="chatbot-window" class="hidden flex-col w-[350px] sm:w-[390px] max-w-[calc(100vw-1.5rem)] h-[540px] max-h-[82vh] bg-white rounded-3xl shadow-2xl border-2 border-brand-orange overflow-hidden transform transition-all duration-300">
+            
+            <!-- Header Chatbot Thể Thao -->
+            <div class="bg-gradient-to-r from-gray-900 via-brand-dark to-gray-900 text-white px-4 py-3 border-b-2 border-brand-orange flex items-center justify-between shadow-md">
+                <div class="flex items-center gap-2.5">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-full bg-brand-orange text-white flex items-center justify-center font-sport font-black text-base shadow border-2 border-white/20">
+                            SF
+                        </div>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-sport font-black text-sm tracking-wide text-white">Thuận • Sportfit</span>
+                            <span class="bg-orange-500/30 text-orange-400 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded border border-orange-500/40">Founder</span>
+                        </div>
+                        <p class="text-[10px] text-gray-300 font-medium">Tư vấn thực chiến 1-1 • Chuẩn theo môn</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <button onclick="resetChatbotConversation()" title="Làm mới cuộc trò chuyện" class="w-7 h-7 rounded-full text-gray-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-xs transition">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <button onclick="toggleChatbot()" title="Đóng cửa sổ chat" class="w-7 h-7 rounded-full text-gray-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-sm transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vùng hiển thị tin nhắn -->
+            <div id="chatbot-messages" class="flex-1 overflow-y-auto p-3.5 space-y-3 bg-gray-50/80 text-xs sm:text-sm">
+                <!-- Nội dung tin nhắn sẽ được inject bằng JavaScript -->
+            </div>
+
+            <!-- Dải Gợi Ý Câu Hỏi Nhanh (Chips Scrollable) -->
+            <div class="bg-white border-t border-gray-100 px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap text-[11px]">
+                <button onclick="handleQuickQuestion('mua_hang')" class="bg-orange-50 text-brand-orange border border-brand-orange/40 hover:bg-brand-orange hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0 flex items-center gap-1">
+                    <span>🛒 Mua hàng / Chốt đơn</span>
+                </button>
+                <button onclick="handleQuickQuestion('q1_shopee')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    💰 Sao đắt hơn Shopee?
+                </button>
+                <button onclick="handleQuickQuestion('q2_van_phong')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    🏋️ Dân văn phòng nên mua gì?
+                </button>
+                <button onclick="handleQuickQuestion('q3_day_khang_luc')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    💪 Dây kháng lực có lên cơ?
+                </button>
+                <button onclick="handleQuickQuestion('q4_pickleball')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    🏓 Vợt Pickleball T700 khác gì?
+                </button>
+                <button onclick="handleQuickQuestion('q5_size_giay')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    👟 Cách chọn size giày?
+                </button>
+                <button onclick="handleQuickQuestion('q7_ship')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    🚚 Phí ship & Giao bao lâu?
+                </button>
+                <button onclick="handleQuickQuestion('q8_bao_hanh')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    🛡️ Chính sách 1 đổi 1 & Bảo hành?
+                </button>
+                <button onclick="handleQuickQuestion('form_waitlist')" class="bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-500 hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0">
+                    📝 Form Danh sách chờ
+                </button>
+            </div>
+
+            <!-- Khung nhập tin nhắn -->
+            <form id="chatbot-input-form" onsubmit="handleChatbotSubmit(event)" class="p-2.5 bg-white border-t border-gray-200 flex items-center gap-2">
+                <input type="text" id="chatbot-input" placeholder="Hỏi về dụng cụ, thể trạng, bài tập..." 
+                       class="flex-1 bg-gray-100 focus:bg-white px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-brand-orange text-xs sm:text-sm text-gray-800 transition">
+                <button type="submit" class="w-10 h-10 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white flex items-center justify-center text-sm shadow transition flex-shrink-0">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- HÀNG NÚT BẤM NỔI BẬT Ở GÓC PHẢI -->
+        <div class="flex items-center gap-2">
+            <!-- Nút bật Chatbot Thực Chiến (Sportfit) -->
+            <button id="chatbot-toggle-btn" onclick="toggleChatbot()" 
+                    class="pulse-btn flex items-center gap-2.5 bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black text-xs sm:text-sm px-4 py-3 rounded-full shadow-2xl transition transform hover:scale-105 border-2 border-white ring-4 ring-orange-400/30 cursor-pointer relative">
+                <span class="w-7 h-7 bg-white text-brand-orange rounded-full flex items-center justify-center font-black text-sm shadow-inner">
+                    <i class="fa-solid fa-comments"></i>
+                </span>
+                <span>TƯ VẤN THỰC CHIẾN 1-1</span>
+                <!-- Huy hiệu thông báo đỏ -->
+                <span id="chat-unread-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white animate-bounce">1</span>
+            </button>
+
+            <!-- Nút chat Zalo nhanh -->
+            <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" title="Chat trực tiếp qua Zalo 0359.181.278"
+               class="hidden sm:flex items-center gap-1.5 bg-[#0068FF] hover:bg-[#0052cc] text-white font-bold text-xs px-3.5 py-3 rounded-full shadow-xl transition transform hover:scale-105 border border-white cursor-pointer">
+                <span class="w-6 h-6 bg-white text-[#0068FF] rounded-full flex items-center justify-center font-black text-[10px] shadow-inner">Z</span>
+                <span>Zalo</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- POPUP MODAL ĐIỀN FORM DANH SÁCH CHỜ (WAITLIST MODAL KHI KHÁCH MUỐN MUA HOẶC CHỜ ƯU ĐÃI) -->
+    <div id="waitlistModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 text-left shadow-2xl transform transition-all border-2 border-brand-orange relative overflow-hidden max-h-[92vh] overflow-y-auto">
+            
+            <!-- Dải ruy-băng góc -->
+            <div class="absolute top-0 right-0 bg-brand-orange text-white text-[10px] font-sport font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow">
+                CỔNG WAITLIST ƯU TIÊN
+            </div>
+
+            <!-- Header Modal -->
+            <div class="text-center mb-6 pt-2">
+                <div class="w-14 h-14 bg-orange-100 text-brand-orange rounded-full flex items-center justify-center text-2xl mx-auto mb-3 shadow-inner">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                </div>
+                <h3 class="font-sport font-black text-2xl text-gray-900 uppercase">
+                    ĐĂNG KÝ DANH SÁCH CHỜ ĐẶT HÀNG
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-600 mt-1 max-w-md mx-auto">
+                    Dành cho người tập nghiêm túc: Nhận ưu đãi <strong class="text-brand-orange">GIẢM 40%</strong> trọn bộ Starter Kit VĐV (chỉ 890k) + Freeship + Suất tư vấn 1-1 theo môn cùng Founder.
+                </p>
+            </div>
+
+            <!-- Form điền thông tin Danh Sách Chờ -->
+            <form id="siteWaitlistForm" onsubmit="handleSiteWaitlistSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                        Họ và tên của bạn <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="wl_fullname" name="fullname" required placeholder="Ví dụ: Nguyễn Văn A" 
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                        Số điện thoại / Zalo nhận ưu đãi <span class="text-red-500">*</span>
+                    </label>
+                    <input type="tel" id="wl_phone_number" name="phone" required placeholder="Nhập số Zalo nhận xác nhận đơn & video bài tập" 
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                        Sản phẩm / Môn thể thao bạn quan tâm
+                    </label>
+                    <select id="wl_product_interest" name="product_interest" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium bg-white">
+                        <option value="Combo Starter Kit VĐV (890k)">🔥 Combo Starter Kit VĐV (890k - Giảm 40%)</option>
+                        <option value="Gym tại nhà (Dây kháng lực + Bảng chống đẩy)">🏋️ Dụng cụ Gym tại nhà (Dây kháng lực, Bảng chống đẩy, Con lăn)</option>
+                        <option value="Vợt Cầu Lông Carbon Pro Nanoflare 4U">🏸 Vợt Cầu Lông Carbon Pro Nanoflare 4U</option>
+                        <option value="Vợt Pickleball Carbon T700 USAPA">🏓 Vợt Pickleball Carbon T700 USAPA</option>
+                        <option value="Giày thể thao đế kép đệm Air">👟 Giày thể thao đế kép đệm Air chống lật cổ chân</option>
+                        <option value="Cần tư vấn chọn đồ theo môn">💡 Chưa quyết định - Cần tư vấn kỹ thuật theo thể trạng</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                        Ghi chú thể trạng hoặc thắc mắc (Tùy chọn)
+                    </label>
+                    <textarea id="wl_notes" name="notes" rows="2" placeholder="Ví dụ: Mình đau mỏi vai gáy do ngồi máy tính nhiều, muốn tập ngực và vai tại nhà..." 
+                              class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium"></textarea>
+                </div>
+
+                <button type="submit" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black text-sm sm:text-base py-3.5 rounded-xl uppercase tracking-wider transition shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>XÁC NHẬN VÀO DANH SÁCH CHỜ ƯU TIÊN</span>
+                </button>
+
+                <div class="flex items-center justify-between text-[11px] text-gray-500 pt-1">
+                    <span>🔒 Bảo mật 100% • Không spam</span>
+                    <button type="button" onclick="closeWaitlistModal()" class="text-gray-500 hover:text-red-500 underline font-semibold">
+                        Đóng lại
+                    </button>
+                </div>
+            </form>
+
+            <!-- Khối kết quả xác nhận sau khi gửi form -->
+            <div id="waitlistSuccessState" class="hidden text-center space-y-4 py-4">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-circle-check animate-bounce"></i>
+                </div>
+                <h4 class="font-sport font-black text-2xl text-gray-900 uppercase">ĐĂNG KÝ DANH SÁCH CHỜ THÀNH CÔNG!</h4>
+                <p class="text-xs sm:text-sm text-gray-600">
+                    Cảm ơn bạn <strong id="wl_confirm_name" class="text-brand-orange"></strong>! Bạn đã được đưa vào danh sách ưu tiên nhận <strong>Combo Starter Kit VĐV (890k)</strong> cùng bộ video giáo án HD.
+                </p>
+                <div class="bg-orange-50 p-3.5 rounded-2xl border border-orange-200 text-xs text-gray-700 text-left space-y-1">
+                    <p>• <strong>Số điện thoại / Zalo:</strong> <span id="wl_confirm_phone" class="text-blue-600 font-bold"></span></p>
+                    <p>• <strong>Sản phẩm quan tâm:</strong> <span id="wl_confirm_product" class="text-brand-dark font-semibold"></span></p>
+                    <p>• <strong>Trạng thái:</strong> <span class="text-green-600 font-bold">Đã giữ suất ưu đãi 40% & Freeship</span></p>
+                </div>
+                <div class="space-y-2 pt-2">
+                    <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" 
+                       class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-sm py-3 rounded-xl uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-comments"></i>
+                        <span>CHAT ZALO NHẬN BÁO GIÁ & GIAO NGAY</span>
+                    </a>
+                    <button type="button" onclick="closeWaitlistModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-2 rounded-xl uppercase transition">
+                        Đóng cửa sổ
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- POPUP XÁC NHẬN KHẢO SÁT THÀNH CÔNG -->
@@ -1956,6 +2153,368 @@
                 });
             });
         });
+        // 7. KHỞI TẠO VÀ ĐIỀU KHIỂN CHATBOT SPORTFIT PRO (CHUẨN SALES_SCRIPT.MD)
+        let chatbotInitialized = false;
+
+        const CHATBOT_KB = {
+            greeting: {
+                text: `<p class="mb-2">Chào bạn! Mình là <strong>Thuận</strong> từ <strong>Sportfit.pro</strong> đây.</p>
+                       <p class="mb-2">Ở Sportfit, tụi mình không bán đồ thể thao theo kiểu quăng link giá rẻ rồi để bạn tự mò. Tụi mình <strong>đứng về phía người tập nghiêm túc</strong>.</p>
+                       <p class="mb-3">Để mình chọn đúng đồ cho bạn, bạn đang tập môn gì và mục tiêu chính đợt này là gì?</p>
+                       <div class="pt-1 flex flex-wrap gap-1.5">
+                           <button onclick="handleQuickQuestion('mua_hang')" class="bg-orange-100 hover:bg-brand-orange hover:text-white text-brand-orange text-[11px] font-bold px-2.5 py-1 rounded-lg transition">🛒 Mua hàng / Chốt đơn ưu đãi</button>
+                           <button onclick="handleQuickQuestion('q1_shopee')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 text-[11px] font-medium px-2 py-1 rounded-lg transition">💰 Sao giá đắt hơn Shopee?</button>
+                           <button onclick="handleQuickQuestion('q2_van_phong')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 text-[11px] font-medium px-2 py-1 rounded-lg transition">🏋️ Dân văn phòng đau lưng nên mua gì?</button>
+                           <button onclick="handleQuickQuestion('form_waitlist')" class="bg-amber-100 hover:bg-amber-500 hover:text-white text-amber-900 text-[11px] font-bold px-2 py-1 rounded-lg transition">📝 Điền Form Danh Sách Chờ</button>
+                       </div>`
+            },
+            mua_hang: {
+                text: `<p class="font-bold text-gray-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-gift text-brand-orange"></i> ƯU ĐÃI COMBO STARTER KIT VĐV:</p>
+                       <p class="mb-2">Giá niêm yết: <span class="line-through text-gray-400">1.290.000đ</span> → Trợ lực cho anh em hôm nay chỉ còn <strong class="text-brand-orange text-base">890.000đ</strong>.</p>
+                       <div class="bg-orange-50 border border-orange-200 rounded-xl p-2.5 mb-3 text-[11px] sm:text-xs text-gray-700 space-y-1">
+                           <p>✓ <strong>Freeship 100%</strong> toàn quốc tận nhà</p>
+                           <p>✓ Tặng kèm 01 bao đựng chuyên dụng + Video 30 bài tập chuẩn HLV</p>
+                           <p>✓ Bảo hành kỹ thuật 12 tháng (1 đổi 1 trong 7 ngày)</p>
+                           <p>✓ Kiểm tra hàng ưng ý mới thanh toán COD.</p>
+                       </div>
+                       <p class="mb-2 text-gray-800 font-medium">Bạn bấm nút bên dưới để điền form danh sách chờ đặt hàng giữ suất ưu đãi nhé:</p>
+                       <div class="space-y-1.5 pt-1">
+                           <button onclick="openWaitlistModal('Combo Starter Kit VĐV (890k)')" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black py-2.5 px-3 rounded-xl uppercase tracking-wider text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                               <i class="fa-solid fa-clipboard-list"></i>
+                               <span>ĐIỀN FORM DANH SÁCH CHỜ ĐẶT HÀNG</span>
+                           </button>
+                           <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black py-2 px-3 rounded-xl uppercase tracking-wider text-xs shadow-sm flex items-center justify-center gap-1.5">
+                               <i class="fa-solid fa-comments"></i>
+                               <span>CHAT ZALO CHỐT ĐƠN: 0359.181.278</span>
+                           </a>
+                       </div>`
+            },
+            q1_shopee: {
+                text: `<p class="mb-2"><strong>Sao Sportfit bán giá cao hơn Shopee / Lazada?</strong></p>
+                       <p class="mb-2">Nói thật lòng, nếu bạn chỉ tìm món rẻ nhất, trên sàn có những bên rẻ hơn của mình 30–40%. Nhưng sự chênh lệch nằm ở 2 điểm chí mạng:</p>
+                       <p class="mb-1.5">• <strong>Chất liệu gốc rễ:</strong> Dây kháng lực trên sàn đa số là cao su tổng hợp tái chế, mùi hóa chất nồng và kéo căng 2 tháng là rão hoặc đứt phựt vào mặt. Bộ của Sportfit đúc từ <strong>100% Latex tự nhiên nguyên chất</strong>, không mùi, chịu tải bền bỉ 3–5 năm.</p>
+                       <p class="mb-2">• <strong>Cái giá của chấn thương:</strong> Mua vợt quá nặng đầu hay giày đế cứng tiết kiệm được 200k, nhưng sau đó phải tốn tiền triệu cho bác sĩ xương khớp.</p>
+                       <p class="p-2 bg-orange-50 rounded-lg border-l-2 border-brand-orange font-semibold text-gray-800 italic">"Bạn không mua cái giá rẻ hơn — bạn mua sự chắc chắn rằng mình đang dùng đúng dụng cụ chuẩn cho cơ thể."</p>`
+            },
+            q2_van_phong: {
+                text: `<p class="mb-2"><strong>Dân văn phòng ngồi nhiều đau lưng nên mua gì?</strong></p>
+                       <p class="mb-2">Ngồi máy tính 8–10 tiếng/ngày khiến cơ lưng trên bị kéo gù, cơ ngực co rút và cơ bụng yếu làm cột sống chịu áp lực lớn. Lộ trình thực chiến nhất gồm đúng 2 món:</p>
+                       <p class="mb-1">• <strong>Bảng chống đẩy 14-in-1 (489k):</strong> Tay nắm chống trượt cố định khớp cổ tay, tập ngực vai đúng form không đau khớp.</p>
+                       <p class="mb-2">• <strong>Bộ dây kháng lực ngũ sắc Latex (429k):</strong> Chuyên cho các bài kéo lưng (face pull, lat pull) mở khớp vai, triệt tiêu đau mỏi vai gáy.</p>
+                       <p class="mb-2">Mỗi ngày chỉ cần 20–25 phút lúc 6h chiều về nhà. Tặng kèm bộ Video 30 bài tập chuẩn HLV!</p>
+                       <button onclick="openWaitlistModal('Gym tại nhà (Dây kháng lực + Bảng chống đẩy)')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow mt-1">👉 Đăng Ký Danh Sách Chờ Nhận Combo Này</button>`
+            },
+            q3_day_khang_luc: {
+                text: `<p class="mb-2"><strong>Dây kháng lực có tập lên cơ được như tạ tay không?</strong></p>
+                       <p class="mb-2">Về mặt sinh cơ học, dây kháng lực có ưu điểm mà tạ đòn hay tạ đơn không có: <strong>Độ căng biến thiên liên tục</strong>. Bạn càng kéo căng hết biên độ thì lực cản càng lớn, ép sợi cơ kích hoạt tối đa.</p>
+                       <p class="mb-2">Bộ 5 dây Latex của Sportfit kết hợp tối đa lên tới <strong>150 lbs (~68kg)</strong> — mức tải thừa sức siết cơ ngực, xô lưng, bắp tay và đùi săn chắc mà không tốn diện tích phòng khách.</p>`
+            },
+            q4_pickleball: {
+                text: `<p class="mb-2"><strong>Vợt Pickleball Carbon T700 của Sportfit khác gì vợt thường?</strong></p>
+                       <p class="mb-1.5">• <strong>Mặt Carbon T700 thô nhám:</strong> Bám bóng cực tốt, tạo độ xoáy (spin) sắc bén và điều bóng chính xác góc sân.</p>
+                       <p class="mb-2">• <strong>Lõi Polymer tổ ong giảm chấn:</strong> Triệt tiêu 80% xung động ngược, bảo vệ khớp cùi chỏ khỏi chấn thương Tennis Elbow.</p>
+                       <p class="mb-2">Vợt đạt chuẩn thi đấu <strong>USAPA</strong>, siêu nhẹ chỉ 225g.</p>
+                       <button onclick="openWaitlistModal('Vợt Pickleball Carbon T700 USAPA')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow mt-1">👉 Đăng Ký Danh Sách Chờ Nhận Vợt T700</button>`
+            },
+            q5_size_giay: {
+                text: `<p class="mb-2"><strong>Cách chọn size giày thể thao không lo chật rộng?</strong></p>
+                       <p class="mb-2">1. Bạn đặt gót chân sát tường, đo từ gót đến ngón dài nhất (cm) rồi nhắn mình số đo nhé.</p>
+                       <p class="mb-2">2. Giày đế kép Sportfit có form ôm chống lật cổ chân nên tụi mình sẽ tự động trừ hao 0.5cm khi mang vớ dày.</p>
+                       <p class="p-2 bg-green-50 text-green-800 rounded-lg border border-green-200 font-semibold text-[11px]">✓ Cam kết: Nhận hàng mang thử không vừa chân được đổi size miễn phí tận nhà trong 7 ngày!</p>`
+            },
+            q6_anh_that: {
+                text: `<p class="mb-2"><strong>Xem ảnh và video kho thực tế:</strong></p>
+                       <p class="mb-2">Sportfit cam kết ảnh đăng = sản phẩm thực tế nhận tận tay. Bạn chỉ cần nhắn Zalo <strong>0359.181.278</strong>, tụi mình sẽ quay clip cận cảnh chất liệu, đường may và cơ cấu sản phẩm tại kho gửi ngay trong 30 giây!</p>
+                       <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-blue-600 font-bold hover:underline">👉 Nhắn Zalo xem video kho ngay</a>`
+            },
+            q7_ship: {
+                text: `<p class="mb-2"><strong>Thời gian giao hàng & Phí ship:</strong></p>
+                       <p class="mb-1">• <strong>Nội thành HCM & Hà Nội:</strong> 1–2 ngày nhận hàng.</p>
+                       <p class="mb-1">• <strong>Các tỉnh thành khác:</strong> 2–3 ngày.</p>
+                       <p class="mb-2">• <strong>Phí ship:</strong> <strong>FREESHIP 100%</strong> toàn quốc cho mọi đơn hàng từ 300.000đ trở lên!</p>`
+            },
+            q8_bao_hanh: {
+                text: `<p class="mb-2"><strong>Chính sách 1 đổi 1 & Bảo hành:</strong></p>
+                       <p class="mb-1">• <strong>1 đổi 1 trong 7 ngày:</strong> Nếu có bất kỳ lỗi nào từ nhà sản xuất (nứt, rách, bung chỉ, đứt dây), đổi mới tận nhà ngay.</p>
+                       <p class="mb-2">• <strong>Bảo hành kỹ thuật 12 tháng:</strong> Hỗ trợ kỹ thuật qua Zalo 24/7, lưu bảo hành điện tử theo số điện thoại.</p>`
+            },
+            q9_thanh_toan: {
+                text: `<p class="mb-2"><strong>Phương thức thanh toán:</strong></p>
+                       <p class="mb-2">Bạn <strong>KHÔNG CẦN CỌC TRƯỚC</strong> một đồng nào cả. Tụi mình gửi hàng COD: Shipper giao tới tận nhà → Bạn mở hộp kiểm tra đúng mẫu, ưng ý mới thanh toán tiền mặt cho shipper.</p>`
+            },
+            q10_huong_dan: {
+                text: `<p class="mb-2"><strong>Sợ mua về lười không biết tập?</strong></p>
+                       <p class="mb-2">Đừng lo, khi mua bất kỳ món nào tại Sportfit, bạn đều được tặng:</p>
+                       <p class="mb-1">• <strong>Trọn bộ Video bài tập HD:</strong> Hướng dẫn từ khởi động, form động tác chuẩn đến từng nhịp thở.</p>
+                       <p class="mb-2">• <strong>Hỗ trợ chỉnh form 1-1 qua Zalo:</strong> Bạn quay clip động tác gửi qua, đội ngũ kỹ thuật sẽ sửa form trực tiếp cho bạn!</p>`
+            },
+            form_waitlist: {
+                text: `<p class="mb-2"><strong>Cổng Danh Sách Chờ Đặt Hàng (Waitlist)</strong></p>
+                       <p class="mb-2">Dành cho bạn muốn giữ suất ưu đãi <strong>GIẢM 40%</strong> combo Starter Kit VĐV, nhận bộ giáo án video và được tư vấn 1-1 trước khi hàng về:</p>
+                       <button onclick="openWaitlistModal()" class="pulse-btn w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-orange-600 hover:to-brand-orange text-white font-sport font-black py-2.5 rounded-xl uppercase text-xs shadow mt-1 flex items-center justify-center gap-1.5 cursor-pointer">
+                           <i class="fa-solid fa-clipboard-check"></i>
+                           <span>BẤM VÀO ĐÂY ĐỂ MỞ FORM DANH SÁCH CHỜ</span>
+                       </button>`
+            },
+            suy_nghi_them: {
+                text: `<p class="mb-2">Dạ không sao bạn ơi! Mua đồ tập cho bản thân thì cân nhắc kỹ là hoàn toàn đúng đắn. Mình rất tôn trọng quyết định của bạn.</p>
+                       <p class="mb-2">Để không lãng phí thời gian bạn đã tìm hiểu, bạn có thể dành <strong>30 giây</strong> điền Form Khảo sát nhu cầu để nhận gợi ý lộ trình tập và dụng cụ tối giản phù hợp ngân sách:</p>
+                       <div class="space-y-1.5 pt-1">
+                           <button onclick="openWaitlistModal()" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow">📝 Điền Form Danh Sách Chờ Giữ Ưu Đãi</button>
+                           <a href="#khao-sat" onclick="toggleChatbot()" class="block text-center w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 rounded-xl text-xs">📋 Đến Mục Khảo Sát Nhu Cầu 30 Giây</a>
+                       </div>`
+            }
+        };
+
+        // Bật / Tắt cửa sổ Chatbot
+        function toggleChatbot() {
+            const windowEl = document.getElementById('chatbot-window');
+            const badge = document.getElementById('chat-unread-badge');
+            if (windowEl) {
+                const isHidden = windowEl.classList.contains('hidden');
+                if (isHidden) {
+                    windowEl.classList.remove('hidden');
+                    windowEl.classList.add('flex');
+                    if (badge) badge.classList.add('hidden');
+                    
+                    if (!chatbotInitialized) {
+                        chatbotInitialized = true;
+                        initChatbotGreeting();
+                    }
+                } else {
+                    windowEl.classList.add('hidden');
+                    windowEl.classList.remove('flex');
+                }
+            }
+        }
+
+        // Lời chào mở đầu Chatbot
+        function initChatbotGreeting() {
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addChatMessage('bot', CHATBOT_KB.greeting.text);
+            }, 400);
+        }
+
+        // Làm mới hội thoại
+        function resetChatbotConversation() {
+            const msgContainer = document.getElementById('chatbot-messages');
+            if (msgContainer) msgContainer.innerHTML = '';
+            initChatbotGreeting();
+        }
+
+        // Thêm tin nhắn vào khung chat
+        function addChatMessage(sender, contentHtml) {
+            const msgContainer = document.getElementById('chatbot-messages');
+            if (!msgContainer) return;
+
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const msgWrapper = document.createElement('div');
+            msgWrapper.className = sender === 'user' ? 'flex flex-col items-end' : 'flex flex-col items-start';
+
+            if (sender === 'user') {
+                msgWrapper.innerHTML = `
+                    <div class="max-w-[85%] bg-gradient-to-r from-brand-orange to-orange-500 text-white p-3 rounded-2xl rounded-tr-sm shadow text-xs sm:text-sm font-medium leading-relaxed">
+                        ${contentHtml}
+                    </div>
+                    <span class="text-[9px] text-gray-400 mt-1 mr-1">${timeNow}</span>
+                `;
+            } else {
+                msgWrapper.innerHTML = `
+                    <div class="flex items-start gap-2 max-w-[92%]">
+                        <div class="w-7 h-7 rounded-full bg-brand-dark text-brand-orange flex-shrink-0 flex items-center justify-center font-sport font-black text-xs border border-orange-400 shadow mt-0.5">
+                            SF
+                        </div>
+                        <div class="bg-white text-gray-800 p-3.5 rounded-2xl rounded-tl-sm shadow-sm border border-orange-100 text-xs sm:text-sm leading-relaxed space-y-1">
+                            ${contentHtml}
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-gray-400 mt-1 ml-9">${timeNow} • Thuận SF</span>
+                `;
+            }
+
+            msgContainer.appendChild(msgWrapper);
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+
+        // Hiệu ứng đang gõ
+        function showTypingIndicator() {
+            const msgContainer = document.getElementById('chatbot-messages');
+            if (!msgContainer) return;
+            const typingEl = document.createElement('div');
+            typingEl.id = 'chat-typing-indicator';
+            typingEl.className = 'flex items-center gap-1.5 bg-white px-3 py-2 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 w-16 text-gray-400';
+            typingEl.innerHTML = `
+                <span class="w-1.5 h-1.5 bg-brand-orange rounded-full animate-bounce"></span>
+                <span class="w-1.5 h-1.5 bg-brand-orange rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+                <span class="w-1.5 h-1.5 bg-brand-orange rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+            `;
+            msgContainer.appendChild(typingEl);
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('chat-typing-indicator');
+            if (el) el.remove();
+        }
+
+        // Xử lý bấm câu hỏi nhanh
+        function handleQuickQuestion(key) {
+            let userLabel = '';
+            if (key === 'mua_hang') userLabel = 'Mình muốn mua hàng / chốt đơn ưu đãi thì thế nào?';
+            else if (key === 'q1_shopee') userLabel = 'Sao giá bên bạn cao hơn Shopee vậy?';
+            else if (key === 'q2_van_phong') userLabel = 'Dân văn phòng ngồi nhiều đau lưng nên mua gì?';
+            else if (key === 'q3_day_khang_luc') userLabel = 'Dây kháng lực có tập lên cơ như tạ tay không?';
+            else if (key === 'q4_pickleball') userLabel = 'Vợt Pickleball T700 của bạn khác gì vợt thường?';
+            else if (key === 'q5_size_giay') userLabel = 'Không biết chọn size giày, bị chật có được đổi không?';
+            else if (key === 'q6_anh_that') userLabel = 'Có được xem ảnh thật/video kho trước khi mua không?';
+            else if (key === 'q7_ship') userLabel = 'Giao hàng mất bao lâu và có freeship không?';
+            else if (key === 'q8_bao_hanh') userLabel = 'Chính sách bảo hành và đổi trả như thế nào?';
+            else if (key === 'q9_thanh_toan') userLabel = 'Thanh toán thế nào, có cần cọc trước không?';
+            else if (key === 'q10_huong_dan') userLabel = 'Mua về sợ lười không biết tập thì sao?';
+            else if (key === 'form_waitlist') userLabel = 'Cho mình điền Form Danh sách chờ đặt hàng với!';
+
+            addChatMessage('user', userLabel);
+            showTypingIndicator();
+
+            setTimeout(() => {
+                removeTypingIndicator();
+                const res = CHATBOT_KB[key] || CHATBOT_KB.greeting;
+                addChatMessage('bot', res.text);
+            }, 350);
+        }
+
+        // Xử lý gửi tin nhắn tự do từ ô input
+        function handleChatbotSubmit(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('chatbot-input');
+            const query = inputEl ? inputEl.value.trim() : '';
+            if (!query) return;
+
+            addChatMessage('user', query);
+            inputEl.value = '';
+            showTypingIndicator();
+
+            const qLower = query.toLowerCase();
+
+            setTimeout(() => {
+                removeTypingIndicator();
+                
+                // Nhận diện ý định MUA HÀNG / CHỐT ĐƠN
+                if (qLower.includes('mua') || qLower.includes('đặt') || qLower.includes('chốt') || qLower.includes('order') || qLower.includes('combo') || qLower.includes('lấy') || qLower.includes('giá bao nhiêu') || qLower.includes('bán cho') || qLower.includes('ship cho')) {
+                    addChatMessage('bot', CHATBOT_KB.mua_hang.text);
+                }
+                // Shopee / Giá rẻ
+                else if (qLower.includes('shopee') || qLower.includes('đắt') || qLower.includes('rẻ') || qLower.includes('giá cao')) {
+                    addChatMessage('bot', CHATBOT_KB.q1_shopee.text);
+                }
+                // Văn phòng / đau lưng / mới tập
+                else if (qLower.includes('văn phòng') || qLower.includes('đau lưng') || qLower.includes('vai gáy') || qLower.includes('mới tập') || qLower.includes('bắt đầu')) {
+                    addChatMessage('bot', CHATBOT_KB.q2_van_phong.text);
+                }
+                // Dây kháng lực / Tạ
+                else if (qLower.includes('kháng lực') || qLower.includes('tạ') || qLower.includes('lên cơ') || qLower.includes('ngũ sắc')) {
+                    addChatMessage('bot', CHATBOT_KB.q3_day_khang_luc.text);
+                }
+                // Pickleball
+                else if (qLower.includes('pickleball') || qLower.includes('t700') || qLower.includes('vợt pickleball')) {
+                    addChatMessage('bot', CHATBOT_KB.q4_pickleball.text);
+                }
+                // Giày / Size
+                else if (qLower.includes('giày') || qLower.includes('size') || qLower.includes('chân') || qLower.includes('chật') || qLower.includes('rộng')) {
+                    addChatMessage('bot', CHATBOT_KB.q5_size_giay.text);
+                }
+                // Ảnh thật / Video
+                else if (qLower.includes('ảnh thật') || qLower.includes('video') || qLower.includes('kho') || qLower.includes('thực tế')) {
+                    addChatMessage('bot', CHATBOT_KB.q6_anh_that.text);
+                }
+                // Ship / Giao hàng
+                else if (qLower.includes('ship') || qLower.includes('giao') || qLower.includes('vận chuyển') || qLower.includes('bao lâu')) {
+                    addChatMessage('bot', CHATBOT_KB.q7_ship.text);
+                }
+                // Bảo hành / Đổi trả
+                else if (qLower.includes('bảo hành') || qLower.includes('đổi trả') || qLower.includes('lỗi') || qLower.includes('hỏng')) {
+                    addChatMessage('bot', CHATBOT_KB.q8_bao_hanh.text);
+                }
+                // Thanh toán / Cọc
+                else if (qLower.includes('thanh toán') || qLower.includes('cọc') || qLower.includes('cod') || qLower.includes('chuyển khoản')) {
+                    addChatMessage('bot', CHATBOT_KB.q9_thanh_toan.text);
+                }
+                // Bài tập / Lười
+                else if (qLower.includes('bài tập') || qLower.includes('hướng dẫn') || qLower.includes('lười') || qLower.includes('không biết tập')) {
+                    addChatMessage('bot', CHATBOT_KB.q10_huong_dan.text);
+                }
+                // Suy nghĩ thêm / Tham khảo
+                else if (qLower.includes('suy nghĩ') || qLower.includes('nghĩ thêm') || qLower.includes('chưa mua') || qLower.includes('tham khảo')) {
+                    addChatMessage('bot', CHATBOT_KB.suy_nghi_them.text);
+                }
+                // Mặc định
+                else {
+                    const fallbackHtml = `
+                        <p class="mb-2">Cảm ơn bạn đã chia sẻ! Vấn đề <strong>"${query}"</strong> của bạn rất cụ thể.</p>
+                        <p class="mb-2">Để tư vấn chính xác nhất theo từng thể trạng và mục tiêu, bạn có thể bấm trực tiếp để điền form danh sách chờ hoặc chat Zalo 1-1 với mình nhé:</p>
+                        <div class="space-y-1.5 pt-1">
+                            <button onclick="openWaitlistModal()" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow">📝 Điền Form Danh Sách Chờ Ưu Đãi</button>
+                            <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-comments"></i> <span>Chat Zalo Trực Tiếp: 0359.181.278</span>
+                            </a>
+                        </div>
+                    `;
+                    addChatMessage('bot', fallbackHtml);
+                }
+            }, 450);
+        }
+
+        // 8. ĐIỀU KHIỂN MODAL FORM DANH SÁCH CHỜ (WAITLIST MODAL)
+        function openWaitlistModal(preselectedProduct = '') {
+            const modal = document.getElementById('waitlistModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                const form = document.getElementById('siteWaitlistForm');
+                const successState = document.getElementById('waitlistSuccessState');
+                if (form) form.classList.remove('hidden');
+                if (successState) successState.classList.add('hidden');
+
+                if (preselectedProduct) {
+                    const selectEl = document.getElementById('wl_product_interest');
+                    if (selectEl) {
+                        for (let i = 0; i < selectEl.options.length; i++) {
+                            if (selectEl.options[i].value.includes(preselectedProduct) || preselectedProduct.includes(selectEl.options[i].value)) {
+                                selectEl.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function closeWaitlistModal() {
+            const modal = document.getElementById('waitlistModal');
+            if (modal) modal.classList.add('hidden');
+            const form = document.getElementById('siteWaitlistForm');
+            if (form) form.reset();
+        }
+
+        function handleSiteWaitlistSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('siteWaitlistForm');
+            const name = form.fullname.value.trim();
+            const phone = form.phone.value.trim();
+            const product = form.product_interest.value;
+
+            document.getElementById('wl_confirm_name').innerText = name;
+            document.getElementById('wl_confirm_phone').innerText = phone;
+            document.getElementById('wl_confirm_product').innerText = product;
+
+            form.classList.add('hidden');
+            const successState = document.getElementById('waitlistSuccessState');
+            if (successState) successState.classList.remove('hidden');
+
+            // Ghi nhận phản hồi vào chatbot nếu cửa sổ đang mở
+            addChatMessage('bot', `Tuyệt vời! Mình đã ghi nhận bạn <strong>${name}</strong> (${phone}) vào danh sách chờ ưu tiên cho món <strong>${product}</strong> rồi nhé. Chuyên viên sẽ liên hệ Zalo xác nhận trong thời gian sớm nhất!`);
+        }
     </script>
 </body>
 </html>
