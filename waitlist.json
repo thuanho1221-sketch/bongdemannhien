@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Nguyễn Minh Quân",
+    "phone": "0912345678",
+    "zalo": "0912345678",
+    "registered_at": "2026-11-09 10:15:00",
+    "notes": "Kỹ sư phần mềm, cần giảm mỡ bụng & đau lưng vai"
+  },
+  {
+    "name": "Trần Thu Thảo",
+    "phone": "0987654321",
+    "zalo": "0987654321",
+    "registered_at": "2026-11-10 14:20:00",
+    "notes": "Mẹ bỉm sữa, tập tại nhà lúc con ngủ"
+  },
+  {
+    "name": "Lê Hoàng Long",
+    "phone": "0905123456",
+    "zalo": "0905123456",
+    "registered_at": "2026-11-10 18:45:00",
+    "notes": "Freelancer, mới bắt đầu tập gym"
+  },
+  {
+    "name": "Phạm Lan Anh",
+    "phone": "0933221100",
+    "zalo": "0933221100",
+    "registered_at": "2026-11-11 09:30:00",
+    "notes": "Kế toán, quan tâm dây kháng lực"
+  },
+  {
+    "name": "Võ Đức Thành",
+    "phone": "0977889900",
+    "zalo": "0977889900",
+    "registered_at": "2026-11-11 16:10:00",
+    "notes": "Sales, cần dây nhảy và con lăn"
+  },
+  {
+    "name": "Đặng Trọng Nghĩa",
+    "phone": "0911223344",
+    "zalo": "0911223344",
+    "registered_at": "2026-11-12 11:05:00",
+    "notes": "VĐV cầu lông phong trào 7 năm"
+  },
+  {
+    "name": "Hoàng Bảo Châu",
+    "phone": "0966778899",
+    "zalo": "0966778899",
+    "registered_at": "2026-11-12 15:40:00",
+    "notes": "Chơi pickleball, cần vợt Carbon T700"
+  }
+]

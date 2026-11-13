@@ -1065,10 +1065,16 @@
                                 </span>
                             </div>
 
+                            <button onclick="openPaymentModal('Combo Starter Kit VĐV Sportfit Pro', '890.000đ')"
+                               class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black text-base sm:text-lg py-3.5 rounded-xl uppercase tracking-wider transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2.5 cursor-pointer">
+                                <i class="fa-solid fa-qrcode text-xl"></i>
+                                <span>ĐẶT HÀNG & THANH TOÁN VIETQR (890K)</span>
+                            </button>
+
                             <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" 
-                               class="pulse-btn w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-lg py-4 rounded-xl uppercase tracking-wider transition-all shadow-xl shadow-blue-500/30 flex items-center justify-center gap-2.5 cursor-pointer">
-                                <i class="fa-solid fa-comments text-xl"></i>
-                                <span>BẤM VÀO ĐÂY ĐỂ NHẮN TIN ZALO</span>
+                               class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-xs sm:text-sm py-3 rounded-xl uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-comments text-base"></i>
+                                <span>HOẶC CHAT ZALO TƯ VẤN: 0359.181.278</span>
                             </a>
 
                             <div class="flex items-center justify-center gap-4 text-xs text-gray-500 pt-1">
@@ -1992,6 +1998,218 @@
         </div>
     </div>
 
+    <!-- MODAL THANH TOÁN TỰ ĐỘNG SEPAY VIETQR -->
+    <div id="sepayPaymentModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 text-left shadow-2xl transform transition-all border-2 border-brand-orange relative overflow-hidden max-h-[95vh] overflow-y-auto">
+            
+            <!-- Nút đóng -->
+            <button onclick="closePaymentModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-900 flex items-center justify-center text-sm transition z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- BƯỚC 1: FORM THÔNG TIN ĐẶT HÀNG -->
+            <div id="paymentStep1">
+                <div class="text-center mb-5">
+                    <span class="inline-flex items-center gap-1.5 bg-orange-100 text-brand-orange text-[10px] font-sport font-black px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-shield-halved"></i> Thanh Toán Tự Động SePay
+                    </span>
+                    <h3 class="font-sport font-black text-2xl text-gray-900 uppercase">
+                        XÁC NHẬN ĐƠN HÀNG
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-1">Kiểm tra thông tin và chọn phương thức thanh toán</p>
+                </div>
+
+                <!-- Tóm tắt sản phẩm -->
+                <div class="bg-orange-50/70 border border-orange-200 rounded-2xl p-3.5 mb-4 text-xs">
+                    <div class="flex justify-between items-start gap-2">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-gray-400">Sản phẩm:</span>
+                            <h4 id="checkout_product_name" class="font-bold text-gray-900 text-sm">Combo Starter Kit VĐV Sportfit Pro</h4>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <span class="text-[10px] uppercase font-bold text-gray-400">Thành tiền:</span>
+                            <p id="checkout_product_price" class="font-sport font-black text-base text-brand-orange">890.000đ</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-orange-200/60 flex items-center justify-between text-[11px] text-gray-600">
+                        <span>Phí vận chuyển:</span>
+                        <span class="text-green-600 font-bold uppercase">Miễn phí (Freeship)</span>
+                    </div>
+                </div>
+
+                <form onsubmit="handleProceedToPayment(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Họ và tên của bạn <span class="text-red-500">*</span></label>
+                        <input type="text" id="order_customer_name" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Số điện thoại / Zalo <span class="text-red-500">*</span></label>
+                        <input type="tel" id="order_customer_phone" required placeholder="Nhập số điện thoại nhận hàng" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Địa chỉ giao hàng chi tiết <span class="text-red-500">*</span></label>
+                        <input type="text" id="order_customer_address" required placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                    </div>
+
+                    <!-- Phương thức thanh toán -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1.5">Phương thức thanh toán</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl border-2 border-brand-orange bg-orange-50/50 cursor-pointer">
+                                <input type="radio" name="payment_method" value="vietqr" checked class="text-brand-orange focus:ring-brand-orange">
+                                <div class="flex-1 text-xs">
+                                    <div class="flex items-center gap-1.5 font-bold text-gray-900">
+                                        <span>⚡ Chuyển khoản VietQR Tự Động (SePay)</span>
+                                        <span class="bg-red-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded uppercase">Nhanh nhất</span>
+                                    </div>
+                                    <p class="text-gray-500 text-[11px] mt-0.5">Quét mã QR từ app ngân hàng bất kỳ, hệ thống duyệt tự động sau 3 giây.</p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl border border-gray-300 hover:border-gray-400 bg-white cursor-pointer">
+                                <input type="radio" name="payment_method" value="cod" class="text-brand-orange focus:ring-brand-orange">
+                                <div class="flex-1 text-xs">
+                                    <p class="font-bold text-gray-800">📦 Thanh toán khi nhận hàng (COD)</p>
+                                    <p class="text-gray-500 text-[11px] mt-0.5">Kiểm tra hàng rồi thanh toán tiền mặt cho shipper khi giao tới.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="pulse-btn w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-orange-600 hover:to-brand-orange text-white font-sport font-black text-sm sm:text-base py-3.5 rounded-xl uppercase tracking-wider transition shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2 cursor-pointer mt-2">
+                        <span>TIẾP TỤC THANH TOÁN</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- BƯỚC 2: MÀN HÌNH QUÉT MÃ VIETQR SEPAY -->
+            <div id="paymentStep2VietQR" class="hidden text-center space-y-3.5">
+                <div class="border-b border-gray-100 pb-3">
+                    <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase mb-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span> Chờ Chuyển Khoản
+                    </span>
+                    <h3 class="font-sport font-black text-xl text-gray-900 uppercase">
+                        QUÉT MÃ VIETQR ĐỂ HOÀN TẤT
+                    </h3>
+                    <p class="text-xs text-gray-500">Mở App ngân hàng bất kỳ để quét mã thanh toán tự động</p>
+                </div>
+
+                <!-- Ảnh QR động SePay -->
+                <div class="relative inline-block bg-white p-2 rounded-2xl border-2 border-brand-orange shadow-md">
+                    <img id="sepay_qr_img" src="" alt="Mã thanh toán VietQR SePay" class="w-56 h-56 sm:w-64 sm:h-64 object-contain mx-auto rounded-xl">
+                    <div id="sepay_qr_loading" class="absolute inset-0 bg-white/90 flex flex-col items-center justify-center rounded-xl">
+                        <div class="w-8 h-8 border-4 border-brand-orange border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <p class="text-xs text-gray-600 font-bold">Đang tạo mã VietQR...</p>
+                    </div>
+                </div>
+
+                <!-- Bảng chi tiết chuyển khoản có nút Copy -->
+                <div class="bg-gray-50 rounded-2xl p-3 border border-gray-200 text-left text-xs space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500">Ngân hàng:</span>
+                        <span class="font-bold text-gray-900">VietinBank (Ngân hàng TMCP Công Thương)</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500">Số tài khoản:</span>
+                        <div class="flex items-center gap-1.5">
+                            <span id="copy_acc_num" class="font-sport font-black text-sm text-gray-900">101873934632</span>
+                            <button type="button" onclick="copyText('101873934632', this)" class="bg-white border border-gray-300 hover:border-brand-orange text-[10px] font-bold px-2 py-0.5 rounded text-gray-700">Sao chép</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500">Chủ tài khoản:</span>
+                        <span class="font-bold text-gray-900">HO MINH THUAN</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500">Số tiền:</span>
+                        <div class="flex items-center gap-1.5">
+                            <span id="copy_amount" class="font-sport font-black text-sm text-brand-orange">890.000đ</span>
+                            <button type="button" id="copy_amount_btn" onclick="copyAmount(this)" class="bg-white border border-gray-300 hover:border-brand-orange text-[10px] font-bold px-2 py-0.5 rounded text-gray-700">Sao chép</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between bg-orange-100/70 p-2 rounded-xl border border-orange-200">
+                        <span class="text-orange-900 font-bold">Nội dung chuyển khoản:</span>
+                        <div class="flex items-center gap-1.5">
+                            <span id="copy_order_code" class="font-sport font-black text-sm text-red-600 tracking-wider">SF...</span>
+                            <button type="button" id="copy_code_btn" onclick="copyOrderCode(this)" class="bg-brand-orange text-white text-[10px] font-black px-2 py-1 rounded shadow">Sao chép</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 text-center">
+                    ⚠️ <strong>Lưu ý:</strong> Vui lòng giữ đúng <strong>Nội dung chuyển khoản</strong> để hệ thống SePay tự động kích hoạt đơn hàng trong 3 giây.
+                </div>
+
+                <!-- Trạng thái chờ tiền về -->
+                <div class="flex items-center justify-center gap-2 text-xs text-gray-600 pt-1">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-orange animate-ping"></span>
+                    <span>Hệ thống đang tự động lắng nghe giao dịch SePay...</span>
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button type="button" onclick="manualCheckPayment()" class="flex-1 bg-white border border-gray-300 hover:border-brand-orange text-gray-800 font-bold py-2.5 rounded-xl text-xs transition">
+                        🔄 Kiểm tra thanh toán ngay
+                    </button>
+                    <button type="button" onclick="backToStep1()" class="px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-2.5 rounded-xl text-xs transition">
+                        Quay lại
+                    </button>
+                </div>
+            </div>
+
+            <!-- BƯỚC 3: MÀN HÌNH THANH TOÁN THÀNH CÔNG -->
+            <div id="paymentSuccessScreen" class="hidden text-center space-y-4 py-4">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-circle-check animate-bounce"></i>
+                </div>
+                <h3 class="font-sport font-black text-2xl text-gray-900 uppercase">THANH TOÁN THÀNH CÔNG!</h3>
+                <p class="text-xs sm:text-sm text-gray-600">
+                    SePay đã xác nhận giao dịch thành công cho đơn hàng <strong id="success_order_code" class="text-brand-orange"></strong>.
+                </p>
+                <div class="bg-green-50 p-3.5 rounded-2xl border border-green-200 text-left text-xs space-y-1.5 text-gray-700">
+                    <p>• <strong>Khách hàng:</strong> <span id="success_cust_name" class="font-bold text-gray-900"></span></p>
+                    <p>• <strong>Số điện thoại:</strong> <span id="success_cust_phone" class="font-bold text-gray-900"></span></p>
+                    <p>• <strong>Sản phẩm:</strong> <span id="success_product_name" class="font-bold text-gray-900"></span></p>
+                    <p>• <strong>Số tiền thanh toán:</strong> <span id="success_paid_amount" class="font-black text-brand-orange"></span></p>
+                    <p>• <strong>Trạng thái:</strong> <span class="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-[10px]">ĐÃ THANH TOÁN - CHUẨN BỊ GIAO HÀNG</span></p>
+                </div>
+                <p class="text-xs text-gray-500">
+                    Thông tin đơn hàng đã được đồng bộ tự động vào Google Sheets. Chuyên viên Sportfit sẽ gọi xác nhận giao hàng cho bạn trong ít phút!
+                </p>
+                <div class="space-y-2 pt-2">
+                    <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-sm py-3 rounded-xl uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-comments"></i> <span>Nhắn Zalo Nhận Video Bài Tập Ngay</span>
+                    </a>
+                    <button type="button" onclick="closePaymentModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-2 rounded-xl uppercase transition">
+                        Đóng thông báo
+                    </button>
+                </div>
+            </div>
+
+            <!-- BƯỚC CHO COD -->
+            <div id="paymentCodSuccessScreen" class="hidden text-center space-y-4 py-4">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-truck-fast animate-bounce"></i>
+                </div>
+                <h3 class="font-sport font-black text-2xl text-gray-900 uppercase">ĐẶT HÀNG THÀNH CÔNG!</h3>
+                <p class="text-xs sm:text-sm text-gray-600">
+                    Đơn hàng COD mã <strong id="cod_success_code" class="text-brand-orange"></strong> đã được tiếp nhận.
+                </p>
+                <div class="bg-blue-50 p-3.5 rounded-2xl border border-blue-200 text-left text-xs space-y-1.5 text-gray-700">
+                    <p>• <strong>Hình thức:</strong> Thanh toán khi nhận hàng (COD)</p>
+                    <p>• <strong>Số tiền thu hộ:</strong> <span id="cod_paid_amount" class="font-black text-brand-orange"></span></p>
+                    <p>• <strong>Địa chỉ giao:</strong> <span id="cod_cust_address" class="font-bold text-gray-900"></span></p>
+                </div>
+                <button type="button" onclick="closePaymentModal()" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black text-sm py-3 rounded-xl uppercase tracking-wider transition">
+                    Đóng thông báo
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- POPUP XÁC NHẬN KHẢO SÁT THÀNH CÔNG -->
     <div id="surveySuccessModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl transform transition-all border-2 border-brand-orange relative overflow-hidden">
@@ -2145,10 +2363,10 @@
 
                 const actionBtns = card.querySelectorAll('a, button');
                 actionBtns.forEach(btn => {
-                    btn.setAttribute('title', 'Bấm để chat Zalo đặt hàng: ' + ZALO_PHONE);
+                    btn.setAttribute('title', 'Bấm để thanh toán VietQR tự động qua SePay: ' + title);
                     btn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        openZaloContact(title, price);
+                        openPaymentModal(title, price);
                     });
                 });
             });
@@ -2177,11 +2395,15 @@
                            <p>✓ Bảo hành kỹ thuật 12 tháng (1 đổi 1 trong 7 ngày)</p>
                            <p>✓ Kiểm tra hàng ưng ý mới thanh toán COD.</p>
                        </div>
-                       <p class="mb-2 text-gray-800 font-medium">Bạn bấm nút bên dưới để điền form danh sách chờ đặt hàng giữ suất ưu đãi nhé:</p>
+                       <p class="mb-2 text-gray-800 font-medium">Bạn có thể chọn thanh toán tự động ngay hoặc điền form danh sách chờ nhé:</p>
                        <div class="space-y-1.5 pt-1">
-                           <button onclick="openWaitlistModal('Combo Starter Kit VĐV (890k)')" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black py-2.5 px-3 rounded-xl uppercase tracking-wider text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                           <button onclick="openPaymentModal('Combo Starter Kit VĐV (890k)', '890.000đ')" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black py-2.5 px-3 rounded-xl uppercase tracking-wider text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                               <i class="fa-solid fa-qrcode"></i>
+                               <span>THANH TOÁN VIETQR SEPAY (890K)</span>
+                           </button>
+                           <button onclick="openWaitlistModal('Combo Starter Kit VĐV (890k)')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 px-3 rounded-xl uppercase tracking-wider text-xs shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
                                <i class="fa-solid fa-clipboard-list"></i>
-                               <span>ĐIỀN FORM DANH SÁCH CHỜ ĐẶT HÀNG</span>
+                               <span>ĐIỀN FORM DANH SÁCH CHỜ</span>
                            </button>
                            <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black py-2 px-3 rounded-xl uppercase tracking-wider text-xs shadow-sm flex items-center justify-center gap-1.5">
                                <i class="fa-solid fa-comments"></i>
@@ -2514,6 +2736,215 @@
 
             // Ghi nhận phản hồi vào chatbot nếu cửa sổ đang mở
             addChatMessage('bot', `Tuyệt vời! Mình đã ghi nhận bạn <strong>${name}</strong> (${phone}) vào danh sách chờ ưu tiên cho món <strong>${product}</strong> rồi nhé. Chuyên viên sẽ liên hệ Zalo xác nhận trong thời gian sớm nhất!`);
+        }
+
+        // 9. CẤU HÌNH & XỬ LÝ THANH TOÁN TỰ ĐỘNG QUA SEPAY (VIETINBANK - HO MINH THUAN)
+        const SEPAY_CONFIG = {
+            bank: "VietinBank",
+            accountNumber: "101873934632",
+            accountName: "HO MINH THUAN"
+        };
+
+        let currentCheckout = {
+            productName: "Combo Starter Kit VĐV Sportfit Pro",
+            priceString: "890.000đ",
+            amountNumber: 890000,
+            orderCode: "",
+            customerName: "",
+            customerPhone: "",
+            customerAddress: ""
+        };
+
+        let sepayPollingInterval = null;
+
+        function openPaymentModal(productName = "Combo Starter Kit VĐV Sportfit Pro", priceStr = "890.000đ") {
+            currentCheckout.productName = productName;
+            currentCheckout.priceString = priceStr;
+            
+            // Chuyển chuỗi giá thành số nguyên (VD: "890.000đ" -> 890000)
+            const cleanDigits = (priceStr || '').replace(/\D/g, '');
+            currentCheckout.amountNumber = cleanDigits ? parseInt(cleanDigits, 10) : 890000;
+
+            const nameEl = document.getElementById('checkout_product_name');
+            const priceEl = document.getElementById('checkout_product_price');
+            if (nameEl) nameEl.innerText = currentCheckout.productName;
+            if (priceEl) priceEl.innerText = currentCheckout.priceString;
+
+            // Reset màn hình về Bước 1
+            backToStep1();
+
+            const modal = document.getElementById('sepayPaymentModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            const modal = document.getElementById('sepayPaymentModal');
+            if (modal) modal.classList.add('hidden');
+            if (sepayPollingInterval) {
+                clearInterval(sepayPollingInterval);
+                sepayPollingInterval = null;
+            }
+        }
+
+        function backToStep1() {
+            if (sepayPollingInterval) {
+                clearInterval(sepayPollingInterval);
+                sepayPollingInterval = null;
+            }
+            document.getElementById('paymentStep1').classList.remove('hidden');
+            document.getElementById('paymentStep2VietQR').classList.add('hidden');
+            document.getElementById('paymentSuccessScreen').classList.add('hidden');
+            document.getElementById('paymentCodSuccessScreen').classList.add('hidden');
+        }
+
+        function handleProceedToPayment(e) {
+            e.preventDefault();
+            const name = document.getElementById('order_customer_name').value.trim();
+            const phone = document.getElementById('order_customer_phone').value.trim();
+            const address = document.getElementById('order_customer_address').value.trim();
+            const method = document.querySelector('input[name="payment_method"]:checked').value;
+
+            currentCheckout.customerName = name;
+            currentCheckout.customerPhone = phone;
+            currentCheckout.customerAddress = address;
+
+            // Sinh mã đơn hàng ngẫu nhiên duy nhất (VD: SF + 5 chữ số ngẫu nhiên)
+            const randomCode = Math.floor(10000 + Math.random() * 90000);
+            currentCheckout.orderCode = `SF${randomCode}`;
+
+            if (method === 'cod') {
+                // Xử lý đơn hàng COD
+                document.getElementById('paymentStep1').classList.add('hidden');
+                document.getElementById('cod_success_code').innerText = currentCheckout.orderCode;
+                document.getElementById('cod_paid_amount').innerText = currentCheckout.priceString;
+                document.getElementById('cod_cust_address').innerText = `${name} (${phone}) - ${address}`;
+                document.getElementById('paymentCodSuccessScreen').classList.remove('hidden');
+
+                // Thông báo vào chatbot nếu đang mở
+                if (typeof addChatMessage === 'function') {
+                    addChatMessage('bot', `Đơn hàng COD mã <strong>${currentCheckout.orderCode}</strong> (${currentCheckout.productName}) đã được ghi nhận. Tụi mình sẽ sớm liên hệ xác nhận giao hàng!`);
+                }
+            } else {
+                // Xử lý Chuyển khoản VietQR SePay
+                showVietQRPaymentScreen();
+            }
+        }
+
+        function showVietQRPaymentScreen() {
+            document.getElementById('paymentStep1').classList.add('hidden');
+            document.getElementById('paymentStep2VietQR').classList.remove('hidden');
+
+            // Cập nhật thông tin chi tiết
+            document.getElementById('copy_acc_num').innerText = SEPAY_CONFIG.accountNumber;
+            document.getElementById('copy_amount').innerText = currentCheckout.priceString;
+            document.getElementById('copy_order_code').innerText = currentCheckout.orderCode;
+
+            // Tạo link VietQR SePay
+            const qrUrl = `https://qr.sepay.vn/img?acc=${SEPAY_CONFIG.accountNumber}&bank=${SEPAY_CONFIG.bank}&amount=${currentCheckout.amountNumber}&des=${currentCheckout.orderCode}&template=compact`;
+            
+            const qrImg = document.getElementById('sepay_qr_img');
+            const qrLoading = document.getElementById('sepay_qr_loading');
+            if (qrLoading) qrLoading.classList.remove('hidden');
+
+            qrImg.onload = function() {
+                if (qrLoading) qrLoading.classList.add('hidden');
+            };
+            qrImg.src = qrUrl;
+
+            // Bắt đầu lắng nghe tự động kiểm tra giao dịch tiền vào từ SePay mỗi 3 giây
+            startSepayPolling(currentCheckout.orderCode, currentCheckout.amountNumber);
+        }
+
+        function startSepayPolling(orderCode, amount) {
+            if (sepayPollingInterval) clearInterval(sepayPollingInterval);
+
+            // Kiểm tra ngay lần đầu
+            checkPaymentStatus(orderCode, amount);
+
+            // Lặp lại mỗi 3 giây
+            sepayPollingInterval = setInterval(() => {
+                checkPaymentStatus(orderCode, amount);
+            }, 3000);
+        }
+
+        async function checkPaymentStatus(orderCode, amount) {
+            try {
+                // Gọi API backend proxy kiểm tra SePay
+                const res = await fetch(`/api/check-payment?orderCode=${encodeURIComponent(orderCode)}&amount=${amount}`);
+                if (!res.ok) return;
+
+                const data = await res.json();
+                if (data.success && data.paid) {
+                    onPaymentSuccess(data.transaction);
+                }
+            } catch (err) {
+                console.log("Đang chờ thanh toán...", err);
+            }
+        }
+
+        function manualCheckPayment() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang kiểm tra...`;
+            btn.disabled = true;
+
+            fetch(`/api/check-payment?orderCode=${encodeURIComponent(currentCheckout.orderCode)}&amount=${currentCheckout.amountNumber}`)
+                .then(r => r.json())
+                .then(data => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    if (data.success && data.paid) {
+                        onPaymentSuccess(data.transaction);
+                    } else {
+                        alert("Hệ thống chưa nhận được khoản chuyển. Bạn vui lòng kiểm tra xem app ngân hàng đã trừ tiền và điền đúng nội dung " + currentCheckout.orderCode + " chưa nhé!");
+                    }
+                })
+                .catch(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    alert("Đang kiểm tra kết nối tới SePay. Nếu ngân hàng đã trừ tiền, bạn an tâm giao dịch đã tự động lưu vào Google Sheets của shop!");
+                });
+        }
+
+        function onPaymentSuccess(tx) {
+            if (sepayPollingInterval) {
+                clearInterval(sepayPollingInterval);
+                sepayPollingInterval = null;
+            }
+
+            document.getElementById('paymentStep2VietQR').classList.add('hidden');
+            document.getElementById('success_order_code').innerText = currentCheckout.orderCode;
+            document.getElementById('success_cust_name').innerText = currentCheckout.customerName;
+            document.getElementById('success_cust_phone').innerText = currentCheckout.customerPhone;
+            document.getElementById('success_product_name').innerText = currentCheckout.productName;
+            document.getElementById('success_paid_amount').innerText = currentCheckout.priceString;
+
+            document.getElementById('paymentSuccessScreen').classList.remove('hidden');
+
+            // Gửi tin nhắn xác nhận vào chatbot
+            if (typeof addChatMessage === 'function') {
+                addChatMessage('bot', `🎉 Tuyệt vời! SePay đã xác nhận thanh toán thành công số tiền <strong>${currentCheckout.priceString}</strong> cho đơn hàng <strong>${currentCheckout.orderCode}</strong>. Đơn hàng đã được lưu và chuyên viên sẽ gửi hàng ngay!`);
+            }
+        }
+
+        function copyText(str, btn) {
+            navigator.clipboard.writeText(str).then(() => {
+                const old = btn.innerText;
+                btn.innerText = "✓ Đã chép!";
+                btn.classList.add("bg-green-100", "text-green-800");
+                setTimeout(() => {
+                    btn.innerText = old;
+                    btn.classList.remove("bg-green-100", "text-green-800");
+                }, 2000);
+            });
+        }
+
+        function copyAmount(btn) {
+            copyText(currentCheckout.amountNumber.toString(), btn || document.getElementById('copy_amount_btn'));
+        }
+
+        function copyOrderCode(btn) {
+            copyText(currentCheckout.orderCode, btn || document.getElementById('copy_code_btn'));
         }
     </script>
 </body>
