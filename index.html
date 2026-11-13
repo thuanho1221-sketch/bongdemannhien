@@ -2726,6 +2726,13 @@
             const phone = form.phone.value.trim();
             const product = form.product_interest.value;
 
+            // Lưu đăng ký vào hệ thống (hiện trong trang admin)
+            fetch('/api/waitlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone, product })
+            }).catch(err => console.error('Waitlist error:', err));
+
             document.getElementById('wl_confirm_name').innerText = name;
             document.getElementById('wl_confirm_phone').innerText = phone;
             document.getElementById('wl_confirm_product').innerText = product;

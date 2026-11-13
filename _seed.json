@@ -1,0 +1,197 @@
+{
+ "products": [
+  {
+   "id": 1,
+   "name": "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1",
+   "product_type": "physical",
+   "price": 489000.0,
+   "description": "Phân định 4 vùng cơ bằng mã màu, chịu tải 200kg, kèm tay nắm chống trượt.",
+   "stock_quantity": 150,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 2,
+   "name": "Bộ 5 Dây Kháng Lực Ngũ Sắc Đàn Hồi Cao Cấp",
+   "product_type": "physical",
+   "price": 429000.0,
+   "description": "100% cao su Latex tự nhiên nguyên chất, tải lực 10-150 lbs, không mùi.",
+   "stock_quantity": 200,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 3,
+   "name": "Vợt Cầu Lông Carbon Pro Nanoflare 4U",
+   "product_type": "physical",
+   "price": 1190000.0,
+   "description": "Khung Carbon nguyên khối 82g, sức căng 11.5kg, trợ lực cổ tay đập cầu cắm sân.",
+   "stock_quantity": 50,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 4,
+   "name": "Vợt Pickleball Carbon Fiber T700 USAPA",
+   "product_type": "physical",
+   "price": 1150000.0,
+   "description": "Mặt Carbon T700 nhám tạo xoáy, lõi tổ ong polymer giảm chấn triệt tiêu đau cùi chỏ.",
+   "stock_quantity": 80,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 5,
+   "name": "Con Lăn Tập Cơ Bụng Bánh Kép Tự Động Thu Hồi",
+   "product_type": "physical",
+   "price": 459000.0,
+   "description": "Lò xo thép carbon trợ lực chống ngã, bánh xe bọc cao su êm ái kèm đệm quỳ gối.",
+   "stock_quantity": 120,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 6,
+   "name": "Giày Thể Thao Cầu Lông & Pickleball Đế Kép",
+   "product_type": "physical",
+   "price": 1250000.0,
+   "description": "Đế Non-Marking chống lật cổ chân, đệm khí Air bảo vệ khớp gối khi bật nhảy.",
+   "stock_quantity": 45,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 7,
+   "name": "Combo Starter Kit VĐV Thực Chiến Trọn Gói",
+   "product_type": "physical",
+   "price": 890000.0,
+   "description": "Trọn bộ dụng cụ tuyển chọn theo môn + kèm quà tặng và tư vấn chuyên sâu.",
+   "stock_quantity": 100,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 8,
+   "name": "Trọn Bộ Video 30 Bài Tập Thể Thao HD Chuẩn HLV",
+   "product_type": "digital",
+   "price": 199000.0,
+   "description": "Giáo án video chi tiết từ khởi động, form động tác chuẩn đến phòng ngừa chấn thương.",
+   "stock_quantity": null,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 9,
+   "name": "Ebook Lộ Trình Khởi Sự Kinh Doanh & Luyện Tập Tinh Gọn",
+   "product_type": "digital",
+   "price": 149000.0,
+   "description": "Cẩm nang bóc tách rủi ro, quản trị dòng tiền và chiến lược kỷ luật dành cho người đi làm.",
+   "stock_quantity": null,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 10,
+   "name": "Gói Tư Vấn Kỹ Thuật 1-1 Theo Môn Cùng Chuyên Gia",
+   "product_type": "service",
+   "price": 300000.0,
+   "description": "Phân tích thể trạng, tư vấn chọn dụng cụ chính xác và chỉnh sửa form động tác 1-1 qua Zalo trong 30 ngày.",
+   "stock_quantity": null,
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 11,
+   "name": "Vợt cầu lông",
+   "product_type": "physical",
+   "price": 500000.0,
+   "description": "",
+   "stock_quantity": 10,
+   "created_at": "2026-11-13 09:24:28"
+  }
+ ],
+ "customers": [
+  {
+   "id": 1,
+   "name": "Nguyễn Minh Quân",
+   "phone": "0912345678",
+   "zalo": "0912345678",
+   "registered_at": "2026-11-09 10:15:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "Kỹ sư phần mềm, cần giảm mỡ bụng & đau lưng vai"
+  },
+  {
+   "id": 2,
+   "name": "Trần Thu Thảo",
+   "phone": "0987654321",
+   "zalo": "0987654321",
+   "registered_at": "2026-11-10 14:20:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "Mẹ bỉm sữa, tập tại nhà lúc con ngủ"
+  },
+  {
+   "id": 3,
+   "name": "Lê Hoàng Long",
+   "phone": "0905123456",
+   "zalo": "0905123456",
+   "registered_at": "2026-11-10 18:45:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "Freelancer, mới bắt đầu tập gym"
+  },
+  {
+   "id": 4,
+   "name": "Phạm Lan Anh",
+   "phone": "0933221100",
+   "zalo": "0933221100",
+   "registered_at": "2026-11-11 09:30:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "Kế toán, quan tâm dây kháng lực"
+  },
+  {
+   "id": 5,
+   "name": "Võ Đức Thành",
+   "phone": "0977889900",
+   "zalo": "0977889900",
+   "registered_at": "2026-11-11 16:10:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "Sales, cần dây nhảy và con lăn"
+  },
+  {
+   "id": 6,
+   "name": "Đặng Trọng Nghĩa",
+   "phone": "0911223344",
+   "zalo": "0911223344",
+   "registered_at": "2026-11-12 11:05:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "VĐV cầu lông phong trào 7 năm"
+  },
+  {
+   "id": 7,
+   "name": "Hoàng Bảo Châu",
+   "phone": "0966778899",
+   "zalo": "0966778899",
+   "registered_at": "2026-11-12 15:40:00",
+   "created_at": "2026-11-13 09:17:56",
+   "notes": "Chơi pickleball, cần vợt Carbon T700"
+  }
+ ],
+ "orders": [
+  {
+   "id": 1,
+   "customer_id": 3,
+   "product_id": 1,
+   "amount": 489000.0,
+   "status": "paid",
+   "order_date": "2026-11-12 14:30:00",
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 2,
+   "customer_id": 6,
+   "product_id": 2,
+   "amount": 429000.0,
+   "status": "pending",
+   "order_date": "2026-11-13 09:15:00",
+   "created_at": "2026-11-13 09:17:56"
+  },
+  {
+   "id": 3,
+   "customer_id": 1,
+   "product_id": 3,
+   "amount": 1190000.0,
+   "status": "completed",
+   "order_date": "2026-11-13 11:20:00",
+   "created_at": "2026-11-13 09:17:56"
+  }
+ ]
+}
