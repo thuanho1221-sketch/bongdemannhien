@@ -354,6 +354,10 @@
 
     <!-- JAVASCRIPT ĐIỀU KHIỂN TOÀN BỘ LOGIC ADMIN -->
     <script>
+        // Backend Python chạy ở localhost:3000. Mở bằng file:// hoặc từ domain khác (Vercel...) thì phải trỏ thẳng về localhost.
+        const API_BASE = (['localhost', '127.0.0.1'].includes(location.hostname) && location.port === '3000') ? '' : 'http://localhost:3000';
+        const API_URL = API_BASE + '/api/admin';
+
         let dbState = {
             products: [],
             customers: [],
@@ -384,7 +388,7 @@
         // Tải toàn bộ dữ liệu từ /api/admin
         async function fetchAllData() {
             try {
-                const res = await fetch('/api/admin');
+                const res = await fetch(API_URL);
                 if (!res.ok) throw new Error('Không thể kết nối API /api/admin');
                 const data = await res.json();
                 if (data.success) {
@@ -395,7 +399,7 @@
                 }
             } catch (err) {
                 console.error("Lỗi tải dữ liệu:", err);
-                alert("Không kết nối được server backend. Hãy chắc chắn bạn đang chạy 'python admin_server.py' trên cổng 3000!");
+                alert("Không kết nối được backend (" + API_URL + ").\nHãy chạy 'python admin_server.py' trong thư mục dự án rồi mở http://localhost:3000/admin");
             }
         }
 
@@ -734,7 +738,7 @@
         // Gửi request API chung
         async function sendApiRequest(payload) {
             try {
-                const res = await fetch('/api/admin', {
+                const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
