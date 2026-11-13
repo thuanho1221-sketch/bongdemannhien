@@ -7,7 +7,9 @@ import urllib.parse
 import shutil
 
 PORT = 3000
-DB_FILE = os.path.abspath("brain.db")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(BASE_DIR)  # luôn phục vụ file tĩnh & tìm brain.db cạnh file này, bất kể chạy từ đâu
+DB_FILE = os.path.join(BASE_DIR, "brain.db")
 BACKUP_DB_FILE = os.path.abspath("D:/my-brain/brain.db")
 
 def get_db():
@@ -28,6 +30,7 @@ class AdminHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.send_header('Access-Control-Allow-Private-Network', 'true')
         super().end_headers()
 
     def do_OPTIONS(self):
@@ -39,7 +42,8 @@ class AdminHandler(http.server.SimpleHTTPRequestHandler):
         
         # Route /admin -> serve /admin/index.html
         if parsed.path in ['/admin', '/admin/']:
-            self.path = '/admin/index.html'
+            # Hỗ trợ cả 2 cấu trúc: admin/index.html hoặc admin.html ở thư mục gốc
+            self.path = '/admin/index.html' if os.path.exists(os.path.join(BASE_DIR, 'admin', 'index.html')) else '/admin.html'
             return super().do_GET()
 
         # API endpoint /api/admin
@@ -228,6 +232,7 @@ class AdminHandler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     server_address = ('', PORT)
-    with socketserver.TCPServer(server_address, AdminHandler) as httpd:
+    socketserver.ThreadingTCPServer.allow_reuse_address = True
+    with socketserver.ThreadingTCPServer(server_address, AdminHandler) as httpd:
         print(f"[*] Admin Server đang chạy tại: http://localhost:{PORT}/admin")
         httpd.serve_forever()
