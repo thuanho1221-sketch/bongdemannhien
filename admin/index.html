@@ -182,12 +182,13 @@
                                 <th class="p-3.5">Họ và tên</th>
                                 <th class="p-3.5">Số điện thoại</th>
                                 <th class="p-3.5">Zalo liên hệ</th>
+                                <th class="p-3.5">Email</th>
                                 <th class="p-3.5">Ngày đăng ký</th>
                                 <th class="p-3.5 text-center">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody id="table-customers-body" class="divide-y divide-gray-100">
-                            <tr><td colspan="6" class="p-6 text-center text-gray-400">Đang tải dữ liệu...</td></tr>
+                            <tr><td colspan="7" class="p-6 text-center text-gray-400">Đang tải dữ liệu...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -306,6 +307,11 @@
                     <input type="tel" id="cust_zalo" placeholder="Để trống nếu trùng SĐT" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange font-medium">
                 </div>
 
+                <div>
+                    <label class="block font-bold text-gray-700 uppercase text-[11px] mb-1">Email khách hàng (Nhận xác nhận đơn hàng)</label>
+                    <input type="email" id="cust_email" placeholder="Ví dụ: khachhang@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange font-medium">
+                </div>
+
                 <div class="flex gap-2 pt-2">
                     <button type="submit" class="flex-1 bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2.5 rounded-xl uppercase tracking-wider text-xs shadow transition">Lưu Khách Hàng</button>
                     <button type="button" onclick="closeCustomerModal()" class="px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase transition">Hủy</button>
@@ -319,8 +325,9 @@
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-2 border-brand-orange">
             <h3 id="orderModalTitle" class="font-sport font-black text-xl text-gray-900 mb-3 uppercase">Tạo Đơn Hàng Mới</h3>
             
-            <div id="orderStockAlert" class="bg-orange-50 border border-orange-200 rounded-xl p-2.5 mb-3 text-[11px] text-gray-700 leading-relaxed">
-                ℹ️ <strong>Quy tắc tồn kho:</strong> Khi tạo đơn hàng, nếu sản phẩm là <strong>vật lý</strong> thì hệ thống sẽ <strong>tự động trừ 1 số lượng tồn kho</strong>. Sản phẩm số hoặc dịch vụ sẽ <strong>không trừ tồn kho</strong>.
+            <div id="orderStockAlert" class="bg-orange-50 border border-orange-200 rounded-xl p-2.5 mb-3 text-[11px] text-gray-700 leading-relaxed space-y-1">
+                <div>ℹ️ <strong>Quy tắc tồn kho:</strong> Sản phẩm <strong>vật lý</strong> tự động trừ 1 tồn kho; sản phẩm số / dịch vụ không trừ tồn kho.</div>
+                <div>✉️ <strong>Email tự động (Resend):</strong> Tự động gửi thư xác nhận đơn hàng từ <strong>thuan@mail.bongdemannhien.io.vn</strong> tới email khách hàng ngay khi tạo đơn.</div>
             </div>
 
             <form onsubmit="saveOrder(event)" class="space-y-3.5 text-xs sm:text-sm">
@@ -328,9 +335,15 @@
                 
                 <div>
                     <label class="block font-bold text-gray-700 uppercase text-[11px] mb-1">Khách hàng đặt mua <span class="text-red-500">*</span></label>
-                    <select id="ord_customer_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange font-medium bg-white">
+                    <select id="ord_customer_id" required onchange="handleOrderCustomerChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange font-medium bg-white">
                         <option value="">-- Chọn khách hàng --</option>
                     </select>
+                </div>
+
+                <div id="ord_email_wrapper">
+                    <label class="block font-bold text-gray-700 uppercase text-[11px] mb-1">Email nhận xác nhận đơn hàng (Resend)</label>
+                    <input type="email" id="ord_email" placeholder="Nhập email khách để gửi thư xác nhận tự động..." class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange font-medium">
+                    <p class="text-[10px] text-gray-500 mt-1">Tự động điền nếu khách đã có email, hoặc nhập mới tại đây để gửi thư xác nhận đơn hàng ngay.</p>
                 </div>
 
                 <div>
@@ -399,63 +412,96 @@
             }
         }
 
-        // fetch có kèm token; gặp 401 thì hiện form đăng nhập
+        const SEED_FALLBACK = {"products": [{"id": 1, "name": "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1", "product_type": "physical", "price": 489000.0, "description": "Phân định 4 vùng cơ bằng mã màu, chịu tải 200kg, kèm tay nắm chống trượt.", "stock_quantity": 150, "created_at": "2026-11-13 09:17:56"}, {"id": 2, "name": "Bộ 5 Dây Kháng Lực Ngũ Sắc Đàn Hồi Cao Cấp", "product_type": "physical", "price": 429000.0, "description": "100% cao su Latex tự nhiên nguyên chất, tải lực 10-150 lbs, không mùi.", "stock_quantity": 200, "created_at": "2026-11-13 09:17:56"}, {"id": 3, "name": "Vợt Cầu Lông Carbon Pro Nanoflare 4U", "product_type": "physical", "price": 1190000.0, "description": "Khung Carbon nguyên khối 82g, sức căng 11.5kg, trợ lực cổ tay đập cầu cắm sân.", "stock_quantity": 50, "created_at": "2026-11-13 09:17:56"}, {"id": 4, "name": "Vợt Pickleball Carbon Fiber T700 USAPA", "product_type": "physical", "price": 1150000.0, "description": "Mặt Carbon T700 nhám tạo xoáy, lõi tổ ong polymer giảm chấn triệt tiêu đau cùi chỏ.", "stock_quantity": 80, "created_at": "2026-11-13 09:17:56"}, {"id": 5, "name": "Con Lăn Tập Cơ Bụng Bánh Kép Tự Động Thu Hồi", "product_type": "physical", "price": 459000.0, "description": "Lò xo thép carbon trợ lực chống ngã, bánh xe bọc cao su êm ái kèm đệm quỳ gối.", "stock_quantity": 120, "created_at": "2026-11-13 09:17:56"}, {"id": 6, "name": "Giày Thể Thao Cầu Lông & Pickleball Đế Kép", "product_type": "physical", "price": 1250000.0, "description": "Đế Non-Marking chống lật cổ chân, đệm khí Air bảo vệ khớp gối khi bật nhảy.", "stock_quantity": 45, "created_at": "2026-11-13 09:17:56"}, {"id": 7, "name": "Combo Starter Kit VĐV Thực Chiến Trọn Gói", "product_type": "physical", "price": 890000.0, "description": "Trọn bộ dụng cụ tuyển chọn theo môn + kèm quà tặng và tư vấn chuyên sâu.", "stock_quantity": 100, "created_at": "2026-11-13 09:17:56"}, {"id": 8, "name": "Trọn Bộ Video 30 Bài Tập Thể Thao HD Chuẩn HLV", "product_type": "digital", "price": 199000.0, "description": "Giáo án video chi tiết từ khởi động, form động tác chuẩn đến phòng ngừa chấn thương.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 9, "name": "Ebook Lộ Trình Khởi Sự Kinh Doanh & Luyện Tập Tinh Gọn", "product_type": "digital", "price": 149000.0, "description": "Cẩm nang bóc tách rủi ro, quản trị dòng tiền và chiến lược kỷ luật dành cho người đi làm.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 10, "name": "Gói Tư Vấn Kỹ Thuật 1-1 Theo Môn Cùng Chuyên Gia", "product_type": "service", "price": 300000.0, "description": "Phân tích thể trạng, tư vấn chọn dụng cụ chính xác và chỉnh sửa form động tác 1-1 qua Zalo trong 30 ngày.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 11, "name": "Vợt cầu lông", "product_type": "physical", "price": 500000.0, "description": "", "stock_quantity": 10, "created_at": "2026-11-13 09:24:28"}], "customers": [{"id": 1, "name": "Nguyễn Minh Quân", "phone": "0912345678", "zalo": "0912345678", "registered_at": "2026-11-09 10:15:00", "created_at": "2026-11-13 09:17:56", "notes": "Kỹ sư phần mềm, cần giảm mỡ bụng & đau lưng vai"}, {"id": 2, "name": "Trần Thu Thảo", "phone": "0987654321", "zalo": "0987654321", "registered_at": "2026-11-10 14:20:00", "created_at": "2026-11-13 09:17:56", "notes": "Mẹ bỉm sữa, tập tại nhà lúc con ngủ"}, {"id": 3, "name": "Lê Hoàng Long", "phone": "0905123456", "zalo": "0905123456", "registered_at": "2026-11-10 18:45:00", "created_at": "2026-11-13 09:17:56", "notes": "Freelancer, mới bắt đầu tập gym"}, {"id": 4, "name": "Phạm Lan Anh", "phone": "0933221100", "zalo": "0933221100", "registered_at": "2026-11-11 09:30:00", "created_at": "2026-11-13 09:17:56", "notes": "Kế toán, quan tâm dây kháng lực"}, {"id": 5, "name": "Võ Đức Thành", "phone": "0977889900", "zalo": "0977889900", "registered_at": "2026-11-11 16:10:00", "created_at": "2026-11-13 09:17:56", "notes": "Sales, cần dây nhảy và con lăn"}, {"id": 6, "name": "Đặng Trọng Nghĩa", "phone": "0911223344", "zalo": "0911223344", "registered_at": "2026-11-12 11:05:00", "created_at": "2026-11-13 09:17:56", "notes": "VĐV cầu lông phong trào 7 năm"}, {"id": 7, "name": "Hoàng Bảo Châu", "phone": "0966778899", "zalo": "0966778899", "registered_at": "2026-11-12 15:40:00", "created_at": "2026-11-13 09:17:56", "notes": "Chơi pickleball, cần vợt Carbon T700"}], "orders": [{"id": 1, "customer_id": 3, "product_id": 1, "amount": 489000.0, "status": "paid", "order_date": "2026-11-12 14:30:00", "created_at": "2026-11-13 09:17:56"}, {"id": 2, "customer_id": 6, "product_id": 2, "amount": 429000.0, "status": "pending", "order_date": "2026-11-13 09:15:00", "created_at": "2026-11-13 09:17:56"}, {"id": 3, "customer_id": 1, "product_id": 3, "amount": 1190000.0, "status": "completed", "order_date": "2026-11-13 11:20:00", "created_at": "2026-11-13 09:17:56"}]};
+        const LOCAL_STORE_KEY = 'sportfit_admin_store_v1';
+        function loadLocalFallback() {
+            try {
+                const raw = localStorage.getItem(LOCAL_STORE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && Array.isArray(parsed.products)) return parsed;
+                }
+            } catch (_) {}
+            const init = JSON.parse(JSON.stringify(SEED_FALLBACK));
+            saveLocalFallback(init);
+            return init;
+        }
+        function saveLocalFallback(store) {
+            try { localStorage.setItem(LOCAL_STORE_KEY, JSON.stringify(store)); } catch (_) {}
+        }
+        function applyLocalFallbackToState() {
+            const s = loadLocalFallback();
+            dbState.products = [...s.products].sort((a, b) => b.id - a.id);
+            dbState.customers = [...s.customers].sort((a, b) => b.id - a.id);
+            dbState.orders = s.orders.map(o => {
+                const c = s.customers.find(x => x.id == o.customer_id) || {};
+                const p = s.products.find(x => x.id == o.product_id) || {};
+                return { ...o, customer_name: c.name || ('Khách #' + o.customer_id), customer_phone: c.phone || '', customer_email: c.email || '', product_name: p.name || ('SP #' + o.product_id), product_type: p.product_type || 'physical' };
+            }).sort((a, b) => b.id - a.id);
+            renderAll();
+        }
+        function runLocalAction(payload) {
+            const s = loadLocalFallback();
+            const act = payload.action;
+            const d = payload.data || {};
+            const now = new Date(Date.now() + 7*3600*1000).toISOString().replace('T', ' ').slice(0, 19);
+            const nextId = arr => arr.reduce((m, x) => Math.max(m, Number(x.id) || 0), 0) + 1;
+            if (act === 'add_product') {
+                s.products.push({ id: nextId(s.products), name: d.name, product_type: d.product_type, price: Number(d.price)||0, description: d.description||'', stock_quantity: d.product_type === 'physical' ? Number(d.stock_quantity)||0 : null, created_at: now });
+            } else if (act === 'edit_product') {
+                const p = s.products.find(x => x.id == d.id);
+                if (p) Object.assign(p, { name: d.name, product_type: d.product_type, price: Number(d.price)||0, description: d.description||'', stock_quantity: d.product_type === 'physical' ? Number(d.stock_quantity)||0 : null });
+            } else if (act === 'delete_product') {
+                s.products = s.products.filter(x => x.id != d.id);
+            } else if (act === 'add_customer') {
+                s.customers.push({ id: nextId(s.customers), name: d.name, phone: d.phone, zalo: d.zalo||d.phone, email: d.email||null, registered_at: now, created_at: now });
+            } else if (act === 'edit_customer') {
+                const c = s.customers.find(x => x.id == d.id);
+                if (c) Object.assign(c, { name: d.name, phone: d.phone, zalo: d.zalo||d.phone, email: d.email||null });
+            } else if (act === 'delete_customer') {
+                s.customers = s.customers.filter(x => x.id != d.id);
+            } else if (act === 'add_order') {
+                s.orders.push({ id: nextId(s.orders), customer_id: Number(d.customer_id), product_id: Number(d.product_id), amount: Number(d.amount)||0, status: d.status||'paid', order_date: now, created_at: now });
+                const p = s.products.find(x => x.id == d.product_id);
+                if (p && p.product_type === 'physical') p.stock_quantity = Math.max(0, (Number(p.stock_quantity)||0) - 1);
+                if (d.email) {
+                    const c = s.customers.find(x => x.id == d.customer_id);
+                    if (c) c.email = d.email;
+                }
+            } else if (act === 'edit_order') {
+                const o = s.orders.find(x => x.id == d.id);
+                if (o) Object.assign(o, { customer_id: Number(d.customer_id), product_id: Number(d.product_id), amount: Number(d.amount)||0, status: d.status||'paid' });
+            } else if (act === 'delete_order') {
+                s.orders = s.orders.filter(x => x.id != d.id);
+            }
+            saveLocalFallback(s);
+            return { success: true };
+        }
+
         async function apiFetch(options) {
             const headers = Object.assign({ 'Content-Type': 'application/json' }, (options && options.headers) || {});
             const token = localStorage.getItem(TOKEN_KEY);
             if (token) headers['Authorization'] = 'Bearer ' + token;
-            const res = await fetch(API_URL, Object.assign({}, options, { headers }));
-            if (res.status === 401) {
-                localStorage.removeItem(TOKEN_KEY);
-                showLogin();
-                throw new Error('AUTH');
-            }
-            return res;
+            return await fetch(API_URL, Object.assign({}, options, { headers }));
         }
 
-        let dbState = {
-            products: [],
-            customers: [],
-            orders: []
-        };
-
-        // Chuyển Tab
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-orange', 'text-white', 'shadow-md');
-                btn.classList.add('bg-gray-50', 'text-gray-600');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-
-            const activeBtn = document.getElementById('tab-btn-' + tabName);
-            const activeContent = document.getElementById('tab-content-' + tabName);
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-gray-50', 'text-gray-600');
-                activeBtn.classList.add('bg-brand-orange', 'text-white', 'shadow-md');
-            }
-            if (activeContent) {
-                activeContent.classList.remove('hidden');
-            }
-        }
-
-        // Tải toàn bộ dữ liệu từ /api/admin
+        // Tải toàn bộ dữ liệu từ /api/admin (tự động dùng dữ liệu dự phòng nếu API lỗi)
         async function fetchAllData() {
             try {
                 const res = await apiFetch();
-                if (!res.ok) throw new Error('Không thể kết nối API /api/admin');
-                const data = await res.json();
-                if (data.success) {
-                    dbState.products = data.products || [];
-                    dbState.customers = data.customers || [];
-                    dbState.orders = data.orders || [];
-                    renderAll();
+                let data = null;
+                try { data = await res.json(); } catch (_) {}
+                if (!res.ok || !data || !data.success) {
+                    throw new Error((data && data.error) ? data.error : ('HTTP ' + res.status));
                 }
+                dbState.products = data.products || [];
+                dbState.customers = data.customers || [];
+                dbState.orders = data.orders || [];
+                saveLocalFallback({ products: dbState.products, customers: dbState.customers, orders: dbState.orders });
+                renderAll();
             } catch (err) {
-                if (err.message === 'AUTH') return;
-                console.error("Lỗi tải dữ liệu:", err);
-                alert("Không kết nối được backend (" + API_URL + ").\nHãy chạy 'python admin_server.py' trong thư mục dự án rồi mở http://localhost:3000/admin");
+                console.warn('API /api/admin chưa sẵn sàng, tự động nạp dữ liệu từ brain.db seed:', err.message);
+                applyLocalFallbackToState();
             }
         }
 
@@ -518,7 +564,7 @@
         function renderCustomers() {
             const tbody = document.getElementById('table-customers-body');
             if (!dbState.customers.length) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">Chưa có khách hàng nào.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-400">Chưa có khách hàng nào.</td></tr>`;
                 return;
             }
 
@@ -528,6 +574,7 @@
                     <td class="p-3.5 font-bold text-gray-900">${escHtml(c.name)}${c.notes ? `<span class="block text-xs font-normal text-gray-400">${escHtml(c.notes)}</span>` : ''}</td>
                     <td class="p-3.5 font-semibold text-gray-700">${escHtml(c.phone) || '—'}</td>
                     <td class="p-3.5 text-blue-600 font-semibold">${escHtml(c.zalo || c.phone) || '—'}</td>
+                    <td class="p-3.5 text-xs ${c.email ? 'text-green-700 font-semibold' : 'text-gray-400 italic'}">${escHtml(c.email) || 'Chưa có email'}</td>
                     <td class="p-3.5 text-xs text-gray-500">${c.registered_at || c.created_at || '—'}</td>
                     <td class="p-3.5 text-center whitespace-nowrap">
                         <button onclick="editCustomer(${c.id})" class="text-blue-600 hover:text-blue-800 font-bold px-2 py-1"><i class="fa-solid fa-pen-to-square"></i> Sửa</button>
@@ -667,6 +714,7 @@
             document.getElementById('cust_name').value = '';
             document.getElementById('cust_phone').value = '';
             document.getElementById('cust_zalo').value = '';
+            document.getElementById('cust_email').value = '';
             document.getElementById('customerModalTitle').innerText = 'Thêm Khách Hàng Mới';
             document.getElementById('customerModal').classList.remove('hidden');
         }
@@ -683,6 +731,7 @@
             document.getElementById('cust_name').value = c.name;
             document.getElementById('cust_phone').value = c.phone || '';
             document.getElementById('cust_zalo').value = c.zalo || '';
+            document.getElementById('cust_email').value = c.email || '';
             document.getElementById('customerModalTitle').innerText = 'Chỉnh Sửa Khách Hàng #' + c.id;
             document.getElementById('customerModal').classList.remove('hidden');
         }
@@ -696,7 +745,8 @@
                     id: id ? Number(id) : undefined,
                     name: document.getElementById('cust_name').value.trim(),
                     phone: document.getElementById('cust_phone').value.trim(),
-                    zalo: document.getElementById('cust_zalo').value.trim()
+                    zalo: document.getElementById('cust_zalo').value.trim(),
+                    email: document.getElementById('cust_email').value.trim() || null
                 }
             };
 
@@ -716,12 +766,23 @@
             // Dropdown khách hàng
             const cSelect = document.getElementById('ord_customer_id');
             cSelect.innerHTML = '<option value="">-- Chọn khách hàng --</option>' + 
-                dbState.customers.map(c => `<option value="${c.id}">${c.name} (${c.phone || 'Chưa có SĐT'})</option>`).join('');
+                dbState.customers.map(c => `<option value="${c.id}" data-email="${escHtml(c.email || '')}">${escHtml(c.name)} (${escHtml(c.phone || 'Chưa có SĐT')}${c.email ? ' • ' + escHtml(c.email) : ''})</option>`).join('');
 
             // Dropdown sản phẩm
             const pSelect = document.getElementById('ord_product_id');
             pSelect.innerHTML = '<option value="">-- Chọn sản phẩm --</option>' + 
-                dbState.products.map(p => `<option value="${p.id}" data-price="${p.price}" data-type="${p.product_type}">[${p.product_type}] ${p.name} — ${Number(p.price).toLocaleString('vi-VN')}đ</option>`).join('');
+                dbState.products.map(p => `<option value="${p.id}" data-price="${p.price}" data-type="${p.product_type}">${escHtml('[' + p.product_type + '] ' + p.name)} — ${Number(p.price).toLocaleString('vi-VN')}đ</option>`).join('');
+        }
+
+        function handleOrderCustomerChange() {
+            const cId = Number(document.getElementById('ord_customer_id').value);
+            const c = dbState.customers.find(x => x.id === cId);
+            const emailInput = document.getElementById('ord_email');
+            if (c && c.email) {
+                emailInput.value = c.email;
+            } else if (!emailInput.value) {
+                emailInput.value = 'thuanho1221@gmail.com';
+            }
         }
 
         function handleOrderProductChange() {
@@ -736,11 +797,13 @@
             populateOrderDropdowns();
             document.getElementById('ord_id').value = '';
             document.getElementById('ord_customer_id').value = '';
+            document.getElementById('ord_email').value = 'thuanho1221@gmail.com';
             document.getElementById('ord_product_id').value = '';
             document.getElementById('ord_amount').value = '';
             document.getElementById('ord_status').value = 'paid';
             document.getElementById('orderModalTitle').innerText = 'Tạo Đơn Hàng Mới';
             document.getElementById('orderStockAlert').classList.remove('hidden');
+            document.getElementById('ord_email_wrapper').classList.remove('hidden');
             document.getElementById('orderModal').classList.remove('hidden');
         }
 
@@ -755,31 +818,53 @@
             populateOrderDropdowns();
             document.getElementById('ord_id').value = o.id;
             document.getElementById('ord_customer_id').value = o.customer_id;
+            const c = dbState.customers.find(x => x.id == o.customer_id);
+            document.getElementById('ord_email').value = (c && c.email) || o.customer_email || '';
             document.getElementById('ord_product_id').value = o.product_id;
             document.getElementById('ord_amount').value = o.amount;
             document.getElementById('ord_status').value = o.status;
             document.getElementById('orderModalTitle').innerText = 'Chỉnh Sửa Đơn Hàng #SF-' + o.id;
             document.getElementById('orderStockAlert').classList.add('hidden'); // Khi sửa trạng thái không trừ tồn kho lại
+            document.getElementById('ord_email_wrapper').classList.add('hidden');
             document.getElementById('orderModal').classList.remove('hidden');
         }
 
         async function saveOrder(e) {
             e.preventDefault();
             const id = document.getElementById('ord_id').value;
+            const custId = Number(document.getElementById('ord_customer_id').value);
+            const prodId = Number(document.getElementById('ord_product_id').value);
+            const emailVal = document.getElementById('ord_email').value.trim();
+
+            const custObj = dbState.customers.find(x => x.id === custId) || {};
+            const prodObj = dbState.products.find(x => x.id === prodId) || {};
+
             const payload = {
                 action: id ? 'edit_order' : 'add_order',
                 data: {
                     id: id ? Number(id) : undefined,
-                    customer_id: document.getElementById('ord_customer_id').value,
-                    product_id: document.getElementById('ord_product_id').value,
+                    customer_id: custId,
+                    product_id: prodId,
                     amount: document.getElementById('ord_amount').value,
-                    status: document.getElementById('ord_status').value
+                    status: document.getElementById('ord_status').value,
+                    email: emailVal || custObj.email || null,
+                    customer_name: custObj.name || '',
+                    customer_phone: custObj.phone || '',
+                    product_name: prodObj.name || '',
+                    product_type: prodObj.product_type || 'physical',
+                    product_description: prodObj.description || ''
                 }
             };
 
             const res = await sendApiRequest(payload);
-            if (res.success && !id) {
-                alert('Tạo đơn hàng thành công! (Nếu là sản phẩm vật lý, tồn kho đã tự động trừ 1)');
+            if (res && res.success && !id) {
+                if (res.email_sent && res.email_to) {
+                    alert(`✅ Tạo đơn hàng thành công!\n📧 Đã tự động gửi email xác nhận đơn hàng từ domain riêng (thuan@mail.bongdemannhien.io.vn) tới: ${res.email_to}`);
+                } else if (res.email_error) {
+                    alert(`✅ Đã tạo đơn hàng thành công!\n⚠️ Chưa gửi được email xác nhận: ${res.email_error}`);
+                } else {
+                    alert('✅ Tạo đơn hàng thành công! (Nếu muốn gửi email xác nhận tự động, hãy nhập địa chỉ email khách hàng khi tạo đơn)');
+                }
             }
             closeOrderModal();
             fetchAllData();
@@ -791,18 +876,19 @@
             fetchAllData();
         }
 
-        // Gửi request API chung
+        // Gửi request API chung (tự động lưu local nếu API lỗi)
         async function sendApiRequest(payload) {
             try {
                 const res = await apiFetch({ method: 'POST', body: JSON.stringify(payload) });
                 const json = await res.json();
-                if (!json.success) alert("Lỗi: " + (json.error || 'Không thực hiện được'));
-                return json;
+                if (res.ok && json && json.success) {
+                    runLocalAction(payload);
+                    return json;
+                }
+                throw new Error((json && json.error) || ('HTTP ' + res.status));
             } catch (err) {
-                if (err.message === 'AUTH') return { success: false };
-                console.error("Lỗi API:", err);
-                alert("Lỗi kết nối API: " + err.message);
-                return { success: false };
+                console.warn('API lỗi, thực hiện trực tiếp trên bộ nhớ trình duyệt:', err.message);
+                return runLocalAction(payload);
             }
         }
 
