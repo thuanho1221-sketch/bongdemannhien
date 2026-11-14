@@ -1,0 +1,18 @@
+# Không đưa các file bí mật / dữ liệu khách hàng / file chạy local lên Vercel
+/resend_config.txt
+/brain.db
+/_seed.json
+/waitlist.json
+/files.zip
+/sales_script.md
+/data
+/mnt
+/*.py
+/_lib.js
+/_config.js
+/_email.js
+/_sequence.js
+/_sequence_run.js
+/admin.js
+/waitlist.js
+/bongde_store.local.json

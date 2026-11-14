@@ -1,17 +1,13 @@
-# CẤU HÌNH RESEND & EMAIL SEQUENCE - SPORTFIT.PRO
+# CẤU HÌNH RESEND - CHỈ DÙNG KHI CHẠY THỬ TRÊN MÁY
 # ========================================================
-# Hướng dẫn:
-# 1. Lấy API Key tại: https://resend.com/api-keys
-# 2. Điền API Key vào dòng RESEND_API_KEY dưới đây (bắt đầu bằng re_...)
-# 3. Domain gửi: Domain đã verify thành công trên Resend: mail.bongdemannhien.io.vn
+# KHÔNG điền API key vào file này rồi đưa lên GitHub / Vercel!
+# Trên Vercel, vào Project Settings -> Environment Variables và thêm:
+#   RESEND_API_KEY = re_...   (key mới tạo trên resend.com/api-keys)
+#   EMAIL_FROM     = Hồ Minh Thuận <thuan@mail.bongdemannhien.io.vn>
+# (File này đã bị chặn trong .vercelignore, không còn công khai trên web.)
 
-RESEND_API_KEY=re_jpRXF8jJ_2JmTi5THAi4XdqWsVHcNDJX8
+RESEND_API_KEY=
 
-# Địa chỉ người gửi từ domain riêng đã verify (mail.bongdemannhien.io.vn)
 EMAIL_FROM=Hồ Minh Thuận <thuan@mail.bongdemannhien.io.vn>
-
-# Email nhận phản hồi khi khách hàng bấm Reply (Thuận đọc trực tiếp)
 EMAIL_REPLY_TO=thuanho1221@gmail.com
-
-# Link trang thanh toán / đặt hàng cho Email 3 (mã giảm giá: SPORTFIT-THUAN2026)
-PAYMENT_URL=https://bongdemannhien.io.vn/#sale-off
+PAYMENT_URL=https://www.bongdemannhien.io.vn/#sale-off

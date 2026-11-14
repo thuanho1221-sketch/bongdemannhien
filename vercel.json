@@ -1,5 +1,16 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/resend_config.txt", "destination": "/", "permanent": false },
+    { "source": "/brain.db", "destination": "/", "permanent": false },
+    { "source": "/_seed.json", "destination": "/", "permanent": false },
+    { "source": "/waitlist.json", "destination": "/", "permanent": false },
+    { "source": "/files.zip", "destination": "/", "permanent": false },
+    { "source": "/sales_script.md", "destination": "/", "permanent": false },
+    { "source": "/data/:path*", "destination": "/", "permanent": false },
+    { "source": "/(.*)\\.py", "destination": "/", "permanent": false },
+    { "source": "/(_lib|_config|_email|_sequence|_sequence_run|admin|waitlist)\\.js", "destination": "/", "permanent": false }
+  ]
 }

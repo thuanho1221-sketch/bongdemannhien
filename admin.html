@@ -444,18 +444,26 @@
         async function fetchAllData() {
             try {
                 const res = await apiFetch();
-                if (!res.ok) throw new Error('Không thể kết nối API /api/admin');
-                const data = await res.json();
-                if (data.success) {
-                    dbState.products = data.products || [];
-                    dbState.customers = data.customers || [];
-                    dbState.orders = data.orders || [];
-                    renderAll();
+                let data = null;
+                try { data = await res.json(); } catch (_) { /* không phải JSON */ }
+                if (!res.ok || !data || !data.success) {
+                    throw new Error((data && data.error) ? data.error : ('Máy chủ trả về mã lỗi ' + res.status));
+                }
+                dbState.products = data.products || [];
+                dbState.customers = data.customers || [];
+                dbState.orders = data.orders || [];
+                renderAll();
+                if (data.storage === 'temporary') {
+                    console.warn('Đang dùng bộ nhớ tạm (chưa cấu hình Turso): dữ liệu mới có thể mất khi Vercel khởi động lại.');
                 }
             } catch (err) {
                 if (err.message === 'AUTH') return;
                 console.error("Lỗi tải dữ liệu:", err);
-                alert("Không kết nối được backend (" + API_URL + ").\nHãy chạy 'python admin_server.py' trong thư mục dự án rồi mở http://localhost:3000/admin");
+                if (location.protocol === 'file:') {
+                    alert("Không kết nối được backend (" + API_URL + ").\nHãy chạy 'python admin_server.py' trong thư mục dự án rồi mở http://localhost:3000/admin");
+                } else {
+                    alert("Không tải được dữ liệu từ /api/admin.\nChi tiết lỗi: " + err.message + "\n\nNếu vừa đăng nhập trước đó, hãy bấm OK rồi tải lại trang (Ctrl + F5).");
+                }
             }
         }
 

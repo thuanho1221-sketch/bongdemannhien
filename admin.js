@@ -1,4 +1,4 @@
-const { getDb, ensureReady, checkPassword, makeToken, verifyToken } = require('./_lib');
+const { getDb, ensureReady, getStorageInfo, checkPassword, makeToken, verifyToken } = require('./_lib');
 
 const NOW = "datetime('now','+7 hours')"; // giờ Việt Nam
 const STATUSES = ['pending', 'paid', 'completed', 'cancelled'];
@@ -37,14 +37,9 @@ module.exports = async (req, res) => {
   const send = (code, obj) => res.status(code).send(JSON.stringify(obj));
 
   try {
-    // Chỉ yêu cầu login nếu máy chủ có thiết lập ADMIN_PASSWORD
-    if (process.env.ADMIN_PASSWORD) {
-      if (req.method === 'POST' && req.body && req.body.action === 'login') {
-        if (checkPassword(req.body.password)) return send(200, { success: true, token: makeToken() });
-        await new Promise((r) => setTimeout(r, 800)); // làm chậm dò mật khẩu
-        return send(401, { success: false, error: 'Sai mật khẩu' });
-      }
-      if (!verifyToken(req)) return send(401, { success: false, error: 'Cần đăng nhập' });
+    // Hỗ trợ login nếu giao diện cũ gửi action=login, nhưng không chặn truy cập (theo yêu cầu "Không cần đăng nhập")
+    if (req.method === 'POST' && req.body && req.body.action === 'login') {
+      return send(200, { success: true, token: makeToken() });
     }
 
     await ensureReady();
@@ -61,7 +56,7 @@ module.exports = async (req, res) => {
                     ORDER BY o.id DESC`),
       ]);
       const rows = (r) => (r && r.rows ? r.rows.map((x) => ({ ...x })) : []);
-      return send(200, { success: true, products: rows(p), customers: rows(c), orders: rows(o) });
+      return send(200, { success: true, ...getStorageInfo(), products: rows(p), customers: rows(c), orders: rows(o) });
     }
 
     if (req.method !== 'POST') return send(405, { success: false, error: 'Method not allowed' });
