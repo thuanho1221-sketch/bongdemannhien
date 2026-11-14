@@ -232,4 +232,138 @@ ${FOOTER_TEXT}`;
   return { subject, preview, text, html };
 }
 
-module.exports = { email1, email2, email3, callName };
+// ==========================================
+// EMAIL 4 — XÁC NHẬN ĐƠN HÀNG (Gửi tự động khi Admin thêm đơn mới vào bảng orders)
+// ==========================================
+function orderConfirmationEmail({
+  orderId,
+  customerName,
+  customerPhone,
+  productName,
+  productType,
+  productDescription,
+  amount,
+  status,
+}) {
+  const ten = callName(customerName);
+  const xưng = ten === 'bạn' ? 'bạn' : ten;
+  const code = orderId ? `#SF-${orderId}` : '#SF-NEW';
+  const prodName = productName || 'Sản phẩm Sportfit.pro';
+  const prodDesc = productDescription || '';
+  const type = productType || 'physical';
+  const phoneStr = customerPhone || 'số điện thoại bạn đã đăng ký';
+  const amountFormatted = `${Number(amount || 0).toLocaleString('vi-VN')}đ`;
+
+  const statusMap = {
+    paid: 'Đã thanh toán',
+    pending: 'Chờ thanh toán / Thanh toán khi nhận hàng (COD)',
+    completed: 'Đã hoàn thành',
+    cancelled: 'Đã hủy',
+  };
+  const statusLabel = statusMap[status] || 'Đã xác nhận';
+
+  const subject = `Mình đã nhận đơn ${code} của ${xưng} — ${prodName}`;
+  const preview = `Xác nhận đơn hàng ${prodName} (${amountFormatted}) và hướng dẫn nhận hàng từ Thuận.`;
+
+  let receivingText = '';
+  let receivingHtml = '';
+
+  if (type === 'digital') {
+    receivingText = `Hướng dẫn nhận học liệu / sản phẩm số:
+- Thứ nhất là, vì "${prodName}" là sản phẩm kỹ thuật số (Digital), bạn không phải chờ shipper giao hàng. Mình sẽ gửi trực tiếp đường link truy cập trọn bộ học liệu qua Email này và Zalo (${phoneStr}) của bạn trong vòng 15 – 30 phút tới.
+- Thứ hai là, kiểu như là khi mở tài liệu ra, bạn đừng cố xem lướt hết một lượt rồi để đó. Hãy xem kỹ phần khởi động và nguyên lý giữ form trước, rồi áp dụng từng bài vào ngay buổi tập gần nhất.
+- Thứ ba là, nếu bạn không tìm thấy tin nhắn Zalo hoặc cần cấp lại quyền truy cập trên thiết bị khác, cứ trả lời email này để mình hỗ trợ ngay.`;
+
+    receivingHtml = `
+      <p style="margin:0 0 8px 0;font-weight:700;color:#166534;">Hướng dẫn nhận học liệu / sản phẩm số:</p>
+      <ul style="margin:0;padding-left:20px;color:#1f2937;">
+        <li style="margin-bottom:8px;"><strong>Thứ nhất là</strong>, vì <strong>${esc(prodName)}</strong> là sản phẩm số (Digital), bạn không phải chờ shipper giao hàng. Mình sẽ gửi trực tiếp đường link truy cập trọn bộ học liệu qua Email này và Zalo (<strong>${esc(phoneStr)}</strong>) trong vòng <strong>15 – 30 phút</strong> tới.</li>
+        <li style="margin-bottom:8px;"><strong>Thứ hai là</strong>, kiểu như là khi mở giáo án ra, bạn đừng cố xem lướt hết một lượt rồi để đó. Hãy xem kỹ phần khởi động và nguyên lý giữ form trước, rồi áp dụng từng bài vào ngay buổi tập gần nhất.</li>
+        <li style="margin-bottom:0;"><strong>Thứ ba là</strong>, nếu cần hỗ trợ mở file trên điện thoại hay máy tính, cứ trả lời email này để mình xử lý ngay cho bạn.</li>
+      </ul>`;
+  } else if (type === 'service') {
+    receivingText = `Hướng dẫn kích hoạt gói tư vấn & đồng hành 1-1:
+- Thứ nhất là, với "${prodName}", mình sẽ chủ động nhắn tin qua Zalo (${phoneStr}) của bạn trong hôm nay để gửi bảng câu hỏi ngắn về thể trạng, lịch tập hiện tại và tiền sử đau mỏi khớp (nếu có).
+- Thứ hai là, kiểu như là để buổi tư vấn đi thẳng vào thực chất, bạn chuẩn bị giúp mình 1 đoạn video ngắn (khoảng 30 giây) quay góc ngang hoặc góc chéo lúc bạn đang thực hiện động tác thường tập nhé. Máy quay không nể ai cả, nhìn vào đó mình sẽ chỉ ra ngay điểm cần chỉnh.
+- Thứ ba là, trong suốt 30 ngày đồng hành, bất cứ lúc nào bạn thấy cấn khớp hay phân vân về mức tạ/dụng cụ, cứ nhắn thẳng cho mình.`;
+
+    receivingHtml = `
+      <p style="margin:0 0 8px 0;font-weight:700;color:#166534;">Hướng dẫn kích hoạt gói tư vấn & đồng hành 1-1:</p>
+      <ul style="margin:0;padding-left:20px;color:#1f2937;">
+        <li style="margin-bottom:8px;"><strong>Thứ nhất là</strong>, với <strong>${esc(prodName)}</strong>, mình sẽ chủ động nhắn tin qua Zalo (<strong>${esc(phoneStr)}</strong>) của bạn trong hôm nay để gửi bảng câu hỏi ngắn về thể trạng, lịch tập hiện tại và tiền sử đau mỏi khớp (nếu có).</li>
+        <li style="margin-bottom:8px;"><strong>Thứ hai là</strong>, kiểu như là để buổi tư vấn đi thẳng vào thực chất, bạn chuẩn bị giúp mình 1 đoạn video ngắn (khoảng 30 giây) quay góc ngang lúc bạn đang thực hiện động tác thường tập nhé.</li>
+        <li style="margin-bottom:0;"><strong>Thứ ba là</strong>, trong suốt 30 ngày đồng hành, bất cứ lúc nào bạn phân vân về form tập hay dụng cụ, cứ nhắn thẳng cho mình.</li>
+      </ul>`;
+  } else {
+    receivingText = `Hướng dẫn nhận hàng và kiểm tra dụng cụ:
+- Thứ nhất là, đơn hàng của bạn đang được mình kiểm tra kỹ ngoại quan và đóng gói, dự kiến giao đến tay bạn trong 2 – 4 ngày làm việc. Shipper sẽ gọi trước vào số ${phoneStr} của bạn trước khi giao.
+- Thứ hai là, kiểu như là khi nhận hàng, bạn cứ mở hộp kiểm tra trực tiếp cùng shipper — cầm thử tay nắm, khung hay bề mặt dụng cụ xem có chắc chắn, đúng mô tả không rồi mới nhận. Nếu có bất kỳ lỗi vận chuyển nào, cứ báo mình đổi mới ngay lập tức, bạn không phải chịu rủi ro gì cả.
+- Thứ ba là, ngay trong buổi tập đầu tiên với "${prodName}", bạn đừng vội đẩy cường độ cao ngay. Hãy dành 5 phút đầu làm quen góc đặt tay, tư thế khớp và nhịp thở để cơ thể vào đúng form chuẩn.`;
+
+    receivingHtml = `
+      <p style="margin:0 0 8px 0;font-weight:700;color:#166534;">Hướng dẫn nhận hàng và kiểm tra dụng cụ:</p>
+      <ul style="margin:0;padding-left:20px;color:#1f2937;">
+        <li style="margin-bottom:8px;"><strong>Thứ nhất là</strong>, đơn hàng của bạn đang được mình kiểm tra kỹ ngoại quan và đóng gói, dự kiến giao đến tay bạn trong <strong>2 – 4 ngày làm việc</strong>. Shipper sẽ gọi trước vào số <strong>${esc(phoneStr)}</strong> của bạn trước khi giao.</li>
+        <li style="margin-bottom:8px;"><strong>Thứ hai là</strong>, kiểu như là khi nhận hàng, bạn cứ mở hộp kiểm tra trực tiếp cùng shipper — cầm thử tay nắm, khung hay bề mặt dụng cụ xem có chắc chắn, đúng mô tả không rồi mới nhận. Nếu có bất kỳ lỗi vận chuyển nào, cứ báo mình đổi mới ngay lập tức, bạn không phải chịu rủi ro gì cả.</li>
+        <li style="margin-bottom:0;"><strong>Thứ ba là</strong>, ngay trong buổi tập đầu tiên với <strong>${esc(prodName)}</strong>, bạn đừng vội đẩy cường độ cao ngay. Hãy dành 5 phút đầu làm quen góc đặt tay, tư thế khớp và nhịp thở để cơ thể vào đúng form chuẩn.</li>
+      </ul>`;
+  }
+
+  const text = `Chào ${xưng},
+
+Mình là Hồ Minh Thuận từ Sportfit.pro. Mình viết thư này để báo là đơn hàng ${code} của bạn đã được mình ghi nhận vào hệ thống.
+
+Thật lòng cảm ơn bạn đã tin tưởng chọn đồng hành cùng mình. Như mình hay nói, khi bạn đặt một món đồ ở Sportfit, bạn không chỉ mua một dụng cụ thể thao — bạn đang đầu tư nghiêm túc cho việc tập đúng cơ chế vận động và bảo vệ cơ thể lâu dài.
+
+THÔNG TIN ĐƠN HÀNG CỦA BẠN:
+- Mã đơn hàng: ${code}
+- Sản phẩm: ${prodName}${prodDesc ? `\n- Đặc điểm kỹ thuật: ${prodDesc}` : ''}
+- Số tiền: ${amountFormatted}
+- Trạng thái: ${statusLabel}
+
+${receivingText}
+
+Nhìn chung, dụng cụ tốt đã sẵn sàng, phần quan trọng nhất bây giờ là cách chúng ta đưa nó vào thói quen tập luyện đều đặn mỗi tuần của bạn.
+
+Câu hỏi nhỏ cho bạn trong lúc chờ nhận hàng: với ${prodName}, mục tiêu số 1 bạn muốn cải thiện trong 30 ngày tới là gì?
+
+Cứ trả lời thẳng email này, mình đọc từng thư và sẽ gợi ý thêm mẹo tập đúng cho mục tiêu đó của bạn.
+
+Thuận
+Sportfit.pro
+
+---
+${FOOTER_TEXT}`;
+
+  const html = wrap(
+    `<p style="font-size:16px;">Chào ${esc(xưng)},</p>
+<p>Mình là <strong>Hồ Minh Thuận</strong> từ <strong>Sportfit.pro</strong>. Mình viết thư này để báo là đơn hàng <strong>${esc(code)}</strong> của bạn đã được mình ghi nhận vào hệ thống.</p>
+<p>Thật lòng cảm ơn bạn đã tin tưởng chọn đồng hành cùng mình. Như mình hay nói, khi bạn đặt một món đồ ở Sportfit, bạn không chỉ mua một dụng cụ thể thao — <em>bạn đang đầu tư nghiêm túc cho việc tập đúng cơ chế vận động và bảo vệ cơ thể lâu dài.</em></p>
+
+<div style="background:#f9fafb;border:2px solid #e5e7eb;border-radius:10px;padding:18px 20px;margin:22px 0;">
+  <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#ea580c;margin-bottom:8px;">Chi tiết đơn hàng ${esc(code)}</div>
+  <h3 style="margin:0 0 8px 0;color:#111827;font-size:18px;">${esc(prodName)}</h3>
+  ${prodDesc ? `<p style="margin:0 0 12px 0;color:#4b5563;font-size:14px;">${esc(prodDesc)}</p>` : ''}
+  <div style="border-top:1px dashed #d1d5db;padding-top:12px;margin-top:8px;font-size:15px;">
+    <div style="margin-bottom:6px;"><strong>Số tiền:</strong> <span style="color:#ea580c;font-weight:800;font-size:18px;">${esc(amountFormatted)}</span></div>
+    <div><strong>Trạng thái:</strong> <span style="color:#111827;font-weight:600;">${esc(statusLabel)}</span></div>
+  </div>
+</div>
+
+<div style="background:#f0fdf4;border-left:4px solid #16a34a;padding:14px 16px;margin:20px 0;border-radius:4px;">
+  ${receivingHtml}
+</div>
+
+<p>Nhìn chung, dụng cụ tốt đã sẵn sàng, phần quan trọng nhất bây giờ là cách chúng ta đưa nó vào thói quen tập luyện đều đặn mỗi tuần của bạn.</p>
+
+<p style="background:#fff7ed;border-left:4px solid #ea580c;padding:12px 16px;margin:20px 0;border-radius:4px;">
+  <strong>Câu hỏi nhỏ cho bạn trong lúc chờ nhận hàng:</strong> với <strong>${esc(prodName)}</strong>, mục tiêu số 1 bạn muốn cải thiện trong 30 ngày tới là gì?<br>
+  Cứ bấm <em>Trả lời (Reply)</em> thẳng email này, mình đọc từng thư và sẽ gợi ý thêm mẹo tập đúng cho mục tiêu đó của bạn.
+</p>`,
+    preview
+  );
+
+  return { subject, preview, text, html };
+}
+
+module.exports = { email1, email2, email3, orderConfirmationEmail, callName };

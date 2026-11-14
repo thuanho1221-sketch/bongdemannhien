@@ -56,17 +56,32 @@ function createLocalClient() {
 
     // ---------- SELECT ----------
     if (T(/^SELECT .* FROM orders/i)) {
-      const rows = s.orders.map((o) => {
+      let rows = s.orders.map((o) => {
         const c = s.customers.find((x) => x.id === o.customer_id) || {};
         const p = s.products.find((x) => x.id === o.product_id) || {};
-        return { ...o, customer_name: c.name || null, customer_phone: c.phone || null, product_name: p.name || null, product_type: p.product_type || null };
+        return {
+          ...o,
+          customer_name: c.name || null,
+          customer_phone: c.phone || null,
+          customer_email: c.email || null,
+          product_name: p.name || null,
+          product_type: p.product_type || null,
+        };
       });
+      if (T(/WHERE customer_id ?= ?\? AND product_id ?= ?\?/i)) {
+        rows = rows.filter((o) => o.customer_id === Number(args[0]) && o.product_id === Number(args[1]));
+      }
       return { rows: rows.sort((a, b) => b.id - a.id) };
     }
-    if (T(/^SELECT .* FROM products/i)) return { rows: [...s.products].sort((a, b) => b.id - a.id) };
+    if (T(/^SELECT .* FROM products/i)) {
+      let rows = [...s.products];
+      if (T(/WHERE id ?= ?\?/i)) rows = rows.filter((p) => p.id === Number(args[0]));
+      return { rows: rows.sort((a, b) => b.id - a.id) };
+    }
     if (T(/^SELECT .* FROM customers/i)) {
       let rows = [...s.customers];
       if (T(/WHERE phone ?= ?\?/i)) rows = rows.filter((c) => String(c.phone) === String(args[0]));
+      if (T(/WHERE id ?= ?\?/i)) rows = rows.filter((c) => c.id === Number(args[0]));
       return { rows: rows.sort((a, b) => b.id - a.id) };
     }
 
@@ -89,6 +104,12 @@ function createLocalClient() {
       const col = sql.match(/SET (\w+)/i)[1];
       const c = s.customers.find((x) => x.id === Number(args[0]));
       if (c) { c[col] = nowStr(); saveStore(); }
+      return { rows: [] };
+    }
+    if (T(/^UPDATE customers SET email ?= ?\? WHERE id ?= ?\?/i)) {
+      const [emailVal, idVal] = args;
+      const c = s.customers.find((x) => x.id === Number(idVal));
+      if (c) { c.email = emailVal; saveStore(); }
       return { rows: [] };
     }
     if (T(/^UPDATE customers SET name/i)) {

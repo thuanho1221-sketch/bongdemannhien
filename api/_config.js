@@ -41,9 +41,14 @@ function loadConfig() {
     } catch (_) {}
   }
 
-  // Fallback defaults khớp với domain đã verify trên Resend
-  if (!config.EMAIL_FROM) {
-    config.EMAIL_FROM = 'Hồ Minh Thuận <thuan@mail.bongdemannhien.io.vn>';
+  // Đảm bảo địa chỉ người gửi luôn sử dụng domain riêng đã verify trên Resend (mail.bongdemannhien.io.vn)
+  // và hiển thị đúng tên người gửi Hồ Minh Thuận theo brand voice trong email_sequence.md
+  if (!config.EMAIL_FROM || !/bongdemannhien\.io\.vn/i.test(config.EMAIL_FROM)) {
+    config.EMAIL_FROM = 'Hồ Minh Thuận — Sportfit.pro <thuan@mail.bongdemannhien.io.vn>';
+  } else if (!/Thuận/i.test(config.EMAIL_FROM)) {
+    const addrMatch = config.EMAIL_FROM.match(/<([^>]+)>/);
+    const addr = addrMatch ? addrMatch[1] : config.EMAIL_FROM.trim();
+    config.EMAIL_FROM = `Hồ Minh Thuận — Sportfit.pro <${addr}>`;
   }
 
   return config;
