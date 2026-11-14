@@ -1,7 +1,6 @@
 const { getDb, ensureReady } = require('./_lib');
 const { runSequence, isTestAddress } = require('./_sequence_run');
 
-// Endpoint công khai cho form Waitlist trên landing page
 module.exports = async (req, res) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
@@ -25,45 +24,39 @@ module.exports = async (req, res) => {
       return send(400, { success: false, error: 'Email không hợp lệ' });
     }
 
-    await ensureReady();
-    const db = getDb();
-    const note = product ? 'Quan tâm: ' + product : null;
+    let db = null;
+    let cust = { name, phone, email, zalo: phone, notes: product ? 'Quan tâm: ' + product : null };
 
-    // Lưu khách hàng vào database
-    await db.execute({
-      sql: `INSERT INTO customers (name, phone, zalo, email, notes, registered_at)
-            VALUES (?, ?, ?, ?, ?, datetime('now', '+7 hours'))
-            ON CONFLICT(phone) DO UPDATE SET
-              name = excluded.name,
-              notes = COALESCE(excluded.notes, customers.notes),
-              email = COALESCE(excluded.email, customers.email)`,
-      args: [name, phone, phone, email || null, note],
-    });
+    // 1. Lưu vào cơ sở dữ liệu
+    try {
+      await ensureReady();
+      db = getDb();
+      const note = product ? 'Quan tâm: ' + product : null;
+      await db.execute({
+        sql: `INSERT INTO customers (name, phone, zalo, email, notes, registered_at)
+              VALUES (?, ?, ?, ?, ?, datetime('now', '+7 hours'))
+              ON CONFLICT(phone) DO UPDATE SET
+                name = excluded.name,
+                notes = COALESCE(excluded.notes, customers.notes),
+                email = COALESCE(excluded.email, customers.email)`,
+        args: [name, phone, phone, email || null, note],
+      });
+      const r = await db.execute({ sql: 'SELECT * FROM customers WHERE phone=?', args: [phone] });
+      if (r && r.rows && r.rows[0]) {
+        cust = { ...r.rows[0] };
+      }
+    } catch (dbErr) {
+      console.warn('Lưu DB không thành công (tiếp tục gửi email):', dbErr.message);
+    }
 
-    // Kích hoạt chuỗi 3 email nếu khách có để lại email
+    // 2. Kích hoạt chuỗi email qua Resend (độc lập, không bị nghẽn bởi DB)
     let sequenceResult = null;
     if (email) {
       try {
-        const r = await db.execute({ sql: 'SELECT * FROM customers WHERE phone=?', args: [phone] });
-        const cust = r.rows[0] ? { ...r.rows[0] } : { name, email, phone };
-
-        // Kiểm tra tránh gửi trùng lặp (trừ khi là email test có đuôi +test)
-        const isTest = isTestAddress(email);
-        const dup = isTest
-          ? { rows: [] }
-          : await db.execute({
-              sql: 'SELECT 1 FROM customers WHERE email=? AND welcome_sent_at IS NOT NULL AND id<>? LIMIT 1',
-              args: [email, cust.id || 0],
-            });
-
-        if (!dup.rows.length) {
-          sequenceResult = await runSequence(db, cust, { name, product, email });
-        } else {
-          sequenceResult = { skipped: true, reason: 'Email này đã nhận chuỗi email trước đó' };
-        }
-      } catch (err) {
-        console.error('Lỗi khi gửi email sequence qua Resend:', err.message);
-        sequenceResult = { error: err.message };
+        sequenceResult = await runSequence(db, cust, { name, product, email });
+      } catch (emailErr) {
+        console.error('Lỗi khi gửi email qua Resend:', emailErr.message);
+        sequenceResult = { error: emailErr.message };
       }
     }
 
@@ -74,6 +67,6 @@ module.exports = async (req, res) => {
     });
   } catch (e) {
     console.error('Lỗi xử lý waitlist:', e.message);
-    return send(500, { success: false, error: 'Lỗi máy chủ' });
+    return send(500, { success: false, error: e.message || 'Lỗi máy chủ' });
   }
 };

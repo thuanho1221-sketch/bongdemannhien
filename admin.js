@@ -37,15 +37,15 @@ module.exports = async (req, res) => {
   const send = (code, obj) => res.status(code).send(JSON.stringify(obj));
 
   try {
-    if (!process.env.ADMIN_PASSWORD) return send(500, { success: false, error: 'Chưa cấu hình ADMIN_PASSWORD trên Vercel' });
-
-    if (req.method === 'POST' && req.body && req.body.action === 'login') {
-      if (checkPassword(req.body.password)) return send(200, { success: true, token: makeToken() });
-      await new Promise((r) => setTimeout(r, 800)); // làm chậm dò mật khẩu
-      return send(401, { success: false, error: 'Sai mật khẩu' });
+    // Chỉ yêu cầu login nếu máy chủ có thiết lập ADMIN_PASSWORD
+    if (process.env.ADMIN_PASSWORD) {
+      if (req.method === 'POST' && req.body && req.body.action === 'login') {
+        if (checkPassword(req.body.password)) return send(200, { success: true, token: makeToken() });
+        await new Promise((r) => setTimeout(r, 800)); // làm chậm dò mật khẩu
+        return send(401, { success: false, error: 'Sai mật khẩu' });
+      }
+      if (!verifyToken(req)) return send(401, { success: false, error: 'Cần đăng nhập' });
     }
-
-    if (!verifyToken(req)) return send(401, { success: false, error: 'Cần đăng nhập' });
 
     await ensureReady();
     const db = getDb();
@@ -60,7 +60,7 @@ module.exports = async (req, res) => {
                     FROM orders o LEFT JOIN customers c ON o.customer_id=c.id LEFT JOIN products p ON o.product_id=p.id
                     ORDER BY o.id DESC`),
       ]);
-      const rows = (r) => r.rows.map((x) => ({ ...x }));
+      const rows = (r) => (r && r.rows ? r.rows.map((x) => ({ ...x })) : []);
       return send(200, { success: true, products: rows(p), customers: rows(c), orders: rows(o) });
     }
 
