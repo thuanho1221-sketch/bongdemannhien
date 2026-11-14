@@ -4,6 +4,13 @@ const NOW = "datetime('now','+7 hours')"; // giờ Việt Nam
 const STATUSES = ['pending', 'paid', 'completed', 'cancelled'];
 const TYPES = ['physical', 'digital', 'service'];
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const email = (v) => {
+  const e = String(v ?? '').trim().toLowerCase();
+  if (!e) return null;
+  if (e.length > 254 || !EMAIL_RE.test(e)) throw new Error('Email không hợp lệ');
+  return e;
+};
 const str = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const num = (v, label) => {
   const n = Number(v);
@@ -30,15 +37,15 @@ module.exports = async (req, res) => {
   const send = (code, obj) => res.status(code).send(JSON.stringify(obj));
 
   try {
-    if (!process.env.ADMIN_PASSWORD) return send(500, { success: false, error: 'Chưa cấu hình ADMIN_PASSWORD trên Vercel' });
-
-    if (req.method === 'POST' && req.body && req.body.action === 'login') {
-      if (checkPassword(req.body.password)) return send(200, { success: true, token: makeToken() });
-      await new Promise((r) => setTimeout(r, 800)); // làm chậm dò mật khẩu
-      return send(401, { success: false, error: 'Sai mật khẩu' });
+    // Chỉ yêu cầu login nếu máy chủ có thiết lập ADMIN_PASSWORD
+    if (process.env.ADMIN_PASSWORD) {
+      if (req.method === 'POST' && req.body && req.body.action === 'login') {
+        if (checkPassword(req.body.password)) return send(200, { success: true, token: makeToken() });
+        await new Promise((r) => setTimeout(r, 800)); // làm chậm dò mật khẩu
+        return send(401, { success: false, error: 'Sai mật khẩu' });
+      }
+      if (!verifyToken(req)) return send(401, { success: false, error: 'Cần đăng nhập' });
     }
-
-    if (!verifyToken(req)) return send(401, { success: false, error: 'Cần đăng nhập' });
 
     await ensureReady();
     const db = getDb();
@@ -46,14 +53,14 @@ module.exports = async (req, res) => {
     if (req.method === 'GET') {
       const [p, c, o] = await Promise.all([
         db.execute('SELECT id,name,product_type,price,description,stock_quantity,created_at FROM products ORDER BY id DESC'),
-        db.execute('SELECT id,name,phone,zalo,notes,registered_at,created_at FROM customers ORDER BY id DESC'),
+        db.execute('SELECT id,name,phone,zalo,email,notes,registered_at,created_at FROM customers ORDER BY id DESC'),
         db.execute(`SELECT o.id,o.customer_id,o.product_id,o.amount,o.status,o.order_date,o.created_at,
                            c.name AS customer_name,c.phone AS customer_phone,
                            p.name AS product_name,p.product_type
                     FROM orders o LEFT JOIN customers c ON o.customer_id=c.id LEFT JOIN products p ON o.product_id=p.id
                     ORDER BY o.id DESC`),
       ]);
-      const rows = (r) => r.rows.map((x) => ({ ...x }));
+      const rows = (r) => (r && r.rows ? r.rows.map((x) => ({ ...x })) : []);
       return send(200, { success: true, products: rows(p), customers: rows(c), orders: rows(o) });
     }
 
@@ -74,13 +81,13 @@ module.exports = async (req, res) => {
       case 'add_customer': {
         const name = str(data.name, 100);
         if (!name) throw new Error('Thiếu tên khách hàng');
-        await db.execute({ sql: 'INSERT INTO customers (name,phone,zalo,registered_at) VALUES (?,?,?,' + NOW + ')', args: [name, str(data.phone, 20), str(data.zalo, 20)] });
+        await db.execute({ sql: 'INSERT INTO customers (name,phone,zalo,email,registered_at) VALUES (?,?,?,?,' + NOW + ')', args: [name, str(data.phone, 20), str(data.zalo, 20), email(data.email)] });
         break;
       }
       case 'edit_customer': {
         const name = str(data.name, 100);
         if (!name) throw new Error('Thiếu tên khách hàng');
-        await db.execute({ sql: 'UPDATE customers SET name=?,phone=?,zalo=? WHERE id=?', args: [name, str(data.phone, 20), str(data.zalo, 20), id(data.id)] });
+        await db.execute({ sql: 'UPDATE customers SET name=?,phone=?,zalo=?,email=? WHERE id=?', args: [name, str(data.phone, 20), str(data.zalo, 20), email(data.email), id(data.id)] });
         break;
       }
       case 'delete_customer':
