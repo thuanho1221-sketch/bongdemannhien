@@ -33,6 +33,8 @@ const SCHEMA = [
      notes TEXT,
      email TEXT,
      welcome_sent_at TIMESTAMP,
+     email2_scheduled_at TIMESTAMP,
+     email3_scheduled_at TIMESTAMP,
      registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    )`,
@@ -59,7 +61,7 @@ function ensureReady() {
     // Nâng cấp DB cũ: thêm cột còn thiếu
     const cols = await db.execute('PRAGMA table_info(customers)');
     const have = new Set(cols.rows.map((r) => r.name));
-    for (const col of ['email', 'welcome_sent_at']) {
+    for (const col of ['email', 'welcome_sent_at', 'email2_scheduled_at', 'email3_scheduled_at']) {
       if (!have.has(col)) await db.execute('ALTER TABLE customers ADD COLUMN ' + col + (col === 'email' ? ' TEXT' : ' TIMESTAMP'));
     }
     const flag = await db.execute("SELECT value FROM meta WHERE key='seeded'");

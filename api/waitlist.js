@@ -1,5 +1,5 @@
 const { getDb, ensureReady } = require('./_lib');
-const { sendEmail, welcomeEmail } = require('./_email');
+const { runSequence, isTestAddress } = require('./_sequence_run');
 
 // Endpoint công khai cho form Waitlist trên landing page
 module.exports = async (req, res) => {
@@ -27,25 +27,21 @@ module.exports = async (req, res) => {
       args: [name, phone, phone, email || null, note],
     });
 
-    // Email chào mừng: chỉ gửi 1 lần cho mỗi số điện thoại và mỗi email. Gửi lỗi không làm hỏng việc đăng ký.
-    let emailed = false;
+    // Chuỗi 3 email. Lỗi gửi email không làm hỏng việc đăng ký.
+    let sequence = null;
     if (email) {
       try {
-        const r = await db.execute({
-          sql: `SELECT id, welcome_sent_at FROM customers WHERE phone=?`, args: [phone] });
-        const cust = r.rows[0];
-        const dup = await db.execute({
-          sql: `SELECT 1 FROM customers WHERE email=? AND welcome_sent_at IS NOT NULL LIMIT 1`, args: [email] });
-        if (cust && !cust.welcome_sent_at && !dup.rows.length) {
-          await sendEmail({ to: email, ...welcomeEmail({ name, product }) });
-          await db.execute({ sql: `UPDATE customers SET welcome_sent_at=datetime('now','+7 hours') WHERE id=?`, args: [cust.id] });
-          emailed = true;
-        }
+        const r = await db.execute({ sql: 'SELECT * FROM customers WHERE phone=?', args: [phone] });
+        const cust = r.rows[0] && { ...r.rows[0] };
+        // Một email chỉ nhận chuỗi một lần (trừ chế độ test của chủ shop)
+        const dup = isTestAddress(email) ? { rows: [] } : await db.execute({
+          sql: 'SELECT 1 FROM customers WHERE email=? AND welcome_sent_at IS NOT NULL AND id<>? LIMIT 1', args: [email, cust.id] });
+        if (cust && !dup.rows.length) sequence = await runSequence(db, cust, { name, product, email });
       } catch (e) {
-        console.error('Welcome email failed:', e.message);
+        console.error('Email sequence failed:', e.message);
       }
     }
-    return send(200, { success: true, emailed });
+    return send(200, { success: true, sequence });
   } catch (e) {
     return send(500, { success: false });
   }
