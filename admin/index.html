@@ -444,8 +444,8 @@
         async function fetchAllData() {
             try {
                 const res = await apiFetch();
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok || !data.success) throw new Error(data.error || ('Lỗi máy chủ (HTTP ' + res.status + ')'));
+                if (!res.ok) throw new Error('Không thể kết nối API /api/admin');
+                const data = await res.json();
                 if (data.success) {
                     dbState.products = data.products || [];
                     dbState.customers = data.customers || [];
@@ -455,7 +455,7 @@
             } catch (err) {
                 if (err.message === 'AUTH') return;
                 console.error("Lỗi tải dữ liệu:", err);
-                alert("Không tải được dữ liệu: " + err.message);
+                alert("Không kết nối được backend (" + API_URL + ").\nHãy chạy 'python admin_server.py' trong thư mục dự án rồi mở http://localhost:3000/admin");
             }
         }
 
