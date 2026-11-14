@@ -96,7 +96,10 @@
 
             <!-- Hotline & CTA Nhanh -->
             <div class="flex items-center gap-4">
-                <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-800 hover:text-blue-600">
+                <a href="#danh-sach-cho" class="py-3 px-3.5 bg-yellow-400 text-brand-dark hover:bg-yellow-300 transition font-black flex items-center gap-1.5 shadow rounded">
+                        <i class="fa-solid fa-envelope-open-text"></i> Danh Sách Chờ (Waitlist)
+                    </a>
+                    <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-800 hover:text-blue-600">
                     <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-[#0068FF]">
                         <i class="fa-solid fa-phone-volume animate-pulse"></i>
                     </div>
@@ -158,6 +161,10 @@
 
         <!-- Menu Mobile mở ra khi bấm hamburger -->
         <div id="mobileMenu" class="hidden lg:hidden bg-brand-orange text-white px-4 py-3 space-y-2 border-t border-orange-400 font-sport font-bold text-sm">
+            <a href="#danh-sach-cho" onclick="toggleMobileMenu()" class="block py-2.5 px-3 bg-yellow-400 text-brand-dark font-black rounded flex justify-between items-center shadow">
+                <span>📝 Đăng ký Danh Sách Chờ (Waitlist)</span>
+                <span class="bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded uppercase font-bold">GIẢM 10%</span>
+            </a>
             <a href="#" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded">Trang chủ</a>
             <a href="#san-pham" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded">Sản phẩm</a>
             <a href="#sale-off" onclick="toggleMobileMenu()" class="block py-2 px-3 hover:bg-black/15 rounded flex justify-between items-center">
@@ -226,8 +233,13 @@
 
                     <!-- Nút Kêu gọi hành động to -->
                     <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                        <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="pulse-btn w-full sm:w-auto bg-gradient-to-r from-blue-600 via-blue-500 to-brand-orange hover:from-blue-700 hover:to-orange-600 text-white px-8 py-4 rounded-lg font-sport font-black text-xl tracking-wider text-center shadow-2xl transition duration-300 cursor-pointer flex items-center justify-center gap-2">
-                            <span>👉 CHAT ZALO NHẬN TƯ VẤN &amp; CHỌN DỤNG CỤ CHUẨN</span>
+                        <a href="#danh-sach-cho" class="pulse-btn w-full sm:w-auto bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-orange-600 hover:to-brand-orange text-white px-7 py-4 rounded-xl font-sport font-black text-base sm:text-lg tracking-wider text-center shadow-2xl transition duration-300 cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>📝 ĐĂNG KÝ DANH SÁCH CHỜ (3 EMAIL BÀI HỌC + GIẢM 10%)</span>
+                        </a>
+                        <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-xl font-sport font-black text-base text-center transition flex items-center justify-center gap-2 shadow">
+                            <i class="fa-solid fa-comment-dots"></i>
+                            <span>CHAT ZALO 1-1</span>
                         </a>
                         <span class="text-xs text-gray-400 font-medium">Zalo: 0359.181.278 • Tư vấn kỹ thuật 1-1 miễn phí</span>
                     </div>
@@ -297,6 +309,105 @@
             </div>
         </div>
     </section>
+
+    
+    <!-- ============================================================== -->
+    <!-- PHẦN ĐĂNG KÝ DANH SÁCH CHỜ (WAITLIST INLINE FORM) -->
+    <!-- ============================================================== -->
+    <section id="danh-sach-cho" class="py-16 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white relative overflow-hidden border-y-4 border-brand-orange">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="inline-block bg-brand-orange/20 text-orange-400 border border-brand-orange/40 text-xs uppercase font-extrabold px-3 py-1 rounded-full tracking-widest mb-3">
+                    CỔNG DANH SÁCH CHỜ (WAITLIST) ƯU TIÊN
+                </span>
+                <h2 class="font-sport font-black text-2xl sm:text-3xl lg:text-4xl text-white uppercase tracking-tight">
+                    ĐĂNG KÝ DANH SÁCH CHỜ — NHẬN BÀI HỌC &amp; ƯU ĐÃI 10%
+                </h2>
+                <p class="text-sm sm:text-base text-gray-300 mt-2 leading-relaxed">
+                    Dành cho người tập nghiêm túc. Điền email để nhận ngay chuỗi 3 bài học thực chiến từ Founder Hồ Minh Thuận + Mã ưu đãi độc quyền <strong class="text-brand-orange font-bold">SPORTFIT-THUAN2026</strong>.
+                </p>
+            </div>
+
+            <div class="bg-white text-gray-800 rounded-3xl p-6 sm:p-10 shadow-2xl border border-gray-200">
+                <form id="inlineWaitlistForm" onsubmit="handleInlineWaitlistSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                                Họ và tên của bạn <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="inline_wl_fullname" name="fullname" required placeholder="Ví dụ: Hồ Minh Thuận"
+                                   class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                                Số điện thoại / Zalo <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" id="inline_wl_phone" name="phone" required placeholder="Ví dụ: 0359181278"
+                                   class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                            Địa chỉ Email nhận 3 bài học &amp; Ưu đãi <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" id="inline_wl_email" name="email" required placeholder="Ví dụ: thuanho1221@gmail.com (hoặc thuanho1221+test@gmail.com để test)"
+                               class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
+                        <p class="text-[11px] text-gray-500 mt-1 italic">
+                            💡 Mẹo test: Nhập email có chứa <strong>+test</strong> (ví dụ: <code class="bg-gray-100 px-1 py-0.5 rounded text-orange-600 font-bold">thuanho1221+test@gmail.com</code>) để hệ thống gửi ngay cả 3 email test về hộp thư!
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                            Môn tập hoặc Sản phẩm bạn quan tâm
+                        </label>
+                        <select id="inline_wl_product" name="product_interest" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium bg-white">
+                            <option value="Bảng Tập Chống Đẩy Đa Năng 14 Trong 1 (489k)">Bảng Tập Chống Đẩy Đa Năng 14 Trong 1 — 489.000đ (Trong Email 3)</option>
+                            <option value="Combo Starter Kit VĐV Sportfit Pro (890k)">Combo Starter Kit VĐV Sportfit Pro — 890.000đ</option>
+                            <option value="Dây kháng lực đàn hồi đa năng tập gym (150k)">Dây kháng lực đa năng tập gym — 150.000đ</option>
+                            <option value="Vợt Pickleball Carbon T700 USAPA (1.290k)">Vợt Pickleball Carbon T700 USAPA — 1.290.000đ</option>
+                            <option value="Vợt Cầu Lông Yonex Nanoflare 1000Z 4U (1.890k)">Vợt Cầu Lông Yonex Nanoflare 1000Z — 1.890.000đ</option>
+                            <option value="Chưa xác định - Cần tư vấn môn phù hợp">Chưa xác định — Cần tư vấn môn phù hợp</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="inline_wl_submit_btn"
+                            class="pulse-btn w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-orange-600 hover:to-brand-orange text-white font-sport font-black text-base sm:text-lg py-4 rounded-xl uppercase tracking-wider transition shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 cursor-pointer mt-4">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>XÁC NHẬN VÀO DANH SÁCH CHỜ &amp; GỬI EMAIL NGAY</span>
+                    </button>
+                </form>
+
+                <!-- Trạng thái sau khi gửi thành công -->
+                <div id="inlineWaitlistSuccess" class="hidden text-center space-y-4 py-6">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="font-sport font-black text-2xl text-gray-900 uppercase">ĐĂNG KÝ DANH SÁCH CHỜ THÀNH CÔNG!</h3>
+                    <p class="text-sm text-gray-600 max-w-lg mx-auto">
+                        Cảm ơn bạn <strong id="inline_confirm_name" class="text-brand-orange"></strong>! Thông tin của bạn đã được ghi nhận vào hệ thống.
+                    </p>
+                    <div id="inline_test_note" class="hidden bg-orange-50 border border-orange-200 p-4 rounded-2xl max-w-lg mx-auto text-xs text-orange-900 text-left space-y-1">
+                        <p class="font-bold flex items-center gap-1.5 text-brand-orange">
+                            <i class="fa-solid fa-flask"></i> CHẾ ĐỘ TEST ĐÃ KÍCH HOẠT:
+                        </p>
+                        <p>Hệ thống đã tự động gửi ngay 3 email (Email 1 Chào mừng, Email 2 Lỗi chống đẩy, Email 3 Chốt đơn kèm mã giảm 10%) đến địa chỉ <strong id="inline_confirm_email"></strong>. Bạn hãy kiểm tra hộp thư (cả mục Spam/Promotions nếu có) nhé!</p>
+                    </div>
+                    <div id="inline_normal_note" class="bg-gray-50 border border-gray-200 p-4 rounded-2xl max-w-lg mx-auto text-xs text-gray-700 text-left space-y-1">
+                        <p class="font-bold text-gray-900">📬 Lịch trình nhận email:</p>
+                        <p>• <strong>Ngay bây giờ:</strong> Email 1 chào mừng &amp; câu hỏi khảo sát môn tập.</p>
+                        <p>• <strong>Sau 2 ngày:</strong> Email 2 phân tích kỹ thuật chống đẩy &amp; chấn thương vai.</p>
+                        <p>• <strong>Sau 3 ngày:</strong> Email 3 gửi mã giảm 10% và link ưu đãi dụng cụ.</p>
+                    </div>
+                    <button type="button" onclick="resetInlineWaitlist()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-2.5 px-6 rounded-xl uppercase transition">
+                        Đăng ký thêm thông tin khác
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- 5. PHẦN NỖI ĐAU CỦA KHÁCH HÀNG (PAIN POINTS) -->
     <section class="py-16 bg-gray-100">
@@ -1872,6 +1983,13 @@
             </form>
         </div>
 
+        
+    <!-- Nút Nổi Bật Đăng Ký Danh Sách Chờ ở góc trái -->
+    <a href="#danh-sach-cho" class="fixed bottom-6 left-6 z-40 bg-gradient-to-r from-brand-orange to-orange-500 hover:from-orange-600 hover:to-brand-orange text-white font-sport font-black text-xs sm:text-sm py-3 px-4 rounded-full shadow-2xl border-2 border-white flex items-center gap-2 pulse-btn transition cursor-pointer">
+        <i class="fa-solid fa-envelope-open-text text-base"></i>
+        <span>📝 ĐĂNG KÝ DANH SÁCH CHỜ</span>
+    </a>
+
         <!-- HÀNG NÚT BẤM NỔI BẬT Ở GÓC PHẢI -->
         <div class="flex items-center gap-2">
             <!-- Nút bật Chatbot Thực Chiến (Sportfit) -->
@@ -1931,6 +2049,14 @@
                         Số điện thoại / Zalo nhận ưu đãi <span class="text-red-500">*</span>
                     </label>
                     <input type="tel" id="wl_phone_number" name="phone" required placeholder="Nhập số Zalo nhận xác nhận đơn & video bài tập" 
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
+                        Email nhận video bài tập &amp; ưu đãi <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email" id="wl_email" name="email" required autocomplete="email" placeholder="Ví dụ: ban@gmail.com" 
                            class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
                 </div>
 
@@ -2724,13 +2850,14 @@
             const form = document.getElementById('siteWaitlistForm');
             const name = form.fullname.value.trim();
             const phone = form.phone.value.trim();
+            const email = form.email.value.trim();
             const product = form.product_interest.value;
 
             // Lưu đăng ký vào hệ thống (hiện trong trang admin)
             fetch('/api/waitlist', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, product })
+                body: JSON.stringify({ name, phone, email, product })
             }).catch(err => console.error('Waitlist error:', err));
 
             document.getElementById('wl_confirm_name').innerText = name;

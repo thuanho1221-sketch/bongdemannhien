@@ -1,0 +1,17 @@
+# CẤU HÌNH RESEND & EMAIL SEQUENCE - SPORTFIT.PRO
+# ========================================================
+# Hướng dẫn:
+# 1. Lấy API Key tại: https://resend.com/api-keys
+# 2. Điền API Key vào dòng RESEND_API_KEY dưới đây (bắt đầu bằng re_...)
+# 3. Domain gửi: Domain đã verify thành công trên Resend: mail.bongdemannhien.io.vn
+
+RESEND_API_KEY=re_jpRXF8jJ_2JmTi5THAi4XdqWsVHcNDJX8
+
+# Địa chỉ người gửi từ domain riêng đã verify (mail.bongdemannhien.io.vn)
+EMAIL_FROM=Hồ Minh Thuận <thuan@mail.bongdemannhien.io.vn>
+
+# Email nhận phản hồi khi khách hàng bấm Reply (Thuận đọc trực tiếp)
+EMAIL_REPLY_TO=thuanho1221@gmail.com
+
+# Link trang thanh toán / đặt hàng cho Email 3 (mã giảm giá: SPORTFIT-THUAN2026)
+PAYMENT_URL=https://bongdemannhien.io.vn/#sale-off
