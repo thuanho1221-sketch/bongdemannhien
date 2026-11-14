@@ -118,7 +118,7 @@ module.exports = async (req, res) => {
         const prodRow = (prodRes && prodRes.rows && prodRes.rows[0]) || {};
         const ordRow = (ordRes && ordRes.rows && ordRes.rows[0]) || {};
         const orderId = ordRow.id || data.order_id || '';
-        const toEmail = inputEmail || custRow.email || null;
+        const toEmail = inputEmail || custRow.email || process.env.EMAIL_REPLY_TO || 'thuanho1221@gmail.com';
 
         let emailSent = false;
         let emailId = null;
