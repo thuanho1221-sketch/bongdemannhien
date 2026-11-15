@@ -109,9 +109,14 @@
                     </div>
                 </a>
 
-                <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="bg-[#0068FF] hover:bg-[#0052cc] text-white px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all transform hover:-translate-y-0.5 shadow-md flex items-center gap-1.5 cursor-pointer">
+                <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="pulse-btn bg-brand-orange hover:bg-brand-orangeDark text-white px-4 py-2.5 rounded-lg font-sport font-black text-xs sm:text-sm uppercase tracking-wider transition-all transform hover:-translate-y-0.5 shadow-md flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>Mua Ngay (QR 2.000đ)</span>
+                </button>
+
+                <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="hidden md:flex bg-[#0068FF] hover:bg-[#0052cc] text-white px-3.5 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all transform hover:-translate-y-0.5 shadow-md items-center gap-1.5 cursor-pointer">
                     <span class="bg-white text-[#0068FF] text-[10px] font-black px-1 rounded">ZALO</span>
-                    <span>Chat Mua Hàng</span>
+                    <span>Chat</span>
                 </a>
 
                 <!-- Nút bật menu trên Mobile -->
@@ -1176,10 +1181,10 @@
                                 </span>
                             </div>
 
-                            <button onclick="openPaymentModal('Combo Starter Kit VĐV Sportfit Pro', '890.000đ')"
+                            <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')"
                                class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black text-base sm:text-lg py-3.5 rounded-xl uppercase tracking-wider transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2.5 cursor-pointer">
                                 <i class="fa-solid fa-qrcode text-xl"></i>
-                                <span>ĐẶT HÀNG & THANH TOÁN VIETQR (890K)</span>
+                                <span>MUA NGAY — QUÉT QR SEPAY (2.000Đ)</span>
                             </button>
 
                             <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" 
@@ -1944,29 +1949,23 @@
 
             <!-- Dải Gợi Ý Câu Hỏi Nhanh (Chips Scrollable) -->
             <div class="bg-white border-t border-gray-100 px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap text-[11px]">
-                <button onclick="handleQuickQuestion('mua_hang')" class="bg-orange-50 text-brand-orange border border-brand-orange/40 hover:bg-brand-orange hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0 flex items-center gap-1">
-                    <span>🛒 Mua hàng / Chốt đơn</span>
+                <button onclick="handleQuickQuestion('hoi_gia')" class="bg-orange-50 text-brand-orange border border-brand-orange/40 hover:bg-brand-orange hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0 flex items-center gap-1">
+                    <span>💰 Giá bao nhiêu?</span>
+                </button>
+                <button onclick="handleQuickQuestion('hoi_phu_hop')" class="bg-orange-50 text-brand-orange border border-brand-orange/40 hover:bg-brand-orange hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0 flex items-center gap-1">
+                    <span>🎯 Sản phẩm có hợp với tôi không?</span>
+                </button>
+                <button onclick="handleQuickQuestion('suy_nghi_them')" class="bg-orange-50 text-brand-orange border border-brand-orange/40 hover:bg-brand-orange hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0 flex items-center gap-1">
+                    <span>🤔 Để tôi nghĩ thêm</span>
+                </button>
+                <button onclick="handleQuickQuestion('mua_hang')" class="bg-green-50 text-green-700 border border-green-300 hover:bg-green-600 hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0 flex items-center gap-1">
+                    <span>🛒 Mua hàng / Quét QR 2.000đ</span>
                 </button>
                 <button onclick="handleQuickQuestion('q1_shopee')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
-                    💰 Sao đắt hơn Shopee?
+                    Sao đắt hơn Shopee?
                 </button>
                 <button onclick="handleQuickQuestion('q2_van_phong')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
                     🏋️ Dân văn phòng nên mua gì?
-                </button>
-                <button onclick="handleQuickQuestion('q3_day_khang_luc')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
-                    💪 Dây kháng lực có lên cơ?
-                </button>
-                <button onclick="handleQuickQuestion('q4_pickleball')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
-                    🏓 Vợt Pickleball T700 khác gì?
-                </button>
-                <button onclick="handleQuickQuestion('q5_size_giay')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
-                    👟 Cách chọn size giày?
-                </button>
-                <button onclick="handleQuickQuestion('q7_ship')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
-                    🚚 Phí ship & Giao bao lâu?
-                </button>
-                <button onclick="handleQuickQuestion('q8_bao_hanh')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 hover:text-brand-orange font-medium px-2.5 py-1 rounded-full transition flex-shrink-0">
-                    🛡️ Chính sách 1 đổi 1 & Bảo hành?
                 </button>
                 <button onclick="handleQuickQuestion('form_waitlist')" class="bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-500 hover:text-white font-bold px-2.5 py-1 rounded-full transition flex-shrink-0">
                     📝 Form Danh sách chờ
@@ -2150,33 +2149,39 @@
                     <div class="flex justify-between items-start gap-2">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-gray-400">Sản phẩm:</span>
-                            <h4 id="checkout_product_name" class="font-bold text-gray-900 text-sm">Combo Starter Kit VĐV Sportfit Pro</h4>
+                            <h4 id="checkout_product_name" class="font-bold text-gray-900 text-sm">Bảng Tập Chống Đẩy Đa Năng 14 Trong 1</h4>
                         </div>
                         <div class="text-right flex-shrink-0">
-                            <span class="text-[10px] uppercase font-bold text-gray-400">Thành tiền:</span>
-                            <p id="checkout_product_price" class="font-sport font-black text-base text-brand-orange">890.000đ</p>
+                            <span class="text-[10px] uppercase font-bold text-gray-400">Thanh toán VietQR SePay:</span>
+                            <p id="checkout_product_price" class="font-sport font-black text-base text-brand-orange">2.000đ</p>
                         </div>
                     </div>
                     <div class="mt-2 pt-2 border-t border-orange-200/60 flex items-center justify-between text-[11px] text-gray-600">
-                        <span>Phí vận chuyển:</span>
-                        <span class="text-green-600 font-bold uppercase">Miễn phí (Freeship)</span>
+                        <span>Chế độ thanh toán thật SePay:</span>
+                        <span class="text-green-600 font-bold uppercase">Quét QR 2.000đ • Tự động gửi Email &amp; lên đơn /admin</span>
                     </div>
                 </div>
 
                 <form onsubmit="handleProceedToPayment(event)" class="space-y-3">
                     <div>
                         <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Họ và tên của bạn <span class="text-red-500">*</span></label>
-                        <input type="text" id="order_customer_name" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                        <input type="text" id="order_customer_name" required placeholder="Ví dụ: Hồ Minh Thuận" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Số điện thoại / Zalo <span class="text-red-500">*</span></label>
-                        <input type="tel" id="order_customer_phone" required placeholder="Nhập số điện thoại nhận hàng" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Số điện thoại / Zalo <span class="text-red-500">*</span></label>
+                            <input type="tel" id="order_customer_phone" required placeholder="Ví dụ: 0359181278" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Email nhận xác nhận đơn <span class="text-red-500">*</span></label>
+                            <input type="email" id="order_customer_email" required placeholder="Ví dụ: thuanho1221@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                        </div>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Địa chỉ giao hàng chi tiết <span class="text-red-500">*</span></label>
-                        <input type="text" id="order_customer_address" required placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                        <input type="text" id="order_customer_address" required value="Giao tiêu chuẩn tận nơi" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
                     </div>
 
                     <!-- Phương thức thanh toán -->
@@ -2297,15 +2302,19 @@
                 <div class="bg-green-50 p-3.5 rounded-2xl border border-green-200 text-left text-xs space-y-1.5 text-gray-700">
                     <p>• <strong>Khách hàng:</strong> <span id="success_cust_name" class="font-bold text-gray-900"></span></p>
                     <p>• <strong>Số điện thoại:</strong> <span id="success_cust_phone" class="font-bold text-gray-900"></span></p>
+                    <p>• <strong>Email nhận xác nhận:</strong> <span id="success_cust_email" class="font-bold text-green-700"></span></p>
                     <p>• <strong>Sản phẩm:</strong> <span id="success_product_name" class="font-bold text-gray-900"></span></p>
                     <p>• <strong>Số tiền thanh toán:</strong> <span id="success_paid_amount" class="font-black text-brand-orange"></span></p>
-                    <p>• <strong>Trạng thái:</strong> <span class="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-[10px]">ĐÃ THANH TOÁN - CHUẨN BỊ GIAO HÀNG</span></p>
+                    <p>• <strong>Trạng thái đơn (/admin):</strong> <span class="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-[10px]">SUCCESS — ĐÃ THANH TOÁN</span></p>
                 </div>
-                <p class="text-xs text-gray-500">
-                    Thông tin đơn hàng đã được đồng bộ tự động vào Google Sheets. Chuyên viên Sportfit sẽ gọi xác nhận giao hàng cho bạn trong ít phút!
+                <p class="text-xs text-gray-600">
+                    📧 Hệ thống đã tự động gửi <strong>Email xác nhận đơn hàng</strong> từ <strong>thuan@mail.bongdemannhien.io.vn</strong> về hộp thư của bạn và cập nhật đơn lên <strong>/admin</strong> (trạng thái <code class="bg-green-100 text-green-800 px-1 rounded font-bold">success</code>)!
                 </p>
                 <div class="space-y-2 pt-2">
-                    <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-sm py-3 rounded-xl uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2">
+                    <a href="/admin#orders" target="_blank" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black text-sm py-3 rounded-xl uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-gauge-high"></i> <span>Mở Trang /admin Xem Đơn Hàng ('success') Ngay</span>
+                    </a>
+                    <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black text-sm py-2.5 rounded-xl uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2">
                         <i class="fa-solid fa-comments"></i> <span>Nhắn Zalo Nhận Video Bài Tập Ngay</span>
                     </a>
                     <button type="button" onclick="closePaymentModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-2 rounded-xl uppercase transition">
@@ -2497,60 +2506,76 @@
                 });
             });
         });
-        // 7. KHỞI TẠO VÀ ĐIỀU KHIỂN CHATBOT SPORTFIT PRO (CHUẨN SALES_SCRIPT.MD)
+        // 7. KHỞI TẠO VÀ ĐIỀU KHIỂN CHATBOT SPORTFIT PRO (CHUẨN SALES_SCRIPT.MD + BRAND VOICE HỒ MINH THUẬN)
         let chatbotInitialized = false;
 
         const CHATBOT_KB = {
             greeting: {
                 text: `<p class="mb-2">Chào bạn! Mình là <strong>Thuận</strong> từ <strong>Sportfit.pro</strong> đây.</p>
                        <p class="mb-2">Ở Sportfit, tụi mình không bán đồ thể thao theo kiểu quăng link giá rẻ rồi để bạn tự mò. Tụi mình <strong>đứng về phía người tập nghiêm túc</strong>.</p>
-                       <p class="mb-3">Để mình chọn đúng đồ cho bạn, bạn đang tập môn gì và mục tiêu chính đợt này là gì?</p>
+                       <p class="mb-3">Bạn có thể hỏi mình 3 câu bất kỳ (ví dụ: <strong>hỏi giá</strong>, <strong>hỏi sản phẩm có hợp không</strong>, hoặc <strong>"để tôi nghĩ thêm"</strong>) — hoặc bấm nhanh các nút gợi ý bên dưới nhé:</p>
                        <div class="pt-1 flex flex-wrap gap-1.5">
-                           <button onclick="handleQuickQuestion('mua_hang')" class="bg-orange-100 hover:bg-brand-orange hover:text-white text-brand-orange text-[11px] font-bold px-2.5 py-1 rounded-lg transition">🛒 Mua hàng / Chốt đơn ưu đãi</button>
-                           <button onclick="handleQuickQuestion('q1_shopee')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 text-[11px] font-medium px-2 py-1 rounded-lg transition">💰 Sao giá đắt hơn Shopee?</button>
-                           <button onclick="handleQuickQuestion('q2_van_phong')" class="bg-gray-100 hover:bg-orange-100 text-gray-700 text-[11px] font-medium px-2 py-1 rounded-lg transition">🏋️ Dân văn phòng đau lưng nên mua gì?</button>
-                           <button onclick="handleQuickQuestion('form_waitlist')" class="bg-amber-100 hover:bg-amber-500 hover:text-white text-amber-900 text-[11px] font-bold px-2 py-1 rounded-lg transition">📝 Điền Form Danh Sách Chờ</button>
+                           <button onclick="handleQuickQuestion('hoi_gia')" class="bg-orange-100 hover:bg-brand-orange hover:text-white text-brand-orange text-[11px] font-bold px-2.5 py-1 rounded-lg transition">💰 1. Giá sản phẩm bao nhiêu?</button>
+                           <button onclick="handleQuickQuestion('hoi_phu_hop')" class="bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-700 text-[11px] font-bold px-2.5 py-1 rounded-lg transition">🏋️ 2. Sản phẩm có hợp với tôi không?</button>
+                           <button onclick="handleQuickQuestion('suy_nghi_them')" class="bg-amber-100 hover:bg-amber-600 hover:text-white text-amber-900 text-[11px] font-bold px-2.5 py-1 rounded-lg transition">🤔 3. Để tôi nghĩ thêm</button>
+                           <button onclick="handleQuickQuestion('mua_hang')" class="bg-green-100 hover:bg-green-600 hover:text-white text-green-800 text-[11px] font-bold px-2.5 py-1 rounded-lg transition">🛒 Mua hàng (QR 2.000đ)</button>
+                       </div>`
+            },
+            hoi_gia: {
+                text: `<p class="mb-2">Chào bạn, mình báo giá chi tiết và rõ ràng từng món tại <strong>Sportfit.pro</strong> để bạn dễ cân đối nhé:</p>
+                       <div class="bg-orange-50 border border-orange-200 rounded-xl p-2.5 mb-2.5 text-[11px] sm:text-xs text-gray-800 space-y-1.5">
+                           <p>• <strong>Bảng Tập Chống Đẩy Đa Năng 14 Trong 1:</strong> <strong class="text-brand-orange">489.000đ</strong> (nhập mã <code class="bg-white px-1 rounded font-bold">SPORTFIT-THUAN2026</code> giảm 10% còn <strong>440.100đ</strong>).</p>
+                           <p>• <strong>Bộ Dây Kháng Lực Ngũ Sắc Latex:</strong> <strong class="text-brand-orange">150.000đ</strong> – <strong>429.000đ</strong>.</p>
+                           <p>• <strong>Combo Starter Kit VĐV Trọn Gói:</strong> <span class="line-through text-gray-400">1.290.000đ</span> → <strong class="text-brand-orange">890.000đ</strong> (Freeship + Tặng Video 30 bài tập).</p>
+                           <p class="pt-1 border-t border-orange-200 text-green-800 font-bold">🔥 Đặc biệt (Trải nghiệm cổng thanh toán SePay VietQR): Chốt đơn test thực tế chỉ <span class="underline">2.000đ</span>!</p>
+                       </div>
+                       <p class="mb-2 text-[11px] text-gray-600 italic">Thứ nhất là mình không cạnh tranh bằng giá rẻ nhất như hàng chợ. Thứ hai là mỗi sản phẩm đều kèm bảo hành 12 tháng, 1 đổi 1 trong 7 ngày.</p>
+                       <p class="mb-2 font-semibold text-gray-900">Bạn đang nhắm món nào, hay muốn mình tư vấn xem sản phẩm có hợp với thể trạng của bạn không?</p>
+                       <div class="flex flex-wrap gap-1.5 pt-1">
+                           <button onclick="handleQuickQuestion('hoi_phu_hop')" class="bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-700 text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition">🏋️ Sản phẩm có hợp với tôi không?</button>
+                           <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="bg-brand-orange hover:bg-brand-orangeDark text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition">🛒 Bấm Mua Ngay (QR 2.000đ)</button>
+                       </div>`
+            },
+            hoi_phu_hop: {
+                text: `<p class="mb-2">Câu hỏi này cực kỳ quan trọng! Ở Sportfit, mình luôn hỏi kỹ mục tiêu rồi mới dám khuyên bạn mua.</p>
+                       <p class="mb-1.5">• <strong>Thứ nhất là:</strong> Nếu bạn là <strong>người mới bắt đầu, dân văn phòng ngồi nhiều đau mỏi vai gáy</strong>, hoặc muốn tập tại nhà 20–25 phút mỗi tối thì <strong>Bảng chống đẩy 14-in-1 + Dây kháng lực Latex</strong> là cực kỳ hợp. Bảng có chia vạch màu cố định khớp cổ tay và góc khuỷu tay 45 độ, giúp bạn vào đúng nhóm cơ ngực - vai - lưng mà không sợ chấn thương khớp vai.</p>
+                       <p class="mb-2">• <strong>Thứ hai là:</strong> Kiểu như là bạn chưa quen nhịp độ, tụi mình gửi kèm luôn <strong>Giáo án Video 30 ngày chuẩn HLV</strong> và hỗ trợ chỉnh form 1-1 qua Zalo cho bạn.</p>
+                       <p class="p-2 bg-green-50 border border-green-200 rounded-lg text-[11px] text-green-800 font-semibold mb-2">✓ Nhìn chung: Dù bạn mới tập từ con số 0 hay đã tập lâu năm cần dụng cụ chuẩn thực chiến tại nhà thì bộ này đều đáp ứng trọn vẹn!</p>
+                       <p class="mb-2 font-semibold text-gray-900">Bạn thấy lộ trình này đã khớp với nhu cầu của bạn chưa, hay cần thời gian suy nghĩ thêm?</p>
+                       <div class="flex flex-wrap gap-1.5 pt-1">
+                           <button onclick="handleQuickQuestion('suy_nghi_them')" class="bg-amber-100 hover:bg-amber-600 hover:text-white text-amber-900 text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition">🤔 Để tôi nghĩ thêm</button>
+                           <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="bg-brand-orange hover:bg-brand-orangeDark text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition">🛒 Bấm Mua Ngay (QR 2.000đ)</button>
                        </div>`
             },
             mua_hang: {
-                text: `<p class="font-bold text-gray-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-gift text-brand-orange"></i> ƯU ĐÃI COMBO STARTER KIT VĐV:</p>
-                       <p class="mb-2">Giá niêm yết: <span class="line-through text-gray-400">1.290.000đ</span> → Trợ lực cho anh em hôm nay chỉ còn <strong class="text-brand-orange text-base">890.000đ</strong>.</p>
+                text: `<p class="font-bold text-gray-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-gift text-brand-orange"></i> CHỐT ĐƠN TRỰC TIẾP QUA VIETQR SEPAY (2.000Đ):</p>
+                       <p class="mb-2">Mức thanh toán trải nghiệm thực tế cổng tự động SePay: <strong class="text-brand-orange text-base">2.000đ</strong> (Quét QR nhận xác nhận đơn &amp; gửi email tự động ngay lập tức!).</p>
                        <div class="bg-orange-50 border border-orange-200 rounded-xl p-2.5 mb-3 text-[11px] sm:text-xs text-gray-700 space-y-1">
-                           <p>✓ <strong>Freeship 100%</strong> toàn quốc tận nhà</p>
-                           <p>✓ Tặng kèm 01 bao đựng chuyên dụng + Video 30 bài tập chuẩn HLV</p>
-                           <p>✓ Bảo hành kỹ thuật 12 tháng (1 đổi 1 trong 7 ngày)</p>
-                           <p>✓ Kiểm tra hàng ưng ý mới thanh toán COD.</p>
+                           <p>✓ Tự động đối soát giao dịch ngân hàng trong 3 giây</p>
+                           <p>✓ Tự động gửi <strong>Email xác nhận đơn hàng</strong> từ <code class="font-bold">thuan@mail.bongdemannhien.io.vn</code></p>
+                           <p>✓ Tự động đẩy đơn lên <strong>/admin</strong> và chuyển trạng thái sang <strong class="text-green-700">'success'</strong></p>
                        </div>
-                       <p class="mb-2 text-gray-800 font-medium">Bạn có thể chọn thanh toán tự động ngay hoặc điền form danh sách chờ nhé:</p>
                        <div class="space-y-1.5 pt-1">
-                           <button onclick="openPaymentModal('Combo Starter Kit VĐV (890k)', '890.000đ')" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black py-2.5 px-3 rounded-xl uppercase tracking-wider text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                           <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black py-2.5 px-3 rounded-xl uppercase tracking-wider text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
                                <i class="fa-solid fa-qrcode"></i>
-                               <span>THANH TOÁN VIETQR SEPAY (890K)</span>
+                               <span>BẤM NÚT MUA — QUÉT QR SEPAY 2.000Đ NGAY</span>
                            </button>
-                           <button onclick="openWaitlistModal('Combo Starter Kit VĐV (890k)')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 px-3 rounded-xl uppercase tracking-wider text-xs shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
-                               <i class="fa-solid fa-clipboard-list"></i>
-                               <span>ĐIỀN FORM DANH SÁCH CHỜ</span>
-                           </button>
-                           <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black py-2 px-3 rounded-xl uppercase tracking-wider text-xs shadow-sm flex items-center justify-center gap-1.5">
-                               <i class="fa-solid fa-comments"></i>
-                               <span>CHAT ZALO CHỐT ĐƠN: 0359.181.278</span>
-                           </a>
                        </div>`
             },
             q1_shopee: {
                 text: `<p class="mb-2"><strong>Sao Sportfit bán giá cao hơn Shopee / Lazada?</strong></p>
                        <p class="mb-2">Nói thật lòng, nếu bạn chỉ tìm món rẻ nhất, trên sàn có những bên rẻ hơn của mình 30–40%. Nhưng sự chênh lệch nằm ở 2 điểm chí mạng:</p>
-                       <p class="mb-1.5">• <strong>Chất liệu gốc rễ:</strong> Dây kháng lực trên sàn đa số là cao su tổng hợp tái chế, mùi hóa chất nồng và kéo căng 2 tháng là rão hoặc đứt phựt vào mặt. Bộ của Sportfit đúc từ <strong>100% Latex tự nhiên nguyên chất</strong>, không mùi, chịu tải bền bỉ 3–5 năm.</p>
-                       <p class="mb-2">• <strong>Cái giá của chấn thương:</strong> Mua vợt quá nặng đầu hay giày đế cứng tiết kiệm được 200k, nhưng sau đó phải tốn tiền triệu cho bác sĩ xương khớp.</p>
-                       <p class="p-2 bg-orange-50 rounded-lg border-l-2 border-brand-orange font-semibold text-gray-800 italic">"Bạn không mua cái giá rẻ hơn — bạn mua sự chắc chắn rằng mình đang dùng đúng dụng cụ chuẩn cho cơ thể."</p>`
+                       <p class="mb-1.5">• <strong>Thứ nhất là chất liệu gốc rễ:</strong> Dây kháng lực trên sàn đa số là cao su tổng hợp tái chế, mùi hóa chất nồng và kéo căng 2 tháng là rão. Bộ của Sportfit đúc từ <strong>100% Latex tự nhiên nguyên chất</strong>, chịu tải bền bỉ 3–5 năm.</p>
+                       <p class="mb-2">• <strong>Thứ hai là cái giá của chấn thương:</strong> Mua dụng cụ sai chuẩn tiết kiệm được hơn trăm ngàn, nhưng sau đó phải tốn tiền triệu cho bác sĩ xương khớp.</p>
+                       <p class="p-2 bg-orange-50 rounded-lg border-l-2 border-brand-orange font-semibold text-gray-800 italic mb-2">"Bạn không mua cái giá rẻ hơn — bạn mua sự chắc chắn rằng mình đang dùng đúng dụng cụ chuẩn cho cơ thể."</p>
+                       <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow">🛒 Bấm Mua Trải Nghiệm (QR SePay 2.000đ)</button>`
             },
             q2_van_phong: {
                 text: `<p class="mb-2"><strong>Dân văn phòng ngồi nhiều đau lưng nên mua gì?</strong></p>
                        <p class="mb-2">Ngồi máy tính 8–10 tiếng/ngày khiến cơ lưng trên bị kéo gù, cơ ngực co rút và cơ bụng yếu làm cột sống chịu áp lực lớn. Lộ trình thực chiến nhất gồm đúng 2 món:</p>
                        <p class="mb-1">• <strong>Bảng chống đẩy 14-in-1 (489k):</strong> Tay nắm chống trượt cố định khớp cổ tay, tập ngực vai đúng form không đau khớp.</p>
-                       <p class="mb-2">• <strong>Bộ dây kháng lực ngũ sắc Latex (429k):</strong> Chuyên cho các bài kéo lưng (face pull, lat pull) mở khớp vai, triệt tiêu đau mỏi vai gáy.</p>
-                       <p class="mb-2">Mỗi ngày chỉ cần 20–25 phút lúc 6h chiều về nhà. Tặng kèm bộ Video 30 bài tập chuẩn HLV!</p>
-                       <button onclick="openWaitlistModal('Gym tại nhà (Dây kháng lực + Bảng chống đẩy)')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow mt-1">👉 Đăng Ký Danh Sách Chờ Nhận Combo Này</button>`
+                       <p class="mb-2">• <strong>Bộ dây kháng lực ngũ sắc Latex (150k - 429k):</strong> Chuyên cho các bài kéo lưng (face pull, lat pull) mở khớp vai, triệt tiêu đau mỏi vai gáy.</p>
+                       <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow mt-1">🛒 Mua Ngay Qua QR SePay (2.000đ)</button>`
             },
             q3_day_khang_luc: {
                 text: `<p class="mb-2"><strong>Dây kháng lực có tập lên cơ được như tạ tay không?</strong></p>
@@ -2561,8 +2586,7 @@
                 text: `<p class="mb-2"><strong>Vợt Pickleball Carbon T700 của Sportfit khác gì vợt thường?</strong></p>
                        <p class="mb-1.5">• <strong>Mặt Carbon T700 thô nhám:</strong> Bám bóng cực tốt, tạo độ xoáy (spin) sắc bén và điều bóng chính xác góc sân.</p>
                        <p class="mb-2">• <strong>Lõi Polymer tổ ong giảm chấn:</strong> Triệt tiêu 80% xung động ngược, bảo vệ khớp cùi chỏ khỏi chấn thương Tennis Elbow.</p>
-                       <p class="mb-2">Vợt đạt chuẩn thi đấu <strong>USAPA</strong>, siêu nhẹ chỉ 225g.</p>
-                       <button onclick="openWaitlistModal('Vợt Pickleball Carbon T700 USAPA')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow mt-1">👉 Đăng Ký Danh Sách Chờ Nhận Vợt T700</button>`
+                       <p class="mb-2">Vợt đạt chuẩn thi đấu <strong>USAPA</strong>, siêu nhẹ chỉ 225g.</p>`
             },
             q5_size_giay: {
                 text: `<p class="mb-2"><strong>Cách chọn size giày thể thao không lo chật rộng?</strong></p>
@@ -2572,8 +2596,7 @@
             },
             q6_anh_that: {
                 text: `<p class="mb-2"><strong>Xem ảnh và video kho thực tế:</strong></p>
-                       <p class="mb-2">Sportfit cam kết ảnh đăng = sản phẩm thực tế nhận tận tay. Bạn chỉ cần nhắn Zalo <strong>0359.181.278</strong>, tụi mình sẽ quay clip cận cảnh chất liệu, đường may và cơ cấu sản phẩm tại kho gửi ngay trong 30 giây!</p>
-                       <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-blue-600 font-bold hover:underline">👉 Nhắn Zalo xem video kho ngay</a>`
+                       <p class="mb-2">Sportfit cam kết ảnh đăng = sản phẩm thực tế nhận tận tay. Bạn chỉ cần nhắn Zalo <strong>0359.181.278</strong>, tụi mình sẽ quay clip cận cảnh chất liệu, đường may và cơ cấu sản phẩm tại kho gửi ngay trong 30 giây!</p>`
             },
             q7_ship: {
                 text: `<p class="mb-2"><strong>Thời gian giao hàng & Phí ship:</strong></p>
@@ -2588,7 +2611,7 @@
             },
             q9_thanh_toan: {
                 text: `<p class="mb-2"><strong>Phương thức thanh toán:</strong></p>
-                       <p class="mb-2">Bạn <strong>KHÔNG CẦN CỌC TRƯỚC</strong> một đồng nào cả. Tụi mình gửi hàng COD: Shipper giao tới tận nhà → Bạn mở hộp kiểm tra đúng mẫu, ưng ý mới thanh toán tiền mặt cho shipper.</p>`
+                       <p class="mb-2">Bạn có thể quét mã <strong>VietQR SePay tự động (chỉ 2.000đ)</strong> để nhận email xác nhận đơn hàng ngay lập tức, hoặc chọn nhận hàng kiểm tra rồi mới thanh toán COD nhé!</p>`
             },
             q10_huong_dan: {
                 text: `<p class="mb-2"><strong>Sợ mua về lười không biết tập?</strong></p>
@@ -2598,18 +2621,23 @@
             },
             form_waitlist: {
                 text: `<p class="mb-2"><strong>Cổng Danh Sách Chờ Đặt Hàng (Waitlist)</strong></p>
-                       <p class="mb-2">Dành cho bạn muốn giữ suất ưu đãi <strong>GIẢM 40%</strong> combo Starter Kit VĐV, nhận bộ giáo án video và được tư vấn 1-1 trước khi hàng về:</p>
+                       <p class="mb-2">Dành cho bạn muốn nhận chuỗi 3 email bài học thực chiến từ Founder Hồ Minh Thuận + Mã ưu đãi 10%:</p>
                        <button onclick="openWaitlistModal()" class="pulse-btn w-full bg-gradient-to-r from-brand-orange to-orange-500 hover:from-orange-600 hover:to-brand-orange text-white font-sport font-black py-2.5 rounded-xl uppercase text-xs shadow mt-1 flex items-center justify-center gap-1.5 cursor-pointer">
                            <i class="fa-solid fa-clipboard-check"></i>
                            <span>BẤM VÀO ĐÂY ĐỂ MỞ FORM DANH SÁCH CHỜ</span>
                        </button>`
             },
             suy_nghi_them: {
-                text: `<p class="mb-2">Dạ không sao bạn ơi! Mua đồ tập cho bản thân thì cân nhắc kỹ là hoàn toàn đúng đắn. Mình rất tôn trọng quyết định của bạn.</p>
-                       <p class="mb-2">Để không lãng phí thời gian bạn đã tìm hiểu, bạn có thể dành <strong>30 giây</strong> điền Form Khảo sát nhu cầu để nhận gợi ý lộ trình tập và dụng cụ tối giản phù hợp ngân sách:</p>
+                text: `<p class="mb-2">Dạ hoàn toàn thoải mái bạn ơi! Mua dụng cụ gắn bó với cơ thể mình mỗi ngày thì việc cân nhắc kỹ là rất đúng đắn. Mình cực kỳ tôn trọng quyết định của bạn, không bao giờ chèo kéo.</p>
+                       <p class="mb-2">• <strong>Thứ nhất là:</strong> Mình giữ sẵn cho bạn mã ưu đãi 10% <code class="bg-orange-100 text-brand-orange px-1.5 py-0.5 rounded font-bold">SPORTFIT-THUAN2026</code> trong hộp thư của bạn rồi nhé.</p>
+                       <p class="mb-2">• <strong>Thứ hai là:</strong> Kiểu như là bạn muốn trải nghiệm thử luồng đặt hàng &amp; nhận email xác nhận đơn tự động của Sportfit ngay bây giờ mà không lo tốn kém, bạn chỉ cần bấm nút Mua bên dưới và quét QR SePay <strong>đúng 2.000đ</strong> thôi!</p>
+                       <p class="mb-2 font-semibold text-gray-900">Khi nào sẵn sàng bạn cứ bấm nút Mua bên dưới nhé. Bạn có muốn thử quét QR 2.000đ nhận đơn ngay không?</p>
                        <div class="space-y-1.5 pt-1">
-                           <button onclick="openWaitlistModal()" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow">📝 Điền Form Danh Sách Chờ Giữ Ưu Đãi</button>
-                           <a href="#khao-sat" onclick="toggleChatbot()" class="block text-center w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 rounded-xl text-xs">📋 Đến Mục Khảo Sát Nhu Cầu 30 Giây</a>
+                           <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="pulse-btn w-full bg-gradient-to-r from-brand-orange via-orange-500 to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white font-sport font-black py-2.5 px-3 rounded-xl uppercase text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                               <i class="fa-solid fa-qrcode"></i>
+                               <span>🛒 BẤM NÚT MUA — QUÉT QR SEPAY 2.000Đ NGAY</span>
+                           </button>
+                           <button onclick="openWaitlistModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 rounded-xl uppercase text-xs">📝 Hoặc Lưu Thông Tin Vào Danh Sách Chờ</button>
                        </div>`
             }
         };
@@ -2642,7 +2670,7 @@
             setTimeout(() => {
                 removeTypingIndicator();
                 addChatMessage('bot', CHATBOT_KB.greeting.text);
-            }, 400);
+            }, 350);
         }
 
         // Làm mới hội thoại
@@ -2710,7 +2738,10 @@
         // Xử lý bấm câu hỏi nhanh
         function handleQuickQuestion(key) {
             let userLabel = '';
-            if (key === 'mua_hang') userLabel = 'Mình muốn mua hàng / chốt đơn ưu đãi thì thế nào?';
+            if (key === 'hoi_gia') userLabel = 'Cho mình hỏi giá sản phẩm bao nhiêu vậy?';
+            else if (key === 'hoi_phu_hop') userLabel = 'Sản phẩm bên bạn có hợp với mình không?';
+            else if (key === 'suy_nghi_them') userLabel = 'Để tôi nghĩ thêm nhé!';
+            else if (key === 'mua_hang') userLabel = 'Mình muốn mua hàng / quét QR 2.000đ!';
             else if (key === 'q1_shopee') userLabel = 'Sao giá bên bạn cao hơn Shopee vậy?';
             else if (key === 'q2_van_phong') userLabel = 'Dân văn phòng ngồi nhiều đau lưng nên mua gì?';
             else if (key === 'q3_day_khang_luc') userLabel = 'Dây kháng lực có tập lên cơ như tạ tay không?';
@@ -2730,10 +2761,10 @@
                 removeTypingIndicator();
                 const res = CHATBOT_KB[key] || CHATBOT_KB.greeting;
                 addChatMessage('bot', res.text);
-            }, 350);
+            }, 300);
         }
 
-        // Xử lý gửi tin nhắn tự do từ ô input
+        // Xử lý gửi tin nhắn tự do từ ô input (Bắt chính xác 3 câu hỏi: hỏi giá, hỏi hợp không, "để tôi nghĩ thêm")
         function handleChatbotSubmit(e) {
             e.preventDefault();
             const inputEl = document.getElementById('chatbot-input');
@@ -2749,17 +2780,25 @@
             setTimeout(() => {
                 removeTypingIndicator();
                 
-                // Nhận diện ý định MUA HÀNG / CHỐT ĐƠN
-                if (qLower.includes('mua') || qLower.includes('đặt') || qLower.includes('chốt') || qLower.includes('order') || qLower.includes('combo') || qLower.includes('lấy') || qLower.includes('giá bao nhiêu') || qLower.includes('bán cho') || qLower.includes('ship cho')) {
+                // 1. Nói "để tôi nghĩ thêm" / suy nghĩ / cân nhắc
+                if (qLower.includes('nghĩ') || qLower.includes('suy nghĩ') || qLower.includes('cân nhắc') || qLower.includes('từ từ') || qLower.includes('chưa mua') || qLower.includes('tham khảo') || qLower.includes('để tôi') || qLower.includes('để mình') || qLower.includes('xem thêm')) {
+                    addChatMessage('bot', CHATBOT_KB.suy_nghi_them.text);
+                }
+                // 2. Hỏi sản phẩm có hợp không / phù hợp / tư vấn
+                else if (qLower.includes('hợp') || qLower.includes('phù hợp') || qLower.includes('dùng được') || qLower.includes('tập được') || qLower.includes('nên mua') || qLower.includes('nên chọn') || qLower.includes('tư vấn') || qLower.includes('văn phòng') || qLower.includes('đau lưng') || qLower.includes('vai gáy') || qLower.includes('mới tập') || qLower.includes('bắt đầu')) {
+                    addChatMessage('bot', CHATBOT_KB.hoi_phu_hop.text);
+                }
+                // 3. Hỏi giá / bao nhiêu tiền
+                else if (qLower.includes('giá') || qLower.includes('bao nhiêu') || qLower.includes('tiền') || qLower.includes('chi phí') || qLower.includes('báo giá') || qLower.includes('mấy trăm') || qLower.includes('nhiêu')) {
+                    addChatMessage('bot', CHATBOT_KB.hoi_gia.text);
+                }
+                // 4. Ý định MUA HÀNG / CHỐT ĐƠN
+                else if (qLower.includes('mua') || qLower.includes('đặt') || qLower.includes('chốt') || qLower.includes('order') || qLower.includes('combo') || qLower.includes('lấy') || qLower.includes('bán cho') || qLower.includes('ship cho') || qLower.includes('qr')) {
                     addChatMessage('bot', CHATBOT_KB.mua_hang.text);
                 }
                 // Shopee / Giá rẻ
-                else if (qLower.includes('shopee') || qLower.includes('đắt') || qLower.includes('rẻ') || qLower.includes('giá cao')) {
+                else if (qLower.includes('shopee') || qLower.includes('đắt') || qLower.includes('rẻ')) {
                     addChatMessage('bot', CHATBOT_KB.q1_shopee.text);
-                }
-                // Văn phòng / đau lưng / mới tập
-                else if (qLower.includes('văn phòng') || qLower.includes('đau lưng') || qLower.includes('vai gáy') || qLower.includes('mới tập') || qLower.includes('bắt đầu')) {
-                    addChatMessage('bot', CHATBOT_KB.q2_van_phong.text);
                 }
                 // Dây kháng lực / Tạ
                 else if (qLower.includes('kháng lực') || qLower.includes('tạ') || qLower.includes('lên cơ') || qLower.includes('ngũ sắc')) {
@@ -2793,28 +2832,169 @@
                 else if (qLower.includes('bài tập') || qLower.includes('hướng dẫn') || qLower.includes('lười') || qLower.includes('không biết tập')) {
                     addChatMessage('bot', CHATBOT_KB.q10_huong_dan.text);
                 }
-                // Suy nghĩ thêm / Tham khảo
-                else if (qLower.includes('suy nghĩ') || qLower.includes('nghĩ thêm') || qLower.includes('chưa mua') || qLower.includes('tham khảo')) {
-                    addChatMessage('bot', CHATBOT_KB.suy_nghi_them.text);
-                }
-                // Mặc định
+                // Mặc định: Trả lời thân thiện + nút mua ngay
                 else {
                     const fallbackHtml = `
-                        <p class="mb-2">Cảm ơn bạn đã chia sẻ! Vấn đề <strong>"${query}"</strong> của bạn rất cụ thể.</p>
-                        <p class="mb-2">Để tư vấn chính xác nhất theo từng thể trạng và mục tiêu, bạn có thể bấm trực tiếp để điền form danh sách chờ hoặc chat Zalo 1-1 với mình nhé:</p>
+                        <p class="mb-2">Cảm ơn bạn đã nhắn cho <strong>Thuận — Sportfit.pro</strong> về <strong>"${query}"</strong>!</p>
+                        <p class="mb-2">Bạn có thể bấm nhanh một trong 3 chủ đề dưới đây hoặc bấm nút Mua để quét QR SePay 2.000đ nhé:</p>
                         <div class="space-y-1.5 pt-1">
-                            <button onclick="openWaitlistModal()" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow">📝 Điền Form Danh Sách Chờ Ưu Đãi</button>
-                            <a href="https://zalo.me/0359181278" target="_blank" rel="noopener noreferrer" class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-sport font-black py-2 rounded-xl uppercase text-xs shadow flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-comments"></i> <span>Chat Zalo Trực Tiếp: 0359.181.278</span>
-                            </a>
+                            <button onclick="handleQuickQuestion('hoi_gia')" class="w-full bg-orange-100 hover:bg-brand-orange hover:text-white text-brand-orange font-bold py-2 rounded-xl text-xs transition">💰 1. Xem bảng giá chi tiết</button>
+                            <button onclick="handleQuickQuestion('hoi_phu_hop')" class="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-700 font-bold py-2 rounded-xl text-xs transition">🏋️ 2. Xem sản phẩm có hợp với bạn không</button>
+                            <button onclick="openPaymentModal('Bảng Tập Chống Đẩy Đa Năng 14 Trong 1', '2.000đ')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-sport font-black py-2.5 rounded-xl uppercase text-xs shadow">🛒 Bấm Mua Ngay (QR SePay 2.000đ)</button>
                         </div>
                     `;
                     addChatMessage('bot', fallbackHtml);
                 }
-            }, 450);
+            }, 350);
         }
 
-        // 8. ĐIỀU KHIỂN MODAL FORM DANH SÁCH CHỜ (WAITLIST MODAL)
+        // Helper lưu đồng bộ vào localStorage để trang /admin trên trình duyệt luôn thấy ngay Khách hàng & Đơn hàng mới
+        const LOCAL_ADMIN_STORE_KEY = 'sportfit_admin_store_v1';
+        function syncCustomerAndOrderToLocalStore({ customer, order, updateOrderCode, newStatus }) {
+            try {
+                const raw = localStorage.getItem(LOCAL_ADMIN_STORE_KEY);
+                const store = raw ? JSON.parse(raw) : { products: [], customers: [], orders: [] };
+                if (!Array.isArray(store.customers)) store.customers = [];
+                if (!Array.isArray(store.orders)) store.orders = [];
+
+                let custId = null;
+                if (customer && customer.phone) {
+                    let existingCust = store.customers.find(c => String(c.phone).trim() === String(customer.phone).trim());
+                    if (existingCust) {
+                        if (customer.name) existingCust.name = customer.name;
+                        if (customer.email) existingCust.email = customer.email;
+                        custId = existingCust.id;
+                    } else {
+                        custId = Date.now();
+                        store.customers.unshift({
+                            id: custId,
+                            name: customer.name || 'Khách hàng Sportfit',
+                            phone: customer.phone,
+                            email: customer.email || '',
+                            source: customer.source || 'website',
+                            referred_by: null
+                        });
+                    }
+                    localStorage.setItem('sportfit_last_customer', JSON.stringify({
+                        name: customer.name || '',
+                        phone: customer.phone || '',
+                        email: customer.email || '',
+                        product: customer.product || ''
+                    }));
+                }
+
+                if (order) {
+                    const ordId = order.id || Date.now() + 1;
+                    const existingOrd = store.orders.find(o =>
+                        (order.orderCode && o.order_code === order.orderCode) ||
+                        (order.id && Number(o.id) === Number(order.id))
+                    );
+                    if (existingOrd) {
+                        existingOrd.status = order.status || existingOrd.status;
+                        existingOrd.amount = order.amount || existingOrd.amount;
+                    } else {
+                        store.orders.unshift({
+                            id: ordId,
+                            order_code: order.orderCode || '',
+                            customer_id: custId || 1,
+                            customer_name: (customer && customer.name) || order.customerName || 'Khách hàng',
+                            customer_phone: (customer && customer.phone) || order.customerPhone || '',
+                            customer_email: (customer && customer.email) || order.customerEmail || '',
+                            product_id: order.productId || 1,
+                            product_name: order.productName || 'Bảng Tập Chống Đẩy Đa Năng 14 Trong 1',
+                            amount: order.amount || 2000,
+                            status: order.status || 'pending',
+                            created_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                        });
+                    }
+                }
+
+                if (updateOrderCode && newStatus) {
+                    store.orders.forEach(o => {
+                        if (o.order_code === updateOrderCode || Number(o.id) === Number(updateOrderCode)) {
+                            o.status = newStatus;
+                        }
+                    });
+                }
+
+                localStorage.setItem(LOCAL_ADMIN_STORE_KEY, JSON.stringify(store));
+            } catch (e) {
+                console.warn('Local sync warning:', e);
+            }
+        }
+
+        // 8. ĐIỀU KHIỂN FORM DANH SÁCH CHỜ INLINE (#inlineWaitlistForm) VÀ MODAL (#siteWaitlistForm)
+        async function handleInlineWaitlistSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('inlineWaitlistForm');
+            const submitBtn = document.getElementById('inline_wl_submit_btn');
+            const name = document.getElementById('inline_wl_fullname').value.trim();
+            const phone = document.getElementById('inline_wl_phone').value.trim();
+            const email = document.getElementById('inline_wl_email').value.trim();
+            const product = document.getElementById('inline_wl_product').value;
+
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>ĐANG GỬI EMAIL CHÀO MỪNG QUA RESEND...</span>`;
+            }
+
+            // Lưu thông tin khách vào bộ nhớ trình duyệt để tự động điền khi bấm Mua và đồng bộ /admin
+            syncCustomerAndOrderToLocalStore({
+                customer: { name, phone, email, product, source: 'waitlist' }
+            });
+
+            let apiData = null;
+            try {
+                const res = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, email, product })
+                });
+                apiData = await res.json();
+            } catch (err) {
+                console.error('Inline Waitlist error:', err);
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+
+            document.getElementById('inline_confirm_name').innerText = name;
+            const confirmEmailEl = document.getElementById('inline_confirm_email');
+            if (confirmEmailEl) confirmEmailEl.innerText = email;
+
+            const isTestMode = email.toLowerCase().includes('+test') || (apiData && apiData.test_mode);
+            const testNoteEl = document.getElementById('inline_test_note');
+            const normalNoteEl = document.getElementById('inline_normal_note');
+
+            if (isTestMode) {
+                if (testNoteEl) testNoteEl.classList.remove('hidden');
+                if (normalNoteEl) normalNoteEl.classList.add('hidden');
+            } else {
+                if (testNoteEl) testNoteEl.classList.add('hidden');
+                if (normalNoteEl) normalNoteEl.classList.remove('hidden');
+            }
+
+            if (form) form.classList.add('hidden');
+            const successBox = document.getElementById('inlineWaitlistSuccess');
+            if (successBox) successBox.classList.remove('hidden');
+
+            // Ghi nhận phản hồi vào chatbot
+            addChatMessage('bot', `🎉 Tuyệt vời! Mình đã ghi nhận bạn <strong>${name}</strong> (Email: <strong>${email}</strong>) vào Danh sách chờ cho sản phẩm <strong>${product}</strong> và gửi email chào mừng từ <code>thuan@mail.bongdemannhien.io.vn</code> về hộp thư của bạn rồi nhé! Bạn kiểm tra hộp thư xong có thể hỏi mình thêm 3 câu hoặc bấm nút Mua nhé!`);
+        }
+
+        function resetInlineWaitlist() {
+            const form = document.getElementById('inlineWaitlistForm');
+            const successBox = document.getElementById('inlineWaitlistSuccess');
+            if (form) {
+                form.reset();
+                form.classList.remove('hidden');
+            }
+            if (successBox) successBox.classList.add('hidden');
+        }
+
         function openWaitlistModal(preselectedProduct = '') {
             const modal = document.getElementById('waitlistModal');
             if (modal) {
@@ -2845,7 +3025,7 @@
             if (form) form.reset();
         }
 
-        function handleSiteWaitlistSubmit(e) {
+        async function handleSiteWaitlistSubmit(e) {
             e.preventDefault();
             const form = document.getElementById('siteWaitlistForm');
             const name = form.fullname.value.trim();
@@ -2853,12 +3033,20 @@
             const email = form.email.value.trim();
             const product = form.product_interest.value;
 
-            // Lưu đăng ký vào hệ thống (hiện trong trang admin)
-            fetch('/api/waitlist', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, email, product })
-            }).catch(err => console.error('Waitlist error:', err));
+            syncCustomerAndOrderToLocalStore({
+                customer: { name, phone, email, product, source: 'waitlist' }
+            });
+
+            // Lưu đăng ký vào hệ thống & gửi chuỗi email Resend
+            try {
+                await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, email, product })
+                });
+            } catch (err) {
+                console.error('Waitlist error:', err);
+            }
 
             document.getElementById('wl_confirm_name').innerText = name;
             document.getElementById('wl_confirm_phone').innerText = phone;
@@ -2868,11 +3056,10 @@
             const successState = document.getElementById('waitlistSuccessState');
             if (successState) successState.classList.remove('hidden');
 
-            // Ghi nhận phản hồi vào chatbot nếu cửa sổ đang mở
-            addChatMessage('bot', `Tuyệt vời! Mình đã ghi nhận bạn <strong>${name}</strong> (${phone}) vào danh sách chờ ưu tiên cho món <strong>${product}</strong> rồi nhé. Chuyên viên sẽ liên hệ Zalo xác nhận trong thời gian sớm nhất!`);
+            addChatMessage('bot', `Tuyệt vời! Mình đã ghi nhận bạn <strong>${name}</strong> (${email}) vào danh sách chờ ưu tiên cho món <strong>${product}</strong> và gửi email chào mừng về hộp thư của bạn rồi nhé!`);
         }
 
-        // 9. CẤU HÌNH & XỬ LÝ THANH TOÁN TỰ ĐỘNG QUA SEPAY (VIETINBANK - HO MINH THUAN)
+        // 9. CẤU HÌNH & XỬ LÝ THANH TOÁN TỰ ĐỘNG QUA SEPAY (VIETINBANK - HO MINH THUAN - 2.000Đ THẬT)
         const SEPAY_CONFIG = {
             bank: "VietinBank",
             accountNumber: "101873934632",
@@ -2880,29 +3067,50 @@
         };
 
         let currentCheckout = {
-            productName: "Combo Starter Kit VĐV Sportfit Pro",
-            priceString: "890.000đ",
-            amountNumber: 890000,
+            productId: 1,
+            productName: "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1",
+            priceString: "2.000đ",
+            amountNumber: 2000,
             orderCode: "",
+            orderId: null,
             customerName: "",
             customerPhone: "",
+            customerEmail: "",
             customerAddress: ""
         };
 
         let sepayPollingInterval = null;
 
-        function openPaymentModal(productName = "Combo Starter Kit VĐV Sportfit Pro", priceStr = "890.000đ") {
-            currentCheckout.productName = productName;
-            currentCheckout.priceString = priceStr;
-            
-            // Chuyển chuỗi giá thành số nguyên (VD: "890.000đ" -> 890000)
-            const cleanDigits = (priceStr || '').replace(/\D/g, '');
-            currentCheckout.amountNumber = cleanDigits ? parseInt(cleanDigits, 10) : 890000;
+        function openPaymentModal(productName = "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1", priceStr = "2.000đ") {
+            currentCheckout.productName = productName || "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1";
+            // Luôn sử dụng mức 2.000đ thật cho cổng VietQR SePay theo đúng yêu cầu kiểm thử thực tế
+            currentCheckout.amountNumber = 2000;
+            currentCheckout.priceString = "2.000đ";
+
+            // Xác định productId tương ứng trong brain.db
+            const pLower = currentCheckout.productName.toLowerCase();
+            if (pLower.includes('dây kháng lực')) currentCheckout.productId = 2;
+            else if (pLower.includes('pickleball')) currentCheckout.productId = 7;
+            else if (pLower.includes('cầu lông') || pLower.includes('yonex')) currentCheckout.productId = 6;
+            else currentCheckout.productId = 1;
 
             const nameEl = document.getElementById('checkout_product_name');
             const priceEl = document.getElementById('checkout_product_price');
             if (nameEl) nameEl.innerText = currentCheckout.productName;
             if (priceEl) priceEl.innerText = currentCheckout.priceString;
+
+            // Tự động điền thông tin khách vừa đăng ký danh sách chờ (nếu có)
+            try {
+                const savedCust = JSON.parse(localStorage.getItem('sportfit_last_customer') || 'null');
+                if (savedCust) {
+                    const nameInput = document.getElementById('order_customer_name');
+                    const phoneInput = document.getElementById('order_customer_phone');
+                    const emailInput = document.getElementById('order_customer_email');
+                    if (nameInput && !nameInput.value && savedCust.name) nameInput.value = savedCust.name;
+                    if (phoneInput && !phoneInput.value && savedCust.phone) phoneInput.value = savedCust.phone;
+                    if (emailInput && !emailInput.value && savedCust.email) emailInput.value = savedCust.email;
+                }
+            } catch (_) {}
 
             // Reset màn hình về Bước 1
             backToStep1();
@@ -2931,35 +3139,73 @@
             document.getElementById('paymentCodSuccessScreen').classList.add('hidden');
         }
 
-        function handleProceedToPayment(e) {
+        async function handleProceedToPayment(e) {
             e.preventDefault();
             const name = document.getElementById('order_customer_name').value.trim();
             const phone = document.getElementById('order_customer_phone').value.trim();
+            const emailEl = document.getElementById('order_customer_email');
+            const email = emailEl ? emailEl.value.trim() : '';
             const address = document.getElementById('order_customer_address').value.trim();
-            const method = document.querySelector('input[name="payment_method"]:checked').value;
+            const methodEl = document.querySelector('input[name="payment_method"]:checked');
+            const method = methodEl ? methodEl.value : 'sepay';
 
             currentCheckout.customerName = name;
             currentCheckout.customerPhone = phone;
+            currentCheckout.customerEmail = email;
             currentCheckout.customerAddress = address;
 
-            // Sinh mã đơn hàng ngẫu nhiên duy nhất (VD: SF + 5 chữ số ngẫu nhiên)
+            // Sinh mã đơn hàng ngẫu nhiên duy nhất (VD: SF + 5 chữ số)
             const randomCode = Math.floor(10000 + Math.random() * 90000);
             currentCheckout.orderCode = `SF${randomCode}`;
 
+            // Lưu đơn hàng ở trạng thái 'pending' lên hệ thống /admin trước khi quét QR
+            syncCustomerAndOrderToLocalStore({
+                customer: { name, phone, email, source: 'sepay_checkout' },
+                order: {
+                    orderCode: currentCheckout.orderCode,
+                    customerName: name,
+                    customerPhone: phone,
+                    customerEmail: email,
+                    productId: currentCheckout.productId,
+                    productName: currentCheckout.productName,
+                    amount: currentCheckout.amountNumber,
+                    status: 'pending'
+                }
+            });
+
+            fetch('/api/admin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'add_order',
+                    customer_name: name,
+                    customer_phone: phone,
+                    customer_email: email,
+                    product_id: currentCheckout.productId,
+                    amount: currentCheckout.amountNumber,
+                    status: 'pending',
+                    skip_email: true
+                })
+            })
+            .then(r => r.json())
+            .then(resData => {
+                if (resData && resData.id) {
+                    currentCheckout.orderId = resData.id;
+                }
+            })
+            .catch(err => console.warn('Initial pending order save warning:', err));
+
             if (method === 'cod') {
-                // Xử lý đơn hàng COD
                 document.getElementById('paymentStep1').classList.add('hidden');
                 document.getElementById('cod_success_code').innerText = currentCheckout.orderCode;
                 document.getElementById('cod_paid_amount').innerText = currentCheckout.priceString;
                 document.getElementById('cod_cust_address').innerText = `${name} (${phone}) - ${address}`;
                 document.getElementById('paymentCodSuccessScreen').classList.remove('hidden');
 
-                // Thông báo vào chatbot nếu đang mở
                 if (typeof addChatMessage === 'function') {
                     addChatMessage('bot', `Đơn hàng COD mã <strong>${currentCheckout.orderCode}</strong> (${currentCheckout.productName}) đã được ghi nhận. Tụi mình sẽ sớm liên hệ xác nhận giao hàng!`);
                 }
             } else {
-                // Xử lý Chuyển khoản VietQR SePay
                 showVietQRPaymentScreen();
             }
         }
@@ -2968,12 +3214,11 @@
             document.getElementById('paymentStep1').classList.add('hidden');
             document.getElementById('paymentStep2VietQR').classList.remove('hidden');
 
-            // Cập nhật thông tin chi tiết
             document.getElementById('copy_acc_num').innerText = SEPAY_CONFIG.accountNumber;
             document.getElementById('copy_amount').innerText = currentCheckout.priceString;
             document.getElementById('copy_order_code').innerText = currentCheckout.orderCode;
 
-            // Tạo link VietQR SePay
+            // Tạo link VietQR SePay đúng 2.000đ và nội dung mã đơn SFxxxxx
             const qrUrl = `https://qr.sepay.vn/img?acc=${SEPAY_CONFIG.accountNumber}&bank=${SEPAY_CONFIG.bank}&amount=${currentCheckout.amountNumber}&des=${currentCheckout.orderCode}&template=compact`;
             
             const qrImg = document.getElementById('sepay_qr_img');
@@ -2992,10 +3237,8 @@
         function startSepayPolling(orderCode, amount) {
             if (sepayPollingInterval) clearInterval(sepayPollingInterval);
 
-            // Kiểm tra ngay lần đầu
             checkPaymentStatus(orderCode, amount);
 
-            // Lặp lại mỗi 3 giây
             sepayPollingInterval = setInterval(() => {
                 checkPaymentStatus(orderCode, amount);
             }, 3000);
@@ -3003,13 +3246,26 @@
 
         async function checkPaymentStatus(orderCode, amount) {
             try {
-                // Gọi API backend proxy kiểm tra SePay
-                const res = await fetch(`/api/check-payment?orderCode=${encodeURIComponent(orderCode)}&amount=${amount}`);
+                const res = await fetch('/api/check-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderCode: orderCode,
+                        orderId: currentCheckout.orderId,
+                        amount: amount,
+                        customerName: currentCheckout.customerName,
+                        customerPhone: currentCheckout.customerPhone,
+                        customerEmail: currentCheckout.customerEmail,
+                        customerAddress: currentCheckout.customerAddress,
+                        productName: currentCheckout.productName,
+                        productId: currentCheckout.productId
+                    })
+                });
                 if (!res.ok) return;
 
                 const data = await res.json();
                 if (data.success && data.paid) {
-                    onPaymentSuccess(data.transaction);
+                    onPaymentSuccess(data);
                 }
             } catch (err) {
                 console.log("Đang chờ thanh toán...", err);
@@ -3017,47 +3273,68 @@
         }
 
         function manualCheckPayment() {
-            const btn = event.target;
+            const btn = event.currentTarget || event.target;
             const originalText = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang kiểm tra...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang kiểm tra giao dịch SePay...`;
             btn.disabled = true;
 
-            fetch(`/api/check-payment?orderCode=${encodeURIComponent(currentCheckout.orderCode)}&amount=${currentCheckout.amountNumber}`)
+            fetch('/api/check-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderCode: currentCheckout.orderCode,
+                    orderId: currentCheckout.orderId,
+                    amount: currentCheckout.amountNumber,
+                    customerName: currentCheckout.customerName,
+                    customerPhone: currentCheckout.customerPhone,
+                    customerEmail: currentCheckout.customerEmail,
+                    customerAddress: currentCheckout.customerAddress,
+                    productName: currentCheckout.productName,
+                    productId: currentCheckout.productId
+                })
+            })
                 .then(r => r.json())
                 .then(data => {
                     btn.disabled = false;
                     btn.innerHTML = originalText;
                     if (data.success && data.paid) {
-                        onPaymentSuccess(data.transaction);
+                        onPaymentSuccess(data);
                     } else {
-                        alert("Hệ thống chưa nhận được khoản chuyển. Bạn vui lòng kiểm tra xem app ngân hàng đã trừ tiền và điền đúng nội dung " + currentCheckout.orderCode + " chưa nhé!");
+                        alert("Hệ thống đang đợi giao dịch từ SePay. Bạn vui lòng kiểm tra đã chuyển khoản 2.000đ kèm đúng nội dung " + currentCheckout.orderCode + " chưa nhé (thường mất 3-10 giây sau khi chuyển)!");
                     }
                 })
                 .catch(() => {
                     btn.disabled = false;
                     btn.innerHTML = originalText;
-                    alert("Đang kiểm tra kết nối tới SePay. Nếu ngân hàng đã trừ tiền, bạn an tâm giao dịch đã tự động lưu vào Google Sheets của shop!");
+                    alert("Không thể kết nối tạm thời tới máy chủ kiểm tra thanh toán. Vui lòng thử lại sau vài giây!");
                 });
         }
 
-        function onPaymentSuccess(tx) {
+        function onPaymentSuccess(data) {
             if (sepayPollingInterval) {
                 clearInterval(sepayPollingInterval);
                 sepayPollingInterval = null;
             }
 
+            // Cập nhật trạng thái đơn sang 'success' trong bộ nhớ trình duyệt để trang /admin thấy ngay lập tức
+            syncCustomerAndOrderToLocalStore({
+                updateOrderCode: currentCheckout.orderCode,
+                newStatus: 'success'
+            });
+
             document.getElementById('paymentStep2VietQR').classList.add('hidden');
-            document.getElementById('success_order_code').innerText = currentCheckout.orderCode;
+            document.getElementById('success_order_code').innerText = (data && data.orderId) ? `#${data.orderId} (${currentCheckout.orderCode})` : currentCheckout.orderCode;
             document.getElementById('success_cust_name').innerText = currentCheckout.customerName;
             document.getElementById('success_cust_phone').innerText = currentCheckout.customerPhone;
+            const emailSpan = document.getElementById('success_cust_email');
+            if (emailSpan) emailSpan.innerText = currentCheckout.customerEmail || 'Đã lưu trên hệ thống';
             document.getElementById('success_product_name').innerText = currentCheckout.productName;
             document.getElementById('success_paid_amount').innerText = currentCheckout.priceString;
 
             document.getElementById('paymentSuccessScreen').classList.remove('hidden');
 
-            // Gửi tin nhắn xác nhận vào chatbot
             if (typeof addChatMessage === 'function') {
-                addChatMessage('bot', `🎉 Tuyệt vời! SePay đã xác nhận thanh toán thành công số tiền <strong>${currentCheckout.priceString}</strong> cho đơn hàng <strong>${currentCheckout.orderCode}</strong>. Đơn hàng đã được lưu và chuyên viên sẽ gửi hàng ngay!`);
+                addChatMessage('bot', `🎉 Tuyệt vời! SePay đã xác nhận thanh toán thành công <strong>${currentCheckout.priceString}</strong> cho đơn hàng <strong>${currentCheckout.orderCode}</strong>. Hệ thống đã tự động gửi <strong>Email xác nhận đơn hàng</strong> tới <strong>${currentCheckout.customerEmail}</strong> và chuyển trạng thái đơn trong <a href="/admin" class="underline font-bold text-brand-orange">/admin</a> sang <strong>'success'</strong>!`);
             }
         }
 
