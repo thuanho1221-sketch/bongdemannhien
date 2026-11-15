@@ -3,7 +3,7 @@ const { sendEmail } = require('./_email');
 const { orderConfirmationEmail } = require('./_sequence');
 
 const NOW = "datetime('now','+7 hours')"; // giờ Việt Nam
-const STATUSES = ['pending', 'paid', 'completed', 'cancelled'];
+const STATUSES = ['pending', 'paid', 'success', 'completed', 'cancelled'];
 const TYPES = ['physical', 'digital', 'service'];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -92,10 +92,30 @@ module.exports = async (req, res) => {
         break;
 
       case 'add_order': {
-        const cust = id(data.customer_id), prod = id(data.product_id);
+        let cust = Number(data.customer_id) || 0;
+        const prod = id(data.product_id || 1);
         const amountVal = num(data.amount, 'Số tiền');
         const status = STATUSES.includes(data.status) ? data.status : 'paid';
         const inputEmail = data.email ? email(data.email) : null;
+
+        // Nếu đơn tạo từ trang chủ (chưa có customer_id), tự động tìm hoặc tạo khách hàng theo SĐT
+        if (!cust && data.customer_phone) {
+          const cleanPhone = String(data.customer_phone).replace(/[\s.\-()]/g, '');
+          const cName = str(data.customer_name, 100) || 'Khách hàng Sportfit';
+          await db.execute({
+            sql: `INSERT INTO customers (name, phone, zalo, email, notes, registered_at)
+                  VALUES (?, ?, ?, ?, ?, ${NOW})
+                  ON CONFLICT(phone) DO UPDATE SET
+                    name = excluded.name,
+                    email = COALESCE(excluded.email, customers.email)`,
+            args: [cName, cleanPhone, cleanPhone, inputEmail, str(data.notes, 300) || null],
+          });
+          const foundC = await db.execute({ sql: 'SELECT id FROM customers WHERE phone=?', args: [cleanPhone] });
+          if (foundC && foundC.rows && foundC.rows[0]) {
+            cust = Number(foundC.rows[0].id);
+          }
+        }
+        if (!cust) cust = 1;
 
         const stmts = [
           { sql: 'INSERT INTO orders (customer_id,product_id,amount,status,order_date) VALUES (?,?,?,?,' + NOW + ')', args: [cust, prod, amountVal, status] },
@@ -117,14 +137,14 @@ module.exports = async (req, res) => {
         const custRow = (custRes && custRes.rows && custRes.rows[0]) || {};
         const prodRow = (prodRes && prodRes.rows && prodRes.rows[0]) || {};
         const ordRow = (ordRes && ordRes.rows && ordRes.rows[0]) || {};
-        const orderId = ordRow.id || data.order_id || '';
+        const orderId = data.order_code || ordRow.id || data.order_id || '';
         const toEmail = inputEmail || custRow.email || process.env.EMAIL_REPLY_TO || 'thuanho1221@gmail.com';
 
         let emailSent = false;
         let emailId = null;
         let emailError = null;
 
-        if (toEmail) {
+        if (toEmail && !data.skip_email) {
           try {
             const msg = orderConfirmationEmail({
               orderId,
@@ -153,7 +173,8 @@ module.exports = async (req, res) => {
         return send(200, {
           success: true,
           message: 'Đã tạo đơn hàng thành công',
-          order_id: orderId,
+          order_id: ordRow.id || orderId,
+          customer_id: cust,
           email_sent: emailSent,
           email_to: toEmail,
           email_id: emailId,

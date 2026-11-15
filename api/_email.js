@@ -29,16 +29,26 @@ async function sendEmail({ to, subject, html, text, scheduledAt }) {
     body.scheduled_at = scheduledAt; // ISO 8601 string: Resend hỗ trợ hẹn giờ gửi
   }
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + key,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
+  const sendOnce = async () => {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + key,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { res, data };
+  };
 
-  const data = await res.json().catch(() => ({}));
+  let { res, data } = await sendOnce();
+  // Nếu chạm giới hạn 2 req/giây của Resend (HTTP 429), chờ 1.2s rồi thử lại
+  if (res.status === 429) {
+    await new Promise((r) => setTimeout(r, 1200));
+    ({ res, data } = await sendOnce());
+  }
+
   if (!res.ok) {
     const errText = data.message || JSON.stringify(data);
     throw new Error(`Resend ${res.status}: ${errText}`);

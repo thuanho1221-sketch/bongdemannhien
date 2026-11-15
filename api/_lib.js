@@ -163,6 +163,13 @@ function createLocalClient() {
       saveStore();
       return { rows: [] };
     }
+    if (T(/^UPDATE orders SET status ?= ?\? WHERE id ?= ?\?/i)) {
+      const [status, id] = args;
+      const o = s.orders.find((x) => x.id === Number(id));
+      if (o) o.status = status;
+      saveStore();
+      return { rows: [] };
+    }
     if (T(/^UPDATE orders/i)) {
       const [customer_id, product_id, amount, status, id] = args;
       const o = s.orders.find((x) => x.id === Number(id));

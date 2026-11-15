@@ -39,8 +39,8 @@ async function runSequence(db, cust, ctx) {
     // Nếu không phải test và bước này đã gửi rồi thì bỏ qua
     if (!test && cust && cust[s.col]) continue;
 
-    // Giữ khoảng cách giữa các request để không vượt quá giới hạn 2 req/giây của Resend
-    if (results.length) await sleep(600);
+    // Giữ khoảng cách 1.1s giữa các request để không vượt quá giới hạn 2 req/giây của Resend
+    if (results.length) await sleep(1100);
 
     const msg = s.build(c);
     if (test) {
