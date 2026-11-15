@@ -96,7 +96,8 @@ module.exports = async (req, res) => {
         const prod = id(data.product_id || 1);
         const amountVal = num(data.amount, 'Số tiền');
         const status = STATUSES.includes(data.status) ? data.status : 'paid';
-        const inputEmail = data.email ? email(data.email) : null;
+        const rawEmail = data.email || data.customer_email;
+        const inputEmail = rawEmail ? email(rawEmail) : null;
 
         // Nếu đơn tạo từ trang chủ (chưa có customer_id), tự động tìm hoặc tạo khách hàng theo SĐT
         if (!cust && data.customer_phone) {
@@ -173,6 +174,7 @@ module.exports = async (req, res) => {
         return send(200, {
           success: true,
           message: 'Đã tạo đơn hàng thành công',
+          id: ordRow.id || orderId,
           order_id: ordRow.id || orderId,
           customer_id: cust,
           email_sent: emailSent,
@@ -181,10 +183,21 @@ module.exports = async (req, res) => {
           email_error: emailError,
         });
       }
-      case 'edit_order':
-        await db.execute({ sql: 'UPDATE orders SET customer_id=?,product_id=?,amount=?,status=? WHERE id=?',
-          args: [id(data.customer_id), id(data.product_id), num(data.amount, 'Số tiền'), STATUSES.includes(data.status) ? data.status : 'paid', id(data.id)] });
+      case 'edit_order': {
+        const nextStatus = STATUSES.includes(data.status) ? data.status : 'paid';
+        if (data.customer_id && data.product_id && data.amount !== undefined) {
+          await db.execute({
+            sql: 'UPDATE orders SET customer_id=?,product_id=?,amount=?,status=? WHERE id=?',
+            args: [id(data.customer_id), id(data.product_id), num(data.amount, 'Số tiền'), nextStatus, id(data.id)],
+          });
+        } else {
+          await db.execute({
+            sql: 'UPDATE orders SET status=? WHERE id=?',
+            args: [nextStatus, id(data.id)],
+          });
+        }
         break;
+      }
       case 'delete_order':
         await db.execute({ sql: 'DELETE FROM orders WHERE id=?', args: [id(data.id)] });
         break;

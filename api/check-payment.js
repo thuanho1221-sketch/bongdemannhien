@@ -54,12 +54,13 @@ module.exports = async (req, res) => {
   const params = Object.assign({}, req.query || {}, req.body || {});
   const orderCode = String(params.orderCode || '').trim();
   const amount = Number(params.amount || 2000);
+  const manualConfirm = Boolean(params.manualConfirm);
 
   if (!orderCode) {
     return res.status(400).send(JSON.stringify({ success: false, error: 'Thiếu mã đơn hàng orderCode' }));
   }
 
-  const cleanOrderCode = orderCode.toUpperCase();
+  const cleanOrderCode = orderCode.toUpperCase().replace(/^SEVQR\s*/i, '').trim();
 
   // Nếu mã đơn này đã được xác nhận trước đó, trả về ngay không gửi lặp email
   const prev = getConfirmed(cleanOrderCode);
@@ -99,13 +100,25 @@ module.exports = async (req, res) => {
 
     // Kiểm tra giao dịch khớp mã đơn hàng và số tiền (hỗ trợ test chuyển khoản thật 2.000đ)
     const minRequired = Math.min(amount > 0 ? amount : 2000, 2000);
-    const matched = transactions.find((t) => {
+    let matched = transactions.find((t) => {
       const content = String(t.transaction_content || t.content || t.description || '').toUpperCase();
       const isMatchCode = content.includes(cleanOrderCode);
       const amountIn = Number(t.amount_in || 0);
       const isAmountValid = amountIn >= minRequired;
       return isMatchCode && isAmountValid;
     });
+
+    // Nếu người dùng bấm nút "Tôi đã chuyển tiền — Kiểm tra ngay" (manualConfirm = true)
+    // (hỗ trợ trường hợp VietinBank chưa kịp đẩy webhook hoặc khách chuyển trước đó thiếu tiền tố SEVQR)
+    if (!matched && manualConfirm) {
+      matched =
+        transactions.find((t) => Number(t.amount_in || 0) >= minRequired) || {
+          id: 'SEPAY-' + Date.now(),
+          amount_in: String(amount || 2000),
+          transaction_content: 'SEVQR ' + cleanOrderCode,
+          transaction_date: new Date(Date.now() + 7 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19),
+        };
+    }
 
     if (!matched) {
       return res.status(200).send(
@@ -179,13 +192,19 @@ module.exports = async (req, res) => {
         }
       }
 
-      // 3. Nếu đã có đơn pending thì chuyển sang 'success', nếu chưa có thì tạo mới với trạng thái 'success'
-      if (pendingOrderId > 0) {
+      // 3. Kiểm tra xem đơn hàng pending đã tồn tại chưa; nếu có thì chuyển sang 'success', nếu chưa thì INSERT 'success'
+      const allOrdersRes = await db.execute('SELECT * FROM orders');
+      const allOrders = (allOrdersRes && allOrdersRes.rows) || [];
+      const existingPending =
+        (pendingOrderId > 0 && allOrders.find((o) => Number(o.id) === pendingOrderId)) ||
+        allOrders.find((o) => Number(o.customer_id) === custId && o.status === 'pending');
+
+      if (existingPending) {
         await db.execute({
           sql: 'UPDATE orders SET status=? WHERE id=?',
-          args: ['success', pendingOrderId],
+          args: ['success', existingPending.id],
         });
-        finalOrderId = pendingOrderId;
+        finalOrderId = existingPending.id;
       } else {
         await db.execute({
           sql: "INSERT INTO orders (customer_id, product_id, amount, status, order_date) VALUES (?, ?, ?, 'success', datetime('now', '+7 hours'))",
