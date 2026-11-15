@@ -361,6 +361,7 @@
                 <div>
                     <label class="block font-bold text-gray-700 uppercase text-[11px] mb-1">Trạng thái đơn hàng</label>
                     <select id="ord_status" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange font-bold bg-white">
+                        <option value="success">🟢 Thành công (success)</option>
                         <option value="paid">🟢 Đã thanh toán (paid)</option>
                         <option value="pending">🟡 Chờ thanh toán (pending)</option>
                         <option value="completed">🔵 Hoàn thành (completed)</option>
@@ -382,6 +383,40 @@
         const API_BASE = location.protocol === 'file:' ? 'http://localhost:3000' : '';
         const API_URL = API_BASE + '/api/admin';
         const TOKEN_KEY = 'bdmn_admin_token';
+
+        // Biến lưu trữ trạng thái dữ liệu
+        let dbState = {
+            products: [],
+            customers: [],
+            orders: []
+        };
+
+        // Chuyển đổi giữa 3 tab: products, customers, orders
+        function switchTab(tabName) {
+            const tabs = ['products', 'customers', 'orders'];
+            tabs.forEach(t => {
+                const contentEl = document.getElementById('tab-content-' + t);
+                const btnEl = document.getElementById('tab-btn-' + t);
+                const badgeEl = document.getElementById('badge-' + t);
+                if (t === tabName) {
+                    if (contentEl) contentEl.classList.remove('hidden');
+                    if (btnEl) {
+                        btnEl.className = 'tab-btn flex-1 py-3 px-4 rounded-xl font-sport font-black text-xs sm:text-sm transition flex items-center justify-center gap-2 bg-brand-orange text-white shadow-md';
+                    }
+                    if (badgeEl) {
+                        badgeEl.className = 'bg-black/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full';
+                    }
+                } else {
+                    if (contentEl) contentEl.classList.add('hidden');
+                    if (btnEl) {
+                        btnEl.className = 'tab-btn flex-1 py-3 px-4 rounded-xl font-sport font-black text-xs sm:text-sm transition flex items-center justify-center gap-2 bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-brand-orange';
+                    }
+                    if (badgeEl) {
+                        badgeEl.className = 'bg-gray-200 text-gray-700 text-[10px] font-black px-2 py-0.5 rounded-full';
+                    }
+                }
+            });
+        }
 
         function escHtml(v) {
             return String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -412,14 +447,19 @@
             }
         }
 
-        const SEED_FALLBACK = {"products": [{"id": 1, "name": "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1", "product_type": "physical", "price": 489000.0, "description": "Phân định 4 vùng cơ bằng mã màu, chịu tải 200kg, kèm tay nắm chống trượt.", "stock_quantity": 150, "created_at": "2026-11-13 09:17:56"}, {"id": 2, "name": "Bộ 5 Dây Kháng Lực Ngũ Sắc Đàn Hồi Cao Cấp", "product_type": "physical", "price": 429000.0, "description": "100% cao su Latex tự nhiên nguyên chất, tải lực 10-150 lbs, không mùi.", "stock_quantity": 200, "created_at": "2026-11-13 09:17:56"}, {"id": 3, "name": "Vợt Cầu Lông Carbon Pro Nanoflare 4U", "product_type": "physical", "price": 1190000.0, "description": "Khung Carbon nguyên khối 82g, sức căng 11.5kg, trợ lực cổ tay đập cầu cắm sân.", "stock_quantity": 50, "created_at": "2026-11-13 09:17:56"}, {"id": 4, "name": "Vợt Pickleball Carbon Fiber T700 USAPA", "product_type": "physical", "price": 1150000.0, "description": "Mặt Carbon T700 nhám tạo xoáy, lõi tổ ong polymer giảm chấn triệt tiêu đau cùi chỏ.", "stock_quantity": 80, "created_at": "2026-11-13 09:17:56"}, {"id": 5, "name": "Con Lăn Tập Cơ Bụng Bánh Kép Tự Động Thu Hồi", "product_type": "physical", "price": 459000.0, "description": "Lò xo thép carbon trợ lực chống ngã, bánh xe bọc cao su êm ái kèm đệm quỳ gối.", "stock_quantity": 120, "created_at": "2026-11-13 09:17:56"}, {"id": 6, "name": "Giày Thể Thao Cầu Lông & Pickleball Đế Kép", "product_type": "physical", "price": 1250000.0, "description": "Đế Non-Marking chống lật cổ chân, đệm khí Air bảo vệ khớp gối khi bật nhảy.", "stock_quantity": 45, "created_at": "2026-11-13 09:17:56"}, {"id": 7, "name": "Combo Starter Kit VĐV Thực Chiến Trọn Gói", "product_type": "physical", "price": 890000.0, "description": "Trọn bộ dụng cụ tuyển chọn theo môn + kèm quà tặng và tư vấn chuyên sâu.", "stock_quantity": 100, "created_at": "2026-11-13 09:17:56"}, {"id": 8, "name": "Trọn Bộ Video 30 Bài Tập Thể Thao HD Chuẩn HLV", "product_type": "digital", "price": 199000.0, "description": "Giáo án video chi tiết từ khởi động, form động tác chuẩn đến phòng ngừa chấn thương.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 9, "name": "Ebook Lộ Trình Khởi Sự Kinh Doanh & Luyện Tập Tinh Gọn", "product_type": "digital", "price": 149000.0, "description": "Cẩm nang bóc tách rủi ro, quản trị dòng tiền và chiến lược kỷ luật dành cho người đi làm.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 10, "name": "Gói Tư Vấn Kỹ Thuật 1-1 Theo Môn Cùng Chuyên Gia", "product_type": "service", "price": 300000.0, "description": "Phân tích thể trạng, tư vấn chọn dụng cụ chính xác và chỉnh sửa form động tác 1-1 qua Zalo trong 30 ngày.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 11, "name": "Vợt cầu lông", "product_type": "physical", "price": 500000.0, "description": "", "stock_quantity": 10, "created_at": "2026-11-13 09:24:28"}], "customers": [{"id": 1, "name": "Nguyễn Minh Quân", "phone": "0912345678", "zalo": "0912345678", "registered_at": "2026-11-09 10:15:00", "created_at": "2026-11-13 09:17:56", "notes": "Kỹ sư phần mềm, cần giảm mỡ bụng & đau lưng vai"}, {"id": 2, "name": "Trần Thu Thảo", "phone": "0987654321", "zalo": "0987654321", "registered_at": "2026-11-10 14:20:00", "created_at": "2026-11-13 09:17:56", "notes": "Mẹ bỉm sữa, tập tại nhà lúc con ngủ"}, {"id": 3, "name": "Lê Hoàng Long", "phone": "0905123456", "zalo": "0905123456", "registered_at": "2026-11-10 18:45:00", "created_at": "2026-11-13 09:17:56", "notes": "Freelancer, mới bắt đầu tập gym"}, {"id": 4, "name": "Phạm Lan Anh", "phone": "0933221100", "zalo": "0933221100", "registered_at": "2026-11-11 09:30:00", "created_at": "2026-11-13 09:17:56", "notes": "Kế toán, quan tâm dây kháng lực"}, {"id": 5, "name": "Võ Đức Thành", "phone": "0977889900", "zalo": "0977889900", "registered_at": "2026-11-11 16:10:00", "created_at": "2026-11-13 09:17:56", "notes": "Sales, cần dây nhảy và con lăn"}, {"id": 6, "name": "Đặng Trọng Nghĩa", "phone": "0911223344", "zalo": "0911223344", "registered_at": "2026-11-12 11:05:00", "created_at": "2026-11-13 09:17:56", "notes": "VĐV cầu lông phong trào 7 năm"}, {"id": 7, "name": "Hoàng Bảo Châu", "phone": "0966778899", "zalo": "0966778899", "registered_at": "2026-11-12 15:40:00", "created_at": "2026-11-13 09:17:56", "notes": "Chơi pickleball, cần vợt Carbon T700"}], "orders": [{"id": 1, "customer_id": 3, "product_id": 1, "amount": 489000.0, "status": "paid", "order_date": "2026-11-12 14:30:00", "created_at": "2026-11-13 09:17:56"}, {"id": 2, "customer_id": 6, "product_id": 2, "amount": 429000.0, "status": "pending", "order_date": "2026-11-13 09:15:00", "created_at": "2026-11-13 09:17:56"}, {"id": 3, "customer_id": 1, "product_id": 3, "amount": 1190000.0, "status": "completed", "order_date": "2026-11-13 11:20:00", "created_at": "2026-11-13 09:17:56"}]};
+        const SEED_FALLBACK = {"products": [{"id": 1, "name": "Bảng Tập Chống Đẩy Đa Năng 14 Trong 1", "product_type": "physical", "price": 489000.0, "description": "Phân định 4 vùng cơ bằng mã màu, chịu tải 200kg, kèm tay nắm chống trượt.", "stock_quantity": 150, "created_at": "2026-11-13 09:17:56"}, {"id": 2, "name": "Bộ 5 Dây Kháng Lực Ngũ Sắc Đàn Hồi Cao Cấp", "product_type": "physical", "price": 429000.0, "description": "100% cao su Latex tự nhiên nguyên chất, tải lực 10-150 lbs, không mùi.", "stock_quantity": 200, "created_at": "2026-11-13 09:17:56"}, {"id": 3, "name": "Vợt Cầu Lông Carbon Pro Nanoflare 4U", "product_type": "physical", "price": 1190000.0, "description": "Khung Carbon nguyên khối 82g, sức căng 11.5kg, trợ lực cổ tay đập cầu cắm sân.", "stock_quantity": 50, "created_at": "2026-11-13 09:17:56"}, {"id": 4, "name": "Vợt Pickleball Carbon Fiber T700 USAPA", "product_type": "physical", "price": 1150000.0, "description": "Mặt Carbon T700 nhám tạo xoáy, lõi tổ ong polymer giảm chấn triệt tiêu đau cùi chỏ.", "stock_quantity": 80, "created_at": "2026-11-13 09:17:56"}, {"id": 5, "name": "Con Lăn Tập Cơ Bụng Bánh Kép Tự Động Thu Hồi", "product_type": "physical", "price": 459000.0, "description": "Lò xo thép carbon trợ lực chống ngã, bánh xe bọc cao su êm ái kèm đệm quỳ gối.", "stock_quantity": 120, "created_at": "2026-11-13 09:17:56"}, {"id": 6, "name": "Giày Thể Thao Cầu Lông & Pickleball Đế Kép", "product_type": "physical", "price": 1250000.0, "description": "Đế Non-Marking chống lật cổ chân, đệm khí Air bảo vệ khớp gối khi bật nhảy.", "stock_quantity": 45, "created_at": "2026-11-13 09:17:56"}, {"id": 7, "name": "Combo Starter Kit VĐV Thực Chiến Trọn Gói", "product_type": "physical", "price": 890000.0, "description": "Trọn bộ dụng cụ tuyển chọn theo môn + kèm quà tặng và tư vấn chuyên sâu.", "stock_quantity": 100, "created_at": "2026-11-13 09:17:56"}, {"id": 8, "name": "Trọn Bộ Video 30 Bài Tập Thể Thao HD Chuẩn HLV", "product_type": "digital", "price": 199000.0, "description": "Giáo án video chi tiết từ khởi động, form động tác chuẩn đến phòng ngừa chấn thương.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 9, "name": "Ebook Lộ Trình Khởi Sự Kinh Doanh & Luyện Tập Tinh Gọn", "product_type": "digital", "price": 149000.0, "description": "Cẩm nang bóc tách rủi ro, quản trị dòng tiền và chiến lược kỷ luật dành cho người đi làm.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 10, "name": "Gói Tư Vấn Kỹ Thuật 1-1 Theo Môn Cùng Chuyên Gia", "product_type": "service", "price": 300000.0, "description": "Phân tích thể trạng, tư vấn chọn dụng cụ chính xác và chỉnh sửa form động tác 1-1 qua Zalo trong 30 ngày.", "stock_quantity": null, "created_at": "2026-11-13 09:17:56"}, {"id": 11, "name": "Vợt cầu lông", "product_type": "physical", "price": 500000.0, "description": "", "stock_quantity": 10, "created_at": "2026-11-13 09:24:28"}], "customers": [{"id": 1, "name": "Nguyễn Minh Quân", "phone": "0912345678", "zalo": "0912345678", "registered_at": "2026-11-09 10:15:00", "created_at": "2026-11-13 09:17:56", "notes": "Kỹ sư phần mềm, cần giảm mỡ bụng & đau lưng vai"}, {"id": 2, "name": "Trần Thu Thảo", "phone": "0987654321", "zalo": "0987654321", "registered_at": "2026-11-10 14:20:00", "created_at": "2026-11-13 09:17:56", "notes": "Mẹ bỉm sữa, tập tại nhà lúc con ngủ"}, {"id": 3, "name": "Lê Hoàng Long", "phone": "0905123456", "zalo": "0905123456", "registered_at": "2026-11-10 18:45:00", "created_at": "2026-11-13 09:17:56", "notes": "Freelancer, mới bắt đầu tập gym"}, {"id": 4, "name": "Phạm Lan Anh", "phone": "0933221100", "zalo": "0933221100", "registered_at": "2026-11-11 09:30:00", "created_at": "2026-11-13 09:17:56", "notes": "Kế toán, quan tâm dây kháng lực"}, {"id": 5, "name": "Võ Đức Thành", "phone": "0977889900", "zalo": "0977889900", "registered_at": "2026-11-11 16:10:00", "created_at": "2026-11-13 09:17:56", "notes": "Sales, cần dây nhảy và con lăn"}, {"id": 6, "name": "Đặng Trọng Nghĩa", "phone": "0911223344", "zalo": "0911223344", "registered_at": "2026-11-12 11:05:00", "created_at": "2026-11-13 09:17:56", "notes": "VĐV cầu lông phong trào 7 năm"}, {"id": 7, "name": "Hoàng Bảo Châu", "phone": "0966778899", "zalo": "0966778899", "registered_at": "2026-11-12 15:40:00", "created_at": "2026-11-13 09:17:56", "notes": "Chơi pickleball, cần vợt Carbon T700"}], "orders": [{"id": 1, "customer_id": 3, "product_id": 1, "amount": 489000.0, "status": "success", "order_date": "2026-11-12 14:30:00", "created_at": "2026-11-13 09:17:56"}, {"id": 2, "customer_id": 6, "product_id": 2, "amount": 429000.0, "status": "pending", "order_date": "2026-11-13 09:15:00", "created_at": "2026-11-13 09:17:56"}, {"id": 3, "customer_id": 1, "product_id": 3, "amount": 1190000.0, "status": "completed", "order_date": "2026-11-13 11:20:00", "created_at": "2026-11-13 09:17:56"}]};
         const LOCAL_STORE_KEY = 'sportfit_admin_store_v1';
         function loadLocalFallback() {
             try {
                 const raw = localStorage.getItem(LOCAL_STORE_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    if (parsed && Array.isArray(parsed.products)) return parsed;
+                    if (parsed && (Array.isArray(parsed.products) || Array.isArray(parsed.orders) || Array.isArray(parsed.customers))) {
+                        if (!Array.isArray(parsed.products) || !parsed.products.length) parsed.products = [...SEED_FALLBACK.products];
+                        if (!Array.isArray(parsed.customers)) parsed.customers = [];
+                        if (!Array.isArray(parsed.orders)) parsed.orders = [];
+                        return parsed;
+                    }
                 }
             } catch (_) {}
             const init = JSON.parse(JSON.stringify(SEED_FALLBACK));
@@ -436,14 +476,21 @@
             dbState.orders = s.orders.map(o => {
                 const c = s.customers.find(x => x.id == o.customer_id) || {};
                 const p = s.products.find(x => x.id == o.product_id) || {};
-                return { ...o, customer_name: c.name || ('Khách #' + o.customer_id), customer_phone: c.phone || '', customer_email: c.email || '', product_name: p.name || ('SP #' + o.product_id), product_type: p.product_type || 'physical' };
+                return {
+                    ...o,
+                    customer_name: o.customer_name || c.name || ('Khách #' + o.customer_id),
+                    customer_phone: o.customer_phone || c.phone || '',
+                    customer_email: o.customer_email || c.email || '',
+                    product_name: o.product_name || p.name || ('SP #' + o.product_id),
+                    product_type: o.product_type || p.product_type || 'physical'
+                };
             }).sort((a, b) => b.id - a.id);
             renderAll();
         }
         function runLocalAction(payload) {
             const s = loadLocalFallback();
             const act = payload.action;
-            const d = payload.data || {};
+            const d = payload.data || payload || {};
             const now = new Date(Date.now() + 7*3600*1000).toISOString().replace('T', ' ').slice(0, 19);
             const nextId = arr => arr.reduce((m, x) => Math.max(m, Number(x.id) || 0), 0) + 1;
             if (act === 'add_product') {
@@ -461,7 +508,7 @@
             } else if (act === 'delete_customer') {
                 s.customers = s.customers.filter(x => x.id != d.id);
             } else if (act === 'add_order') {
-                s.orders.push({ id: nextId(s.orders), customer_id: Number(d.customer_id), product_id: Number(d.product_id), amount: Number(d.amount)||0, status: d.status||'paid', order_date: now, created_at: now });
+                s.orders.push({ id: nextId(s.orders), customer_id: Number(d.customer_id), product_id: Number(d.product_id), amount: Number(d.amount)||0, status: d.status||'success', order_date: now, created_at: now });
                 const p = s.products.find(x => x.id == d.product_id);
                 if (p && p.product_type === 'physical') p.stock_quantity = Math.max(0, (Number(p.stock_quantity)||0) - 1);
                 if (d.email) {
@@ -470,7 +517,7 @@
                 }
             } else if (act === 'edit_order') {
                 const o = s.orders.find(x => x.id == d.id);
-                if (o) Object.assign(o, { customer_id: Number(d.customer_id), product_id: Number(d.product_id), amount: Number(d.amount)||0, status: d.status||'paid' });
+                if (o) Object.assign(o, { customer_id: Number(d.customer_id || o.customer_id), product_id: Number(d.product_id || o.product_id), amount: Number(d.amount ?? o.amount)||0, status: d.status||'success' });
             } else if (act === 'delete_order') {
                 s.orders = s.orders.filter(x => x.id != d.id);
             }
@@ -485,8 +532,9 @@
             return await fetch(API_URL, Object.assign({}, options, { headers }));
         }
 
-        // Tải toàn bộ dữ liệu từ /api/admin (tự động dùng dữ liệu dự phòng nếu API lỗi)
+        // Tải toàn bộ dữ liệu từ /api/admin và gộp các đơn hàng/khách hàng vừa phát sinh trên trình duyệt
         async function fetchAllData() {
+            const localStore = loadLocalFallback();
             try {
                 const res = await apiFetch();
                 let data = null;
@@ -494,9 +542,48 @@
                 if (!res.ok || !data || !data.success) {
                     throw new Error((data && data.error) ? data.error : ('HTTP ' + res.status));
                 }
-                dbState.products = data.products || [];
-                dbState.customers = data.customers || [];
-                dbState.orders = data.orders || [];
+
+                const serverProducts = data.products || [];
+                const serverCustomers = data.customers || [];
+                const serverOrders = data.orders || [];
+
+                // Gộp khách hàng từ localStore (nếu vừa đăng ký waitlist / đặt đơn trên trình duyệt mà khác instance serverless)
+                const mergedCustomers = [...serverCustomers];
+                (localStore.customers || []).forEach(lc => {
+                    const exists = mergedCustomers.some(sc =>
+                        (lc.phone && sc.phone && String(sc.phone).trim() === String(lc.phone).trim()) ||
+                        Number(sc.id) === Number(lc.id)
+                    );
+                    if (!exists) mergedCustomers.unshift(lc);
+                });
+
+                // Gộp đơn hàng từ localStore (ưu tiên trạng thái 'success' nếu đơn vừa thanh toán SePay)
+                const mergedOrders = [...serverOrders];
+                (localStore.orders || []).forEach(lo => {
+                    const matchIdx = mergedOrders.findIndex(so =>
+                        Number(so.id) === Number(lo.id) ||
+                        (lo.customer_phone && so.customer_phone === lo.customer_phone && Number(so.amount) === Number(lo.amount))
+                    );
+                    if (matchIdx >= 0) {
+                        if (lo.status === 'success') {
+                            mergedOrders[matchIdx].status = 'success';
+                        }
+                        if (lo.order_code && !mergedOrders[matchIdx].order_code) {
+                            mergedOrders[matchIdx].order_code = lo.order_code;
+                        }
+                    } else if (lo.order_code || Number(lo.id) > 1000) {
+                        const p = serverProducts.find(x => x.id == lo.product_id) || {};
+                        mergedOrders.unshift({
+                            ...lo,
+                            product_name: lo.product_name || p.name || ('Sản phẩm #' + lo.product_id),
+                            product_type: lo.product_type || p.product_type || 'physical'
+                        });
+                    }
+                });
+
+                dbState.products = serverProducts;
+                dbState.customers = mergedCustomers;
+                dbState.orders = mergedOrders;
                 saveLocalFallback({ products: dbState.products, customers: dbState.customers, orders: dbState.orders });
                 renderAll();
             } catch (err) {
@@ -594,22 +681,29 @@
 
             tbody.innerHTML = dbState.orders.map(o => {
                 let statusBadge = '';
-                if (o.status === 'paid') {
-                    statusBadge = `<span class="bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded text-[11px]">Đã thanh toán</span>`;
+                if (o.status === 'success') {
+                    statusBadge = `<span class="bg-green-100 text-green-800 border border-green-300 font-bold px-2.5 py-1 rounded-full text-[11px]">🟢 success</span>`;
+                } else if (o.status === 'paid') {
+                    statusBadge = `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]">🟢 paid (Đã thanh toán)</span>`;
                 } else if (o.status === 'pending') {
-                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 font-bold px-2 py-0.5 rounded text-[11px]">Chờ thanh toán</span>`;
+                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 font-bold px-2 py-0.5 rounded text-[11px]">🟡 pending (Chờ TT)</span>`;
                 } else if (o.status === 'completed') {
-                    statusBadge = `<span class="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded text-[11px]">Hoàn thành</span>`;
+                    statusBadge = `<span class="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded text-[11px]">🔵 completed</span>`;
                 } else {
-                    statusBadge = `<span class="bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded text-[11px]">Đã hủy</span>`;
+                    statusBadge = `<span class="bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded text-[11px]">🔴 cancelled</span>`;
                 }
+
+                const quickSuccessBtn = o.status !== 'success'
+                    ? `<button onclick="quickSetOrderSuccess(${o.id})" class="bg-green-600 hover:bg-green-700 text-white text-[10px] font-bold px-2 py-1 rounded mr-1 transition" title="Chuyển trạng thái sang success"><i class="fa-solid fa-check"></i> Chuyển 'success'</button>`
+                    : '';
 
                 return `
                     <tr class="hover:bg-orange-50/40 transition">
-                        <td class="p-3.5 font-sport font-black text-brand-dark">#SF-${o.id}</td>
+                        <td class="p-3.5 font-sport font-black text-brand-dark">#SF-${o.id}${o.order_code ? `<span class="block text-[10px] font-sans text-brand-orange">${escHtml(o.order_code)}</span>` : ''}</td>
                         <td class="p-3.5">
                             <strong class="text-gray-900 block">${escHtml(o.customer_name || 'Khách #' + o.customer_id)}</strong>
                             <span class="text-gray-400 text-xs">${escHtml(o.customer_phone)}</span>
+                            ${o.customer_email ? `<span class="block text-[11px] text-green-700">${escHtml(o.customer_email)}</span>` : ''}
                         </td>
                         <td class="p-3.5">
                             <span class="font-bold text-gray-800">${escHtml(o.product_name || 'Sản phẩm #' + o.product_id)}</span>
@@ -619,12 +713,29 @@
                         <td class="p-3.5">${statusBadge}</td>
                         <td class="p-3.5 text-xs text-gray-500">${o.order_date || o.created_at || '—'}</td>
                         <td class="p-3.5 text-center whitespace-nowrap">
+                            ${quickSuccessBtn}
                             <button onclick="editOrder(${o.id})" class="text-blue-600 hover:text-blue-800 font-bold px-2 py-1"><i class="fa-solid fa-pen-to-square"></i> Sửa</button>
                             <button onclick="deleteOrder(${o.id})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1 ml-1"><i class="fa-solid fa-trash"></i> Xóa</button>
                         </td>
                     </tr>
                 `;
             }).join('');
+        }
+
+        async function quickSetOrderSuccess(id) {
+            const o = dbState.orders.find(item => item.id == id);
+            if (!o) return;
+            await sendApiRequest({
+                action: 'edit_order',
+                data: {
+                    id: o.id,
+                    customer_id: o.customer_id,
+                    product_id: o.product_id,
+                    amount: o.amount,
+                    status: 'success'
+                }
+            });
+            fetchAllData();
         }
 
         // ================== CÁC HÀM XỬ LÝ SẢN PHẨM ==================
@@ -800,7 +911,7 @@
             document.getElementById('ord_email').value = 'thuanho1221@gmail.com';
             document.getElementById('ord_product_id').value = '';
             document.getElementById('ord_amount').value = '';
-            document.getElementById('ord_status').value = 'paid';
+            document.getElementById('ord_status').value = 'success';
             document.getElementById('orderModalTitle').innerText = 'Tạo Đơn Hàng Mới';
             document.getElementById('orderStockAlert').classList.remove('hidden');
             document.getElementById('ord_email_wrapper').classList.remove('hidden');
@@ -893,7 +1004,12 @@
         }
 
         // Tự động load dữ liệu khi mở trang
-        document.addEventListener('DOMContentLoaded', fetchAllData);
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAllData();
+            if (location.hash === '#orders' || location.search.includes('orders')) {
+                switchTab('orders');
+            }
+        });
     </script>
 </body>
 </html>
