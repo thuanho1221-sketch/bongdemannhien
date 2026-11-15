@@ -347,7 +347,7 @@
                             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
                                 Số điện thoại / Zalo <span class="text-red-500">*</span>
                             </label>
-                            <input type="tel" id="inline_wl_phone" name="phone" required placeholder="Ví dụ: 0359181278"
+                            <input type="tel" id="inline_wl_phone" name="phone" required inputmode="tel" pattern="^(0|\+?84)(3|5|7|8|9)[0-9]{8}$" title="Vui lòng nhập đúng 10 số điện thoại Việt Nam (đầu 03, 05, 07, 08, 09)" placeholder="Ví dụ: 0359181278"
                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
                         </div>
                     </div>
@@ -1245,9 +1245,9 @@
                         <label for="survey_phone" class="block font-bold text-sm sm:text-base text-gray-900 mb-1">
                             2. Số điện thoại/Zalo của bạn là gì? <span class="text-red-500">*</span>
                         </label>
-                        <p class="text-xs text-gray-500 mb-2 italic">(Trả lời ngắn)</p>
-                        <input type="tel" id="survey_phone" name="phone_zalo" required 
-                               placeholder="Ví dụ: 0988.xxx.xxx hoặc số Zalo nhận tư vấn" 
+                        <p class="text-xs text-gray-500 mb-2 italic">(Nhập đúng 10 số di động Việt Nam, đầu 03, 05, 07, 08, 09)</p>
+                        <input type="tel" id="survey_phone" name="phone_zalo" required inputmode="tel" pattern="^(0|\+?84)(3|5|7|8|9)[0-9]{8}$" title="Vui lòng nhập đúng 10 số điện thoại Việt Nam (đầu 03, 05, 07, 08, 09)"
+                               placeholder="Ví dụ: 0988123456 hoặc số Zalo nhận tư vấn" 
                                class="w-full px-4 py-3 bg-white rounded-xl border border-gray-300 focus:outline-none focus:border-brand-orange text-sm font-medium">
                     </div>
 
@@ -2047,7 +2047,7 @@
                     <label class="block text-xs font-bold text-gray-700 uppercase mb-1">
                         Số điện thoại / Zalo nhận ưu đãi <span class="text-red-500">*</span>
                     </label>
-                    <input type="tel" id="wl_phone_number" name="phone" required placeholder="Nhập số Zalo nhận xác nhận đơn & video bài tập" 
+                    <input type="tel" id="wl_phone_number" name="phone" required inputmode="tel" pattern="^(0|\+?84)(3|5|7|8|9)[0-9]{8}$" title="Vui lòng nhập đúng 10 số điện thoại Việt Nam (đầu 03, 05, 07, 08, 09)" placeholder="Nhập số Zalo 10 số nhận xác nhận đơn & video bài tập" 
                            class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-sm font-medium">
                 </div>
 
@@ -2171,7 +2171,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Số điện thoại / Zalo <span class="text-red-500">*</span></label>
-                            <input type="tel" id="order_customer_phone" required placeholder="Ví dụ: 0359181278" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
+                            <input type="tel" id="order_customer_phone" required inputmode="tel" pattern="^(0|\+?84)(3|5|7|8|9)[0-9]{8}$" title="Vui lòng nhập đúng 10 số điện thoại Việt Nam (đầu 03, 05, 07, 08, 09)" placeholder="Ví dụ: 0359181278" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange text-xs sm:text-sm font-medium">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Email nhận xác nhận đơn <span class="text-red-500">*</span></label>
@@ -2445,12 +2445,119 @@
             });
         }
 
-        // 5. XỬ LÝ GỬI FORM KHẢO SÁT NHU CẦU & HIỂN THỊ MODAL
+        // 5. VALIDATE SỐ ĐIỆN THOẠI & EMAIL TRÊN TOÀN BỘ FORM (TRÁNH KHÁCH NHẬP SAI MẤT DATA LIÊN HỆ)
+        const VN_PHONE_REGEX = /^(?:0|\+84|84)(?:3|5|7|8|9)\d{8}$/;
+        const STRICT_EMAIL_REGEX = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+        const TYPO_EMAIL_DOMAINS = {
+            'gmai.com': 'gmail.com',
+            'gmial.com': 'gmail.com',
+            'gmail.con': 'gmail.com',
+            'gamil.com': 'gmail.com',
+            'gmail.vn': 'gmail.com',
+            'yaho.com': 'yahoo.com',
+            'yahoo.con': 'yahoo.com',
+            'hotmai.com': 'hotmail.com',
+            'hotmail.con': 'hotmail.com'
+        };
+
+        function setFieldValidationError(inputEl, errMsg) {
+            if (!inputEl) return;
+            let errEl = inputEl.parentElement.querySelector('.field-error-msg');
+            if (errMsg) {
+                inputEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                inputEl.classList.remove('border-gray-300');
+                if (!errEl) {
+                    errEl = document.createElement('p');
+                    errEl.className = 'field-error-msg text-xs text-red-600 font-semibold mt-1 flex items-center gap-1';
+                    inputEl.insertAdjacentElement('afterend', errEl);
+                }
+                errEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>${errMsg}</span>`;
+            } else {
+                inputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+                inputEl.classList.add('border-gray-300');
+                if (errEl) errEl.remove();
+            }
+        }
+
+        function validatePhoneField(inputEl) {
+            if (!inputEl) return { valid: false, value: '' };
+            const raw = String(inputEl.value || '').trim();
+            const cleaned = raw.replace(/[\s.\-()]/g, '');
+            if (!cleaned) {
+                const msg = 'Vui lòng nhập số điện thoại / Zalo để nhận liên hệ.';
+                setFieldValidationError(inputEl, msg);
+                return { valid: false, value: '', message: msg };
+            }
+            if (!VN_PHONE_REGEX.test(cleaned)) {
+                const msg = 'Số điện thoại chưa đúng (cần 10 số chuẩn đầu 03, 05, 07, 08, 09 — VD: 0912345678).';
+                setFieldValidationError(inputEl, msg);
+                return { valid: false, value: cleaned, message: msg };
+            }
+            let normalized = cleaned;
+            if (normalized.startsWith('+84')) normalized = '0' + normalized.slice(3);
+            else if (normalized.startsWith('84') && normalized.length === 11) normalized = '0' + normalized.slice(2);
+            inputEl.value = normalized;
+            setFieldValidationError(inputEl, '');
+            return { valid: true, value: normalized, message: '' };
+        }
+
+        function validateEmailField(inputEl, required = true) {
+            if (!inputEl) return { valid: !required, value: '' };
+            const cleaned = String(inputEl.value || '').trim().toLowerCase();
+            if (!cleaned) {
+                if (!required) {
+                    setFieldValidationError(inputEl, '');
+                    return { valid: true, value: '' };
+                }
+                const msg = 'Vui lòng nhập địa chỉ email để nhận xác nhận và tài liệu.';
+                setFieldValidationError(inputEl, msg);
+                return { valid: false, value: '', message: msg };
+            }
+            if (cleaned.length > 254 || /\.\./.test(cleaned) || !STRICT_EMAIL_REGEX.test(cleaned)) {
+                const msg = 'Địa chỉ email chưa đúng định dạng (ví dụ: ten@gmail.com).';
+                setFieldValidationError(inputEl, msg);
+                return { valid: false, value: cleaned, message: msg };
+            }
+            const domain = cleaned.split('@')[1];
+            if (TYPO_EMAIL_DOMAINS[domain]) {
+                const msg = `Tên miền "@${domain}" có vẻ bị gõ nhầm. Ý bạn là "@${TYPO_EMAIL_DOMAINS[domain]}" phải không?`;
+                setFieldValidationError(inputEl, msg);
+                return { valid: false, value: cleaned, message: msg };
+            }
+            inputEl.value = cleaned;
+            setFieldValidationError(inputEl, '');
+            return { valid: true, value: cleaned, message: '' };
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            ['inline_wl_phone', 'survey_phone', 'wl_phone_number', 'order_customer_phone'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('blur', () => { if (el.value.trim()) validatePhoneField(el); });
+                    el.addEventListener('input', () => setFieldValidationError(el, ''));
+                }
+            });
+            ['inline_wl_email', 'wl_email', 'order_customer_email'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('blur', () => { if (el.value.trim()) validateEmailField(el, true); });
+                    el.addEventListener('input', () => setFieldValidationError(el, ''));
+                }
+            });
+        });
+
+        // XỬ LÝ GỬI FORM KHẢO SÁT NHU CẦU & HIỂN THỊ MODAL
         function handleSurveySubmit(e) {
             e.preventDefault();
             const form = document.getElementById('surveyForm');
             const name = form.fullname.value.trim();
-            const phone = form.phone_zalo.value.trim();
+            const phoneEl = document.getElementById('survey_phone');
+            const phoneCheck = validatePhoneField(phoneEl);
+            if (!phoneCheck.valid) {
+                phoneEl.focus();
+                return;
+            }
+            const phone = phoneCheck.value;
             
             // Lấy môn thể thao được chọn
             let sport = '';
@@ -2928,10 +3035,24 @@
             e.preventDefault();
             const form = document.getElementById('inlineWaitlistForm');
             const submitBtn = document.getElementById('inline_wl_submit_btn');
-            const name = document.getElementById('inline_wl_fullname').value.trim();
-            const phone = document.getElementById('inline_wl_phone').value.trim();
-            const email = document.getElementById('inline_wl_email').value.trim();
+            const nameEl = document.getElementById('inline_wl_fullname');
+            const phoneEl = document.getElementById('inline_wl_phone');
+            const emailEl = document.getElementById('inline_wl_email');
+            const name = nameEl.value.trim();
             const product = document.getElementById('inline_wl_product').value;
+
+            const phoneCheck = validatePhoneField(phoneEl);
+            if (!phoneCheck.valid) {
+                phoneEl.focus();
+                return;
+            }
+            const emailCheck = validateEmailField(emailEl, true);
+            if (!emailCheck.valid) {
+                emailEl.focus();
+                return;
+            }
+            const phone = phoneCheck.value;
+            const email = emailCheck.value;
 
             const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
             if (submitBtn) {
@@ -3029,8 +3150,20 @@
             e.preventDefault();
             const form = document.getElementById('siteWaitlistForm');
             const name = form.fullname.value.trim();
-            const phone = form.phone.value.trim();
-            const email = form.email.value.trim();
+            const phoneEl = document.getElementById('wl_phone_number');
+            const emailEl = document.getElementById('wl_email');
+            const phoneCheck = validatePhoneField(phoneEl);
+            if (!phoneCheck.valid) {
+                phoneEl.focus();
+                return;
+            }
+            const emailCheck = validateEmailField(emailEl, true);
+            if (!emailCheck.valid) {
+                emailEl.focus();
+                return;
+            }
+            const phone = phoneCheck.value;
+            const email = emailCheck.value;
             const product = form.product_interest.value;
 
             syncCustomerAndOrderToLocalStore({
@@ -3142,9 +3275,20 @@
         async function handleProceedToPayment(e) {
             e.preventDefault();
             const name = document.getElementById('order_customer_name').value.trim();
-            const phone = document.getElementById('order_customer_phone').value.trim();
+            const phoneEl = document.getElementById('order_customer_phone');
             const emailEl = document.getElementById('order_customer_email');
-            const email = emailEl ? emailEl.value.trim() : '';
+            const phoneCheck = validatePhoneField(phoneEl);
+            if (!phoneCheck.valid) {
+                phoneEl.focus();
+                return;
+            }
+            const emailCheck = validateEmailField(emailEl, true);
+            if (!emailCheck.valid) {
+                emailEl.focus();
+                return;
+            }
+            const phone = phoneCheck.value;
+            const email = emailCheck.value;
             const address = document.getElementById('order_customer_address').value.trim();
             const methodEl = document.querySelector('input[name="payment_method"]:checked');
             const method = methodEl ? methodEl.value : 'sepay';

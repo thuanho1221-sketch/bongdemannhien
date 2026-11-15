@@ -847,17 +847,62 @@
             document.getElementById('customerModal').classList.remove('hidden');
         }
 
+        const ADMIN_PHONE_RE = /^(?:0|\+84|84)(?:3|5|7|8|9)\d{8}$/;
+        const ADMIN_EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+        function normalizeAdminPhone(raw) {
+            const c = String(raw || '').replace(/[\s.\-()]/g, '');
+            if (!c) return '';
+            if (!ADMIN_PHONE_RE.test(c)) return null;
+            if (c.startsWith('+84')) return '0' + c.slice(3);
+            if (c.startsWith('84') && c.length === 11) return '0' + c.slice(2);
+            return c;
+        }
+
+        function normalizeAdminEmail(raw) {
+            const e = String(raw || '').trim().toLowerCase();
+            if (!e) return '';
+            if (e.length > 254 || /\.\./.test(e) || !ADMIN_EMAIL_RE.test(e)) return null;
+            return e;
+        }
+
         async function saveCustomer(e) {
             e.preventDefault();
             const id = document.getElementById('cust_id').value;
+            const rawPhone = document.getElementById('cust_phone').value.trim();
+            const rawZalo = document.getElementById('cust_zalo').value.trim();
+            const rawEmail = document.getElementById('cust_email').value.trim();
+
+            const phoneVal = normalizeAdminPhone(rawPhone);
+            if (!phoneVal) {
+                alert('Số điện thoại không hợp lệ! Vui lòng nhập đúng 10 số di động Việt Nam (đầu 03, 05, 07, 08, 09).');
+                document.getElementById('cust_phone').focus();
+                return;
+            }
+            let zaloVal = phoneVal;
+            if (rawZalo) {
+                zaloVal = normalizeAdminPhone(rawZalo);
+                if (!zaloVal) {
+                    alert('Số Zalo không hợp lệ! Vui lòng nhập đúng 10 số di động Việt Nam.');
+                    document.getElementById('cust_zalo').focus();
+                    return;
+                }
+            }
+            const emailVal = normalizeAdminEmail(rawEmail);
+            if (rawEmail && !emailVal) {
+                alert('Địa chỉ Email không đúng định dạng (ví dụ: khachhang@gmail.com).');
+                document.getElementById('cust_email').focus();
+                return;
+            }
+
             const payload = {
                 action: id ? 'edit_customer' : 'add_customer',
                 data: {
                     id: id ? Number(id) : undefined,
                     name: document.getElementById('cust_name').value.trim(),
-                    phone: document.getElementById('cust_phone').value.trim(),
-                    zalo: document.getElementById('cust_zalo').value.trim(),
-                    email: document.getElementById('cust_email').value.trim() || null
+                    phone: phoneVal,
+                    zalo: zaloVal,
+                    email: emailVal || null
                 }
             };
 
@@ -945,7 +990,13 @@
             const id = document.getElementById('ord_id').value;
             const custId = Number(document.getElementById('ord_customer_id').value);
             const prodId = Number(document.getElementById('ord_product_id').value);
-            const emailVal = document.getElementById('ord_email').value.trim();
+            const rawEmailVal = document.getElementById('ord_email').value.trim();
+            const emailVal = normalizeAdminEmail(rawEmailVal);
+            if (rawEmailVal && !emailVal) {
+                alert('Địa chỉ Email nhận xác nhận đơn hàng không hợp lệ (ví dụ: khachhang@gmail.com).');
+                document.getElementById('ord_email').focus();
+                return;
+            }
 
             const custObj = dbState.customers.find(x => x.id === custId) || {};
             const prodObj = dbState.products.find(x => x.id === prodId) || {};

@@ -1,0 +1,22 @@
+# Biến môi trường & Khóa bí mật
+.env
+.env.*
+!.env.example
+resend_config.txt
+
+# Cơ sở dữ liệu & Bản sao lưu
+*.db
+*.db-journal
+*.sqlite
+*.bak
+backups/
+bongde_store.local.json
+sepay_confirmed.local.json
+
+# Thư mục phụ thuộc & Hệ thống
+node_modules/
+.vercel/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

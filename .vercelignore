@@ -1,6 +1,11 @@
 # Không đưa các file bí mật / dữ liệu khách hàng / file chạy local lên Vercel
+/.env
+/.env.*
+!/env.example
 /resend_config.txt
 /brain.db
+/*.bak
+/backups
 /_seed.json
 /waitlist.json
 /files.zip
@@ -15,4 +20,7 @@
 /_sequence_run.js
 /admin.js
 /waitlist.js
+/check-payment.js
+/health.js
 /bongde_store.local.json
+/sepay_confirmed.local.json
