@@ -10,18 +10,30 @@ module.exports = async (req, res) => {
   try {
     const b = req.body || {};
     const name = String(b.name || '').trim().slice(0, 100);
-    const phone = String(b.phone || '').replace(/[\s.\-()]/g, '');
+    const rawPhone = String(b.phone || '').replace(/[\s.\-()]/g, '');
     const email = String(b.email || '').trim().toLowerCase();
     const product = String(b.product || '').trim().slice(0, 150);
 
     if (name.length < 2) {
-      return send(400, { success: false, error: 'Tên không hợp lệ' });
+      return send(400, { success: false, error: 'Vui lòng nhập họ và tên hợp lệ (tối thiểu 2 ký tự)' });
     }
-    if (!/^\+?\d{8,13}$/.test(phone)) {
-      return send(400, { success: false, error: 'Số điện thoại không hợp lệ' });
+    if (!/^(?:0|\+84|84)(?:3|5|7|8|9)\d{8}$/.test(rawPhone)) {
+      return send(400, {
+        success: false,
+        error: 'Số điện thoại không hợp lệ (vui lòng nhập đúng 10 số di động Việt Nam, đầu 03, 05, 07, 08, 09)',
+      });
     }
-    if (email && (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))) {
-      return send(400, { success: false, error: 'Email không hợp lệ' });
+    const phone = rawPhone.startsWith('+84')
+      ? '0' + rawPhone.slice(3)
+      : rawPhone.startsWith('84') && rawPhone.length === 11
+      ? '0' + rawPhone.slice(2)
+      : rawPhone;
+
+    if (!email || email.length > 254 || /\.\./.test(email) || !/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      return send(400, {
+        success: false,
+        error: 'Địa chỉ email không hợp lệ (ví dụ đúng: ten@gmail.com)',
+      });
     }
 
     let db = null;

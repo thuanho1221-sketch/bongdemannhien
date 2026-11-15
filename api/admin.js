@@ -6,11 +6,30 @@ const NOW = "datetime('now','+7 hours')"; // giờ Việt Nam
 const STATUSES = ['pending', 'paid', 'success', 'completed', 'cancelled'];
 const TYPES = ['physical', 'digital', 'service'];
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const email = (v) => {
+const PHONE_VN_RE = /^(?:0|\+84|84)(?:3|5|7|8|9)\d{8}$/;
+const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+const phoneVN = (v, required = true) => {
+  const c = String(v ?? '').replace(/[\s.\-()]/g, '');
+  if (!c) {
+    if (required) throw new Error('Vui lòng nhập số điện thoại');
+    return '';
+  }
+  if (!PHONE_VN_RE.test(c)) {
+    throw new Error('Số điện thoại không hợp lệ (cần đúng 10 số di động Việt Nam, đầu 03, 05, 07, 08, 09)');
+  }
+  if (c.startsWith('+84')) return '0' + c.slice(3);
+  if (c.startsWith('84') && c.length === 11) return '0' + c.slice(2);
+  return c;
+};
+const email = (v, required = false) => {
   const e = String(v ?? '').trim().toLowerCase();
-  if (!e) return null;
-  if (e.length > 254 || !EMAIL_RE.test(e)) throw new Error('Email không hợp lệ');
+  if (!e) {
+    if (required) throw new Error('Vui lòng nhập địa chỉ email');
+    return null;
+  }
+  if (e.length > 254 || /\.\./.test(e) || !EMAIL_RE.test(e)) {
+    throw new Error('Email không hợp lệ (ví dụ: ten@gmail.com)');
+  }
   return e;
 };
 const str = (v, max = 500) => String(v ?? '').trim().slice(0, max);
@@ -78,13 +97,17 @@ module.exports = async (req, res) => {
       case 'add_customer': {
         const name = str(data.name, 100);
         if (!name) throw new Error('Thiếu tên khách hàng');
-        await db.execute({ sql: 'INSERT INTO customers (name,phone,zalo,email,registered_at) VALUES (?,?,?,?,' + NOW + ')', args: [name, str(data.phone, 20), str(data.zalo, 20), email(data.email)] });
+        const pVal = phoneVN(data.phone, true);
+        const zVal = data.zalo ? phoneVN(data.zalo, false) : pVal;
+        await db.execute({ sql: 'INSERT INTO customers (name,phone,zalo,email,registered_at) VALUES (?,?,?,?,' + NOW + ')', args: [name, pVal, zVal, email(data.email)] });
         break;
       }
       case 'edit_customer': {
         const name = str(data.name, 100);
         if (!name) throw new Error('Thiếu tên khách hàng');
-        await db.execute({ sql: 'UPDATE customers SET name=?,phone=?,zalo=?,email=? WHERE id=?', args: [name, str(data.phone, 20), str(data.zalo, 20), email(data.email), id(data.id)] });
+        const pVal = phoneVN(data.phone, true);
+        const zVal = data.zalo ? phoneVN(data.zalo, false) : pVal;
+        await db.execute({ sql: 'UPDATE customers SET name=?,phone=?,zalo=?,email=? WHERE id=?', args: [name, pVal, zVal, email(data.email), id(data.id)] });
         break;
       }
       case 'delete_customer':
@@ -101,7 +124,7 @@ module.exports = async (req, res) => {
 
         // Nếu đơn tạo từ trang chủ (chưa có customer_id), tự động tìm hoặc tạo khách hàng theo SĐT
         if (!cust && data.customer_phone) {
-          const cleanPhone = String(data.customer_phone).replace(/[\s.\-()]/g, '');
+          const cleanPhone = phoneVN(data.customer_phone, true);
           const cName = str(data.customer_name, 100) || 'Khách hàng Sportfit';
           await db.execute({
             sql: `INSERT INTO customers (name, phone, zalo, email, notes, registered_at)

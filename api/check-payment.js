@@ -3,6 +3,23 @@ const path = require('path');
 const { getDb, ensureReady } = require('./_lib');
 const { sendEmail } = require('./_email');
 const { orderConfirmationEmail } = require('./_sequence');
+const { loadConfig } = require('./_config');
+
+const PHONE_VN_RE = /^(?:0|\+84|84)(?:3|5|7|8|9)\d{8}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const normalizePhoneVN = (v) => {
+  const c = String(v || '').replace(/[\s.\-()]/g, '');
+  if (!c) return '';
+  if (!PHONE_VN_RE.test(c)) return '';
+  if (c.startsWith('+84')) return '0' + c.slice(3);
+  if (c.startsWith('84') && c.length === 11) return '0' + c.slice(2);
+  return c;
+};
+const normalizeEmail = (v) => {
+  const e = String(v || '').trim().toLowerCase();
+  if (!e || e.length > 254 || !EMAIL_RE.test(e)) return '';
+  return e;
+};
 
 const CONFIRMED_FILE = process.env.VERCEL
   ? '/tmp/sepay_confirmed.json'
@@ -68,8 +85,16 @@ module.exports = async (req, res) => {
     return res.status(200).send(JSON.stringify(prev));
   }
 
-  const SEPAY_API_TOKEN =
-    process.env.SEPAY_API_TOKEN || 'HUD5WAYCGVCTRFJ7MLDLEFMEU1TLNQ6IEIZNGYRNBEHQH79S0XXWVV4JTQ4DBWHP';
+  const cfg = loadConfig();
+  const SEPAY_API_TOKEN = cfg.SEPAY_API_TOKEN || process.env.SEPAY_API_TOKEN || '';
+  if (!SEPAY_API_TOKEN) {
+    return res.status(500).send(
+      JSON.stringify({
+        success: false,
+        error: 'Chưa cấu hình SEPAY_API_TOKEN trong file .env hoặc biến môi trường',
+      })
+    );
+  }
 
   try {
     // Gọi API SePay để lấy 20 giao dịch gần nhất
@@ -133,8 +158,8 @@ module.exports = async (req, res) => {
     // ĐÃ TÌM THẤY GIAO DỊCH SEPAY THÀNH CÔNG -> CẬP NHẬT DB (status = 'success') & GỬI EMAIL XÁC NHẬN ĐƠN HÀNG QUA RESEND
     const paidAmount = Number(matched.amount_in) || amount || 2000;
     const customerName = String(params.customerName || 'Khách hàng Sportfit').trim();
-    const customerPhone = String(params.customerPhone || '').replace(/[\s.\-()]/g, '');
-    const customerEmail = String(params.customerEmail || '').trim().toLowerCase();
+    const customerPhone = normalizePhoneVN(params.customerPhone);
+    const customerEmail = normalizeEmail(params.customerEmail);
     const customerAddress = String(params.customerAddress || '').trim();
     const productName = String(params.productName || 'Bảng Tập Chống Đẩy Đa Năng 14 Trong 1').trim();
     const productIdParam = Number(params.productId) || 1;
