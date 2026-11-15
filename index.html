@@ -3157,11 +3157,38 @@
             // Sinh mã đơn hàng ngẫu nhiên duy nhất (VD: SF + 5 chữ số)
             const randomCode = Math.floor(10000 + Math.random() * 90000);
             currentCheckout.orderCode = `SF${randomCode}`;
+            currentCheckout.orderId = null;
 
-            // Lưu đơn hàng ở trạng thái 'pending' lên hệ thống /admin trước khi quét QR
+            // Tạo đơn hàng ở trạng thái 'pending' trên /api/admin trước rồi mới mở QR
+            try {
+                const res = await fetch('/api/admin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'add_order',
+                        customer_name: name,
+                        customer_phone: phone,
+                        customer_email: email,
+                        product_id: currentCheckout.productId,
+                        amount: currentCheckout.amountNumber,
+                        status: 'pending',
+                        skip_email: true
+                    })
+                });
+                const resData = await res.json();
+                const createdOrdId = resData && (resData.id || resData.order_id);
+                if (createdOrdId) {
+                    currentCheckout.orderId = createdOrdId;
+                }
+            } catch (err) {
+                console.warn('Initial pending order save warning:', err);
+            }
+
+            // Lưu đồng bộ vào bộ nhớ trình duyệt với đúng ID đơn hàng
             syncCustomerAndOrderToLocalStore({
                 customer: { name, phone, email, source: 'sepay_checkout' },
                 order: {
+                    id: currentCheckout.orderId || Date.now(),
                     orderCode: currentCheckout.orderCode,
                     customerName: name,
                     customerPhone: phone,
@@ -3172,28 +3199,6 @@
                     status: 'pending'
                 }
             });
-
-            fetch('/api/admin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'add_order',
-                    customer_name: name,
-                    customer_phone: phone,
-                    customer_email: email,
-                    product_id: currentCheckout.productId,
-                    amount: currentCheckout.amountNumber,
-                    status: 'pending',
-                    skip_email: true
-                })
-            })
-            .then(r => r.json())
-            .then(resData => {
-                if (resData && resData.id) {
-                    currentCheckout.orderId = resData.id;
-                }
-            })
-            .catch(err => console.warn('Initial pending order save warning:', err));
 
             if (method === 'cod') {
                 document.getElementById('paymentStep1').classList.add('hidden');
@@ -3214,12 +3219,15 @@
             document.getElementById('paymentStep1').classList.add('hidden');
             document.getElementById('paymentStep2VietQR').classList.remove('hidden');
 
+            // QUAN TRỌNG: Ngân hàng VietinBank trên SePay bắt buộc nội dung chuyển khoản có tiền tố "SEVQR "
+            const transferContent = `SEVQR ${currentCheckout.orderCode}`;
+
             document.getElementById('copy_acc_num').innerText = SEPAY_CONFIG.accountNumber;
             document.getElementById('copy_amount').innerText = currentCheckout.priceString;
-            document.getElementById('copy_order_code').innerText = currentCheckout.orderCode;
+            document.getElementById('copy_order_code').innerText = transferContent;
 
-            // Tạo link VietQR SePay đúng 2.000đ và nội dung mã đơn SFxxxxx
-            const qrUrl = `https://qr.sepay.vn/img?acc=${SEPAY_CONFIG.accountNumber}&bank=${SEPAY_CONFIG.bank}&amount=${currentCheckout.amountNumber}&des=${currentCheckout.orderCode}&template=compact`;
+            // Tạo link VietQR SePay đúng 2.000đ và nội dung SEVQR SFxxxxx để VietinBank đẩy biến động sang SePay ngay lập tức
+            const qrUrl = `https://qr.sepay.vn/img?acc=${SEPAY_CONFIG.accountNumber}&bank=${SEPAY_CONFIG.bank}&amount=${currentCheckout.amountNumber}&des=${encodeURIComponent(transferContent)}&template=compact`;
             
             const qrImg = document.getElementById('sepay_qr_img');
             const qrLoading = document.getElementById('sepay_qr_loading');
@@ -3275,7 +3283,7 @@
         function manualCheckPayment() {
             const btn = event.currentTarget || event.target;
             const originalText = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang kiểm tra giao dịch SePay...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Đang xác nhận thanh toán &amp; gửi email...`;
             btn.disabled = true;
 
             fetch('/api/check-payment', {
@@ -3290,7 +3298,8 @@
                     customerEmail: currentCheckout.customerEmail,
                     customerAddress: currentCheckout.customerAddress,
                     productName: currentCheckout.productName,
-                    productId: currentCheckout.productId
+                    productId: currentCheckout.productId,
+                    manualConfirm: true
                 })
             })
                 .then(r => r.json())
@@ -3300,7 +3309,7 @@
                     if (data.success && data.paid) {
                         onPaymentSuccess(data);
                     } else {
-                        alert("Hệ thống đang đợi giao dịch từ SePay. Bạn vui lòng kiểm tra đã chuyển khoản 2.000đ kèm đúng nội dung " + currentCheckout.orderCode + " chưa nhé (thường mất 3-10 giây sau khi chuyển)!");
+                        alert("Hệ thống đang đợi giao dịch từ SePay. Bạn vui lòng kiểm tra đã chuyển khoản 2.000đ kèm đúng nội dung SEVQR " + currentCheckout.orderCode + " chưa nhé!");
                     }
                 })
                 .catch(() => {
@@ -3316,25 +3325,48 @@
                 sepayPollingInterval = null;
             }
 
-            // Cập nhật trạng thái đơn sang 'success' trong bộ nhớ trình duyệt để trang /admin thấy ngay lập tức
+            const finalId = (data && data.orderId) || currentCheckout.orderId;
+
+            // 1. Cập nhật trạng thái đơn sang 'success' trong bộ nhớ trình duyệt để trang /admin thấy ngay lập tức
             syncCustomerAndOrderToLocalStore({
                 updateOrderCode: currentCheckout.orderCode,
                 newStatus: 'success'
             });
+            if (finalId) {
+                syncCustomerAndOrderToLocalStore({
+                    updateOrderCode: finalId,
+                    newStatus: 'success'
+                });
+            }
+
+            // 2. Đồng bộ trạng thái 'success' trực tiếp sang /api/admin để mọi instance đều thấy trạng thái 'success'
+            if (finalId) {
+                fetch('/api/admin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'edit_order',
+                        data: {
+                            id: Number(finalId),
+                            status: 'success'
+                        }
+                    })
+                }).catch(() => {});
+            }
 
             document.getElementById('paymentStep2VietQR').classList.add('hidden');
-            document.getElementById('success_order_code').innerText = (data && data.orderId) ? `#${data.orderId} (${currentCheckout.orderCode})` : currentCheckout.orderCode;
+            document.getElementById('success_order_code').innerText = finalId ? `#${finalId} (${currentCheckout.orderCode})` : currentCheckout.orderCode;
             document.getElementById('success_cust_name').innerText = currentCheckout.customerName;
             document.getElementById('success_cust_phone').innerText = currentCheckout.customerPhone;
             const emailSpan = document.getElementById('success_cust_email');
-            if (emailSpan) emailSpan.innerText = currentCheckout.customerEmail || 'Đã lưu trên hệ thống';
+            if (emailSpan) emailSpan.innerText = (data && data.emailTo) || currentCheckout.customerEmail || 'Đã gửi qua Resend';
             document.getElementById('success_product_name').innerText = currentCheckout.productName;
             document.getElementById('success_paid_amount').innerText = currentCheckout.priceString;
 
             document.getElementById('paymentSuccessScreen').classList.remove('hidden');
 
             if (typeof addChatMessage === 'function') {
-                addChatMessage('bot', `🎉 Tuyệt vời! SePay đã xác nhận thanh toán thành công <strong>${currentCheckout.priceString}</strong> cho đơn hàng <strong>${currentCheckout.orderCode}</strong>. Hệ thống đã tự động gửi <strong>Email xác nhận đơn hàng</strong> tới <strong>${currentCheckout.customerEmail}</strong> và chuyển trạng thái đơn trong <a href="/admin" class="underline font-bold text-brand-orange">/admin</a> sang <strong>'success'</strong>!`);
+                addChatMessage('bot', `🎉 Tuyệt vời! SePay đã xác nhận thanh toán thành công <strong>${currentCheckout.priceString}</strong> cho đơn hàng <strong>${currentCheckout.orderCode}</strong>. Hệ thống đã tự động gửi <strong>Email xác nhận đơn hàng</strong> tới <strong>${currentCheckout.customerEmail}</strong> và chuyển trạng thái đơn trong <a href="/admin#orders" class="underline font-bold text-brand-orange">/admin</a> sang <strong>'success'</strong>!`);
             }
         }
 
@@ -3355,7 +3387,7 @@
         }
 
         function copyOrderCode(btn) {
-            copyText(currentCheckout.orderCode, btn || document.getElementById('copy_code_btn'));
+            copyText(`SEVQR ${currentCheckout.orderCode}`, btn || document.getElementById('copy_code_btn'));
         }
     </script>
 </body>
